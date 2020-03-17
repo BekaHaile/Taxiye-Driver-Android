@@ -3,11 +3,6 @@ package product.clicklabs.jugnoo.driver.fragments
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.fragment.app.Fragment
-import androidx.core.view.ViewCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.text.InputFilter
 import android.text.InputType
 import android.text.TextUtils
@@ -17,6 +12,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
@@ -24,6 +24,7 @@ import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
@@ -53,12 +54,13 @@ class DocumentDetailsFragment: Fragment(){
 
     companion object {
         @JvmStatic
-        fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int) =
+        fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int,driverVehicleMappingId:Int) =
                 DocumentDetailsFragment().apply {
                     arguments = Bundle().apply {
                         val gson = Gson()
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putInt(ARGS_POS, pos)
+                        putInt(Constants.DRIVER_VEHICLE_MAPPING_ID, driverVehicleMappingId)
                         putString(ARGS_DOC_INFO, gson.toJson(docInfo))
                     }
                 }
@@ -72,6 +74,7 @@ class DocumentDetailsFragment: Fragment(){
     private  var pos: Int = 0
     private  var viewHolder :View?=null
     private var listener:InteractionListener? = null
+    private var driverVehicleMappingId = -1
 
     val documentInputFields = hashMapOf<String,DocumentInputField>()
 
@@ -94,8 +97,9 @@ class DocumentDetailsFragment: Fragment(){
         super.onCreate(savedInstanceState)
         val gson = Gson()
         docInfo = gson.fromJson(arguments!!.getString(ARGS_DOC_INFO), DocInfo::class.java)
-        accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN)
+        accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN).toString()
         pos = arguments!!.getInt(ARGS_POS)
+        driverVehicleMappingId=arguments!!.getInt(Constants.DRIVER_VEHICLE_MAPPING_ID)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -117,8 +121,9 @@ class DocumentDetailsFragment: Fragment(){
         viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
         lastEdtId = viewHolder!!.id
 
-        listener?.setSubmitButtonVisibility(if(docInfo.listDocFieldsInfo == null || docInfo.listDocFieldsInfo.size == 0) View.GONE else View.VISIBLE)
-
+        listener?.setSubmitButtonVisibility(
+                if(docInfo.status == "0"||docInfo.isEditable==1)
+                    View.VISIBLE else View.GONE)
         if (docInfo.listDocFieldsInfo!=null) {
             for (item in docInfo.listDocFieldsInfo) {
 
@@ -226,6 +231,16 @@ class DocumentDetailsFragment: Fragment(){
                 "doc_values" to fieldsInput.toString()
 
         )
+        if (docInfo.docCategory == 1&&Data.getMultipleVehiclesEnabled() == 1) {
+            if (driverVehicleMappingId != -1)
+                map[Constants.DRIVER_VEHICLE_MAPPING_ID] =driverVehicleMappingId.toString()
+            if ( Data.getDriverMappingIdOnBoarding() != -1) {
+                map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingIdOnBoarding().toString()
+            }
+        }
+        if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingIdOnBoarding()!=-1&&docInfo.docCategory==1){
+            map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingIdOnBoarding().toString()
+        }
         ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(map,ApiName.UPDATE_DOC_FIELDS
                 ,object: APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
             override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
@@ -273,7 +288,7 @@ class DocumentDetailsFragment: Fragment(){
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is InteractionListener){
             listener = context

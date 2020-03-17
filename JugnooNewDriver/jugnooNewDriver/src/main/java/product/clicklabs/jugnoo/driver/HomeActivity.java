@@ -119,6 +119,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -153,6 +154,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -213,6 +215,7 @@ import product.clicklabs.jugnoo.driver.room.model.AcceptLatLng;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.support.SupportMailActivity;
 import product.clicklabs.jugnoo.driver.support.SupportOptionsActivity;
@@ -282,15 +285,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     ImageView profileImg;
-    TextView userName, ratingValue, textViewAutosOn, tvCredits;
+    TextView userName, ratingValue, textViewAutosOn, tvCredits,tvVehicleName;
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
-    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
+    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle,ivDestRideToggle;
 
-    RelativeLayout inviteFriendRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
     TextView inviteFriendText;
+    TextView destRideStatus;
 
     RelativeLayout rlNotificationCenter, etaTimerRLayout;
     TextView etaTimerText;
@@ -302,7 +306,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     RelativeLayout callUsRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
             relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain, rlPlansNew,
-            rlSupportTicket, rlMailSupport;
+            rlSupportTicket, rlMailSupport,vehiclesDetailRL;
     TextView callUsText, tvGetSupport, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
 
@@ -355,7 +359,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     // Driver Engaged layout
     RelativeLayout driverEngagedLayout;
 
-    RelativeLayout perfectRidePassengerCallRl;
+    RelativeLayout perfectRidePassengerCallRl, incentivesRL;
     LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
     TextView driverPerfectRidePassengerName, textViewRideInstructions;
     Button driverEngagedMyLocationBtn;
@@ -418,7 +422,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
     RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
+            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow,rlLowWalletBalance;
     View viewRefreshUSLBar;
     ProgressBar progressBarUSL;
     TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -573,7 +577,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TabLayout tabDots;
     private ViewPager vpRequests;
     private ConstraintLayout containerRequestBidNew;
-
+    public static Handler updateHandler=new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -627,10 +631,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             profileImg = (ImageView) findViewById(R.id.profileImg);
             userName = (TextView) findViewById(R.id.userName);
             tvCredits = (TextView) findViewById(R.id.tvCredits);
+            tvVehicleName=findViewById(R.id.tvVehicleName);
             ratingValue = (TextView) findViewById(R.id.ratingValue);
             userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             tvCredits.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-
+            tvVehicleName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
             linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 
@@ -656,14 +661,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
             textViewDeliveryOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
+            ivDestRideToggle = (ImageView) findViewById(R.id.ivDestRideToggle);
 
 
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+            destRidesRl = (RelativeLayout) findViewById(R.id.destRidesRl);
             driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
             manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
             driverRatingRl = findViewById(R.id.driverRatingRl);
             walletRl = (RelativeLayout) findViewById(R.id.walletRl);
             inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
+            destRideStatus = (TextView) findViewById(R.id.destRideStatus);
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             inviteFriendText.setText(getStringText(R.string.invite_earn));
 
@@ -703,6 +711,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
             relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
             rlMailSupport = (RelativeLayout) findViewById(R.id.rlMailSupport);
+            vehiclesDetailRL = (RelativeLayout) findViewById(R.id.vehiclesDetailRL);
+
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
@@ -762,6 +772,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             languagePrefrencesText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
+            incentivesRL = (RelativeLayout) findViewById(R.id.incentivesRL);
             logoutText = (TextView) findViewById(R.id.logoutText);
             logoutText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			rlHereMaps = findViewById(R.id.rlHereMaps);
@@ -1080,6 +1091,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
             relativeLayoutBatteryLow = (RelativeLayout) findViewById(R.id.relativeLayoutBatteryLow);
+            rlLowWalletBalance = (RelativeLayout) findViewById(R.id.rlLowWalletBalance);
 
             textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
             progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
@@ -1137,6 +1149,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             vpRequests = findViewById(R.id.vpRequests);
             tabDots = findViewById(R.id.tabDots);
             containerRequestBidNew = findViewById(R.id.containerRequestBidNew);
+
+            if(Data.userData.getActiveVehicle()!=null){
+                updateActiveVehicleSideMenu();
+            }
 
             if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY, getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
                 containerSwitch.setVisibility(View.VISIBLE);
@@ -1383,6 +1399,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 }
             });
+            destRidesRl.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this,DestinationRideActivity.class));
+                    overridePendingTransition(R.anim.right_in,R.anim.right_out);
+                }
+            });
 
             walletRl.setOnClickListener(new OnClickListener() {
 
@@ -1539,6 +1563,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     startActivity(new Intent(HomeActivity.this, SupportMailActivity.class));
                 }
             });
+            vehiclesDetailRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(HomeActivity.this,VehicleDetailsActivity.class));
+
+                }
+            });
             rlSupportTicket.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1556,6 +1587,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            incentivesRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, IncentiveActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
             relativeLayoutPlans.setOnClickListener(new OnClickListener() {
@@ -2459,6 +2498,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 rlMailSupport.setVisibility(View.GONE);
             }
 
+            if (Prefs.with(HomeActivity.this).getInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
+                vehiclesDetailRL.setVisibility(View.VISIBLE);
+            } else {
+                vehiclesDetailRL.setVisibility(View.GONE);
+            }
+
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU, 0) == 1) {
                 relativeLayoutPlans.setVisibility(View.VISIBLE);
             } else {
@@ -2542,8 +2587,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1) {
                 walletRl.setVisibility(View.VISIBLE);
+                fetchWalletData();
             } else {
                 walletRl.setVisibility(View.GONE);
+            }
+
+            if (Prefs.with(HomeActivity.this).getInt(Constants.INCENTIVE, 1) == 1) {
+                incentivesRL.setVisibility(View.VISIBLE);
+            } else {
+                incentivesRL.setVisibility(View.GONE);
             }
 
 			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_HERE_MAPS_FEEDBACK, 0) == 1) {
@@ -2551,6 +2603,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				rlHereMaps.setVisibility(View.GONE);
 			}
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_DESTINATION, 1) == 1) {
+                destRidesRl.setVisibility(View.VISIBLE);
+            } else {
+                destRidesRl.setVisibility(View.GONE);
+            }
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
                 textViewSuperDrivers.setText(R.string.leaderboard);
@@ -2601,6 +2658,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }, HomeActivity.this);
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
+    }
+
+    private void fetchWalletData(){
+        new ApiCommonKt<WalletModelResponse>(this, true, true, true).execute((HashMap<String, String>) null, ApiName.FETCH_WALLET,new APICommonCallbackKotlin<WalletModelResponse>() {
+            @Override
+            public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
+                if(Data.userData != null) {
+                    //Data.userData.setWalletBalance(walletModelResponse.getBalance());
+                    checkForLowWalletBalance();
+                }
+            }
+
+            @Override
+            public boolean onError(WalletModelResponse walletModelResponse, String message, int flag) {
+                return false;
+            }
+        });
     }
 
     private AddLuggageInteractor addLuggageInteractor;
@@ -3335,12 +3409,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
+    private void updateActiveVehicleSideMenu(){
+        if(Data.userData.getActiveVehicle()!=null&&Data.getMultipleVehiclesEnabled()==1){
+        tvVehicleName.setVisibility(View.VISIBLE);
+        String vehicleName=Data.userData.getActiveVehicle().getModelName().isEmpty()?Data.userData.getActiveVehicle().getVehicleNo():Data.userData.getActiveVehicle().getModelName()+" "+Data.userData.getActiveVehicle().getVehicleNo();
+        tvVehicleName.setText(vehicleName);
+        } else{
+            tvVehicleName.setVisibility(View.GONE);
+            tvVehicleName.setText("");
+        }
+
+    }
 
     public void switchJugnooOnThroughServer(final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing,
                                             final boolean toggleDelivery,CustomerInfo customerInfo) {
         if (isTourBtnClicked) {
             isTourBtnClicked = false;
             isTourFlag = true;
+        }
+        if(Data.getMultipleVehiclesEnabled() == 1&&(Data.userData.getActiveVehicle()==null||Data.userData.getActiveVehicle().getDriverVehicleMappingId()==-1)&&1==jugnooOnFlag){
+            Intent intent =new Intent(HomeActivity.this,VehicleDetailsActivity.class);
+            intent.putExtra(Constants.OPEN_ACTIVITY_TO_SELECT_VEHICLE,true);
+            startActivityForResult(intent,20);
+            return;
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -3405,6 +3496,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             params.put(KEY_LONGITUDE, "" + latLng.longitude);
                         }
 
+                        if (Data.getMultipleVehiclesEnabled() == 1) {
+                            if(Data.userData.getActiveVehicle()!=null&&Data.userData.getActiveVehicle().getDriverVehicleMappingId()!=-1)
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.userData.getActiveVehicle().getDriverVehicleMappingId()+"");
+                            if(Data.getDriverMappingIdOnBoarding()!=-1){
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+                            }
+                        }
+
                         Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
                         String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
@@ -3412,6 +3511,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         final String message = JSONParser.getServerMessage(jObj);
                         if (jObj.has(KEY_FLAG)) {
                             int flag = jObj.getInt(KEY_FLAG);
+                            if(Data.getMultipleVehiclesEnabled()==1){
+                                Data.userData.setActiveVehicle(DriverVehicleDetails.parseDocumentVehicleDetails(jObj.optJSONObject(Constants.ACTIVE_VEHICLE)));
+                            }
                             if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
                                 int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
@@ -3493,6 +3595,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             showDialogFromBackground(message,true);
                         }
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateActiveVehicleSideMenu();
+                        }
+                    });
                     } catch (Exception e) {
                         e.printStackTrace();
                         runOnUiThread(new Runnable() {
@@ -3695,6 +3803,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
+    private void toggleDestinationRide(){
+        if(Data.userData.currDestRideObj!=null){
+            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+            destRideStatus.setText("ON");
+        } else {
+            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
+            destRideStatus.setText("OFF");
+        }
+    }
     public void changeJugnooONUIAndInitService(final boolean fromApi) {
 
         runOnUiThread(new Runnable() {
@@ -3745,6 +3862,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewDeliveryOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             textViewDeliveryOn.setText(getResources().getString(R.string.delivery_off));
 
+                        }
+                        if(Data.userData.currDestRideObj!=null){
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+                        } else {
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
                         }
 
                         if (!checkIfDriverOnline()) {
@@ -4445,6 +4567,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     showDriverEarning();
                     showRefreshUSLBar();
                     showLowBatteryAlert(true);
+                    checkForLowWalletBalance();
 
                     try {
                         if (timer != null) {
@@ -4983,6 +5106,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
     }
+    private void checkForLowWalletBalance() {
+        if(Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
+                && Data.userData != null
+                && Data.userData.getMinDriverBalance() != null
+                && Data.userData.getWalletBalance()!=null
+        ){
+            if (Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
+                rlLowWalletBalance.setVisibility(View.GONE);
+            } else {
+                rlLowWalletBalance.setVisibility(View.VISIBLE);
+            }
+        } else {
+            rlLowWalletBalance.setVisibility(View.GONE);
+        }
+    }
 
 	private void updateCustomerPoolDiscountFlag(CustomerInfo customerInfo) {
 		try {
@@ -5326,6 +5464,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
 
         try {
+
+            startDestinationRideTimer();
             if (driverRequestListAdapter.customerInfos.size() > 0) {
                 setPannelVisibility(false);
             } else {
@@ -5385,8 +5525,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
-
-		PushClickAction.INSTANCE.performAction(this);
+        toggleDestinationRide();
+        PushClickAction.INSTANCE.performAction(this);
     }
 
 
@@ -8817,7 +8957,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 return;
             }
-
+            if(resultCode==Activity.RESULT_OK) {
+                if(requestCode==20){
+                    relativeLayoutAutosOn.performClick();
+                }
+            }
 
             if (requestCode == 12) {
                 boolean state = data.getBooleanExtra("result", true);
@@ -12380,4 +12524,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
+	public void startDestinationRideTimer(){
+        if(Data.userData.currDestRideObj!=null){
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    if(Data.userData.currDestRideObj!=null) {
+                        Data.userData.currDestRideObj = null;
+                        toggleDestinationRide();
+                        DialogPopup.alertPopup(HomeActivity.this, "Attention !!", getString(R.string.destination_ride_end));
+                    }
+                }
+            };
+            if(updateHandler==null)
+                updateHandler=new Handler();
+            updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
+        }
+    }
 }

@@ -16,7 +16,8 @@ public class UserData {
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled, destinationOptionEnable;
-	public double showDriverRating;
+    public CurrDestRide currDestRideObj;
+    public double showDriverRating;
 	public String deiValue, driverSupportNumber, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
@@ -38,8 +39,13 @@ public class UserData {
 	private String dateOfBirth;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
+	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
+    private ArrayList<DriverVehicleDetails> driverVehicleDetailsList = new ArrayList<>();
+    private DriverVehicleDetails activeVehicle=null;
+	private Double walletBalance;
+	private Double minDriverBalance;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -54,7 +60,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, DriverVehicleDetails activeVehicle,Double minDriverBalance,Double mActualWalletBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -107,11 +113,15 @@ public class UserData {
 		this.sendCreditsEnabled = sendCreditsEnabled;
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
+		this.minDriverBalance = minDriverBalance;
+		this.walletBalance=mActualWalletBalance;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
 		this.subscriptionEnabled = subscriptionEnabled;
 		this.onlyCashRides = onlyCashRides;
 		this.onlyLongRides = onlyLongRides;
+        this.activeVehicle=activeVehicle;
+		this.driverTag = driverTag;
 	}
 
 	public String getUserId() {
@@ -314,5 +324,88 @@ public class UserData {
 
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public ArrayList<SearchResultNew> getSavedAddressList(){
+		return savedAddressList;
+	}
+
+	public class CurrDestRide{
+		String address,type;
+		Double latitude,longitude;
+		int destinationRideTimeRem;
+		long createdAt;
+		public CurrDestRide(String address,double latitude,double longitude,int destinationRideTimeRem,long createdAt,String type){
+			this.address=address;
+			this.destinationRideTimeRem=destinationRideTimeRem;
+			this.latitude=latitude;
+			this.longitude=longitude;
+			this.type=type;
+			this.createdAt=createdAt;
+		}
+
+		public Double getLatitude() {
+			return latitude;
+		}
+
+		public Double getLongitude() {
+			return longitude;
+		}
+
+		public int getDestinationRideTimeRem() {
+			//returns time in seconds
+			if(createdAt>0){
+				int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
+				if(timeRemaining>0)
+				return timeRemaining;
+				else
+					return 0;
+			}
+			else
+				return destinationRideTimeRem;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public void setCreatedAt(long createdAt) {
+			this.createdAt = createdAt;
+		}
+	}
+    public ArrayList<DriverVehicleDetails> getDriverVehicleDetailsList() {
+        return driverVehicleDetailsList;
+    }
+
+    public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
+        this.activeVehicle = activeVehicle;
+    }
+
+	public DriverVehicleDetails getActiveVehicle() {
+		return activeVehicle;
+	}
+
+	/**
+	 * driver's current balance
+	 * @return double
+	 */
+	public Double getWalletBalance() {
+		return walletBalance;
+	}
+
+	public void setWalletBalance(Double walletBalance) {
+		this.walletBalance = walletBalance;
+	}
+
+	/**
+	 * driver's minimum balance that is required to receive a ride request
+	 * @return double
+	 */
+	public Double getMinDriverBalance() {
+		return minDriverBalance;
 	}
 }

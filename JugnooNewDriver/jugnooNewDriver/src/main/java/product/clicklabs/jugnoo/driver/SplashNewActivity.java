@@ -1609,6 +1609,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 										DialogPopup.dismissLoadingDialog();
 									}
 								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+										Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0));
+									}
 									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 									Intent intent = new Intent(SplashNewActivity.this, DriverDocumentActivity.class);
 									intent.putExtra("access_token",jObj.getString("access_token"));

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="20dp"
+    app:cardElevation="7dp">
+
+    <RelativeLayout
+        android:id="@+id/border"
+        android:layout_width="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_alignParentStart="true"
+            android:id="@+id/profileRl"
+            android:layout_width="140px"
+            android:layout_height="140px"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:splitMotionEvents="false"
+            android:tag="mwar">
+
+            <ImageView
+                android:id="@+id/profileBack"
+                android:layout_width="140px"
+                android:layout_height="140px"
+                android:background="@drawable/circle_white"
+                android:tag="mwar"/>
+
+            <ImageView
+                android:id="@+id/profileImg"
+                android:layout_width="134px"
+                android:layout_height="134px"
+                android:src="@drawable/ic_auto_request"
+                android:layout_centerInParent="true"
+                android:tag="mwar"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlRemoveVehicle"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            >
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_delete"
+            android:layout_centerVertical="true"
+            />
+        </RelativeLayout>
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/profileRl"
+            android:layout_toStartOf="@id/rlRemoveVehicle"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hyundai, i10"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/maven_pro_medium"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_toStartOf="@id/tvVehicleType"
+                />
+                <TextView
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/tvVehicleType"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AUTOS"
+                    android:fontFamily="@font/maven_pro_medium"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvVehicleDetails"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_grey"
+                android:textSize="14sp"
+                android:fontFamily="@font/maven_pro_medium"
+                android:text="HRO3L1231"
+
+                />
+            <TextView
+                android:textSize="14sp"
+                android:id="@+id/tvVehicleStatus"
+                android:textColor="@color/red_dark"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rejected"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/maven_pro_medium"
+
+                />
+            <TextView
+                android:textSize="14sp"
+                android:id="@+id/tvVehicleRejectReason"
+                android:textColor="@color/red_dark"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="gone"
+                android:fontFamily="@font/maven_pro_medium"
+
+                />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -52,7 +52,8 @@ public class DriverTimeoutIntentService extends IntentService implements Constan
 			params.put("business_id", "1");
 			params.put("timeout_penalty", "" + timeoutPenalty);
 			HomeUtil.putDefaultParams(params);
-
+			if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingIdOnBoarding()!=-1)
+				params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
 			Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
 			Log.i("TimeOutAlarmReceiver", "2");

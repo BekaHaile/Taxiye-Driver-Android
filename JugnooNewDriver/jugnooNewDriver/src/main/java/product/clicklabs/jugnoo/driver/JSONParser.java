@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -47,6 +48,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -211,6 +213,19 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseSavedAddresses(JSONArray jsonArray) {
+        Data.userData.getSavedAddressList().clear();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject add = null;
+            try {
+                add = jsonArray.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (add != null)
+                Data.userData.getSavedAddressList().add(new SearchResultNew(add.optString("type"), add.optString("address"), "" + add.optInt("id"), add.optDouble("latitude"), add.optDouble("longitude")));
+        }
+    }
 
 	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
 
@@ -218,9 +233,11 @@ public class JSONParser implements Constants {
 		int freeRideIconDisable = 1;
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
-		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
+		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
-
+		DriverVehicleDetails activeVehicle=null;
+        Double minDriverBalance = null;
+        Double mActualCreditBalance=null;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
@@ -230,6 +247,12 @@ public class JSONParser implements Constants {
 		}
 		if (userData.has("resend_email_invoice_enabled")) {
 			resendEmailInvoiceEnabled = userData.getInt("resend_email_invoice_enabled");
+		}
+		if (userData.has("min_driver_balance")) {
+			minDriverBalance = userData.getDouble("min_driver_balance");
+		}
+		if (userData.has("actual_credit_balance")) {
+			mActualCreditBalance = userData.getDouble("actual_credit_balance");
 		}
 		if(userData.has("fare_caching_limit")){
 			fareCachingLimit = userData.getInt("fare_caching_limit");
@@ -253,6 +276,15 @@ public class JSONParser implements Constants {
 		}
 		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
+		}
+		if (userData.has("multiple_vehicles_enabled")) {
+			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
+        }
+		if(userData.has(Constants.ACTIVE_VEHICLE)){
+			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
+			if(vehObj.length()>0) {
+				activeVehicle=DriverVehicleDetails.parseDocumentVehicleDetails(vehObj);
+			}
 		}
 
 		if (1 != autosEnabled) {
@@ -475,7 +507,7 @@ public class JSONParser implements Constants {
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
 				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
-                gender, dateOfBirth);
+                gender, dateOfBirth,activeVehicle,minDriverBalance,mActualCreditBalance);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
@@ -696,6 +728,9 @@ public class JSONParser implements Constants {
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
 		Data.userData = parseUserData(context, jLoginObject);
+        if (jLoginObject.has("user_saved_addresses") && Data.userData != null) {
+            parseSavedAddresses(jLoginObject.getJSONArray("user_saved_addresses"));
+        }
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
@@ -781,7 +816,7 @@ public class JSONParser implements Constants {
 
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
-
+                parseDestRide(jObject1, context);
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
@@ -1018,6 +1053,14 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseDestRide(JSONObject jsonObject, Context context) {
+        //todo Ankur
+		JSONObject destObj=jsonObject.optJSONObject(Constants.KEY_DRIVER_DESTINATION);
+		if(destObj!=null) {
+			Data.userData.currDestRideObj = Data.userData.new CurrDestRide(destObj.optString("address", ""), destObj.optDouble("destination_latitude"),destObj.optDouble("destination_longitude"), destObj.optInt("destination_ride_time_remaining"),System.currentTimeMillis(), destObj.optString("type"));
+		}
+
+    }
 
 	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {
 
@@ -1389,10 +1432,14 @@ public class JSONParser implements Constants {
 //				Constants.KEY_SHOW_TOLL_CHARGE,
                 Constants.WALLET,
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
+				Constants.INCENTIVE,
+				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
-				Constants.DRIVER_PLANS_COMMISSION
-		);
+				Constants.DRIVER_PLANS_COMMISSION,
+                Constants.KEY_DRIVER_DESTINATION,
+                Constants.MULTIPLE_VEHICLES_ENABLED
+        );
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
 		}

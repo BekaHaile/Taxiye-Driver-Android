@@ -6,10 +6,6 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -19,6 +15,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bid_request.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
@@ -79,7 +79,7 @@ class BidRequestFragment : Fragment() {
     }
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is BidInteractionListener){
             interactionListener = context
