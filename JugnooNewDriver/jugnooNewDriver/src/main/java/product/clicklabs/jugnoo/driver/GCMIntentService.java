@@ -90,7 +90,7 @@ import retrofit.mime.TypedByteArray;
 public class GCMIntentService extends FirebaseMessagingService {
 
 	public static int PROMOTION_ID = 100;
-	public static final long REQUEST_TIMEOUT = 120000;
+	public static final long REQUEST_TIMEOUT = 60000;
 	private static final long WAKELOCK_TIMEOUT = 5000;
 
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
