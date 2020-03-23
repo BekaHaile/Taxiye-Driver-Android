@@ -5083,7 +5083,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 	private void setPickupTime(CustomerInfo customerInfo, TextView tvPickupTime) {
-        if (!TextUtils.isEmpty(customerInfo.getPickupTime())) {
+        if (!TextUtils.isEmpty(customerInfo.getPickupTime().trim()) && !customerInfo.getPickupTime().trim().equalsIgnoreCase("")){
             tvPickupTime.setVisibility(View.VISIBLE);
             tvPickupTime.setText(getString(R.string.pickup_time_format,
                     DateOperations.convertTimeViaFormat(DateOperations.utcToLocalWithTZFallback(customerInfo.getPickupTime()))));
@@ -10985,13 +10985,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onSuccess(@NotNull AcceptLatLng acceptLatLng) {
 					LatLng source = null, destination = null;
 					CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(acceptLatLng.getEngagementId()));
-					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+					if(customerInfo!=null && customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
 						if(!isAltMeteringEnabledForDriver(HomeActivity.this)) {
 							source = customerInfo.requestlLatLng;
 							destination = customerInfo.dropLatLng;
 						}
 					} else {
 						source = new LatLng(acceptLatLng.getLat(), acceptLatLng.getLng());
+						if(customerInfo!=null)
 						destination = customerInfo.requestlLatLng;
 					}
 					if(source != null && destination != null) {
