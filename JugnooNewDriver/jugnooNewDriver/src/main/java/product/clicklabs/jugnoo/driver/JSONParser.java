@@ -280,6 +280,20 @@ public class JSONParser implements Constants {
 		if (userData.has("multiple_vehicles_enabled")) {
 			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
         }
+		if(userData.has("external_gps_enabled")){
+			Data.setExternalGpsEnabled(userData.getInt(Constants.EXTERNAL_GPS_ENABLED));
+			if(userData.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
+				if(userData.has("external_gps_data")){
+					JSONObject obj = new JSONObject();
+					obj= userData.getJSONObject("external_gps_data");
+					Data.setGpsPreference(obj.getInt("gps_preference"));
+					Data.setGpsDeviceImeiNo(obj.getString("device_imei_number"));
+					if(obj.getInt("gps_preference")==1){
+						//startSocketLocationUpdateService
+					}
+				}
+			}
+		}
 		if(userData.has(Constants.ACTIVE_VEHICLE)){
 			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
 			if(vehObj.length()>0) {

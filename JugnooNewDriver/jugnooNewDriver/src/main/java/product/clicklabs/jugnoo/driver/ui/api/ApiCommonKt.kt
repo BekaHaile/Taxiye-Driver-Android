@@ -188,6 +188,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.FETCH_DRIVER_TRACTION_RIDES-> RestClient.getApiServices().fetchDriverTractionRides(params, callback as Callback<TractionResponse>)
             ApiName.BRANCH_GENERATE_URL-> RestClient.getBranchApi().generateUrl(bodyParams as BranchUrlRequest, callback as Callback<BranchUrlResponse>)
             ApiName.UPDATE_DRIVER_PROPERTY-> RestClient.getApiServices().updateDriverProperty(params, callback as Callback<FeedCommonResponseKotlin>)
+            ApiName.UPDATE_GPS_PREFERENCE-> RestClient.getApiServices().updateGpsPreference(params,callback as Callback<FeedCommonResponseKotlin>)
             ApiName.FETCH_PROGRAMS ->  RestClient.getApiServices().fetchPrograms(params, callback as Callback<ProgramModel> )
             else -> throw IllegalArgumentException("API Type not declared")
         }

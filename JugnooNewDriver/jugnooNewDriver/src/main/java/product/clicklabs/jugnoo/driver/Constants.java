@@ -548,6 +548,9 @@ public interface Constants {
 	String MODEL_NAME = "model_name";
 	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
 	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
+	String EXTERNAL_GPS_ENABLED="external_gps_enabled";
+	String DEVICE_IMEI_NUMBER= "device_imei_number";
+	String GPS_PREFERENCE ="gps_preference";
 	String OPEN_ACTIVITY_TO_SELECT_VEHICLE="open_activity_to_select_vehicle";
 	String ACTIVE_VEHICLE = "active_vehicle";
 	String REJECT_REASON = "reason";

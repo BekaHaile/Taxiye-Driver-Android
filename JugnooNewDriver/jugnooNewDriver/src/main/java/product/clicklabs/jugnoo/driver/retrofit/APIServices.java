@@ -811,4 +811,8 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_driver_property")
 	void updateDriverProperty(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/set_gps_preference")
+	void updateGpsPreference(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 }

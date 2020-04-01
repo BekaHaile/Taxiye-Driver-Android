@@ -93,7 +93,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     boolean checked = false;
 
 	private SwitchCompat switchOnlyCashRides;
-	private SwitchCompat switchOnlyLongRides;
+	private SwitchCompat switchOnlyLongRides,externalGps;
 
     @Override
     protected void onResume() {
@@ -382,6 +382,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
 		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+		externalGps = findViewById(R.id.switchExternalGps);
 
 		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
 			switchOnlyCashRides.setVisibility(View.VISIBLE);
@@ -407,7 +408,60 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			switchOnlyLongRides.setVisibility(View.GONE);
 			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
 		}
+		if(Data.getExternalGpsEnabled()==1){
+		    externalGps.setVisibility(View.VISIBLE);
+		    if(Data.getGpsPreference()==1){
+		        externalGps.setChecked(true);
+            }else{
+		        externalGps.setChecked(false);
+            }
+        }else{
+		    externalGps.setVisibility(View.GONE);
+        }
+		externalGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateGpsPreference(externalGps.isChecked());
+            }
+        });
 
+    }
+
+    private void updateGpsPreference(boolean checked) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
+        if(checked){
+            params.put(Constants.GPS_PREFERENCE,"1");
+        }else{
+            params.put(Constants.GPS_PREFERENCE,"0")  ;
+        }
+        new ApiCommonKt<FeedCommonResponseKotlin>(this, true, false, true)
+                .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+                    @Override
+                    public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                        if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+                            if(checked==true){
+                                externalGps.setChecked(true);
+                                //startExternalGpsLocationUpdateService
+                            }else{
+                                externalGps.setChecked(false);
+                                //stopExternalGpsLocationUpdateService
+                            }
+                        }
+                    }
+
+                    @Override
+                    public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                        externalGps.setChecked(checked != true);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onFailure(RetrofitError error) {
+                        externalGps.setChecked(checked != true);
+                        return super.onFailure(error);
+                    }
+                });
     }
 
     private void setDefaultValue() {
