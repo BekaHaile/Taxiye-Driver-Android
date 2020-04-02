@@ -36,9 +36,16 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverLocationDispatcher {
+public class DriverLocationDispatcher  {
 
 	private final String TAG = DriverLocationDispatcher.class.getSimpleName();
+	private Double gpslat=0.0,gpsLong=0.0;
+
+	public void onLocationUpdate(Double lattitude, Double longitude) {
+		gpslat = lattitude;
+		gpsLong = longitude;
+		Log.e("external location updater recieved",gpslat+"---"+gpsLong);
+	}
 
 	public void sendLocationToServer(Context context){
 		
@@ -151,6 +158,11 @@ public class DriverLocationDispatcher {
 	}
 
 	private void sendLocationToServer(Context context, long responseTime, String pushyToken, Location location, HashMap<String, String> nameValuePairs) {
+		if(Data.getGpsPreference()==1){
+			location.setLatitude(gpslat);
+			location.setLongitude(gpsLong);
+			Log.e("external location updater",gpslat+"---"+gpsLong);
+		}
 		nameValuePairs.put("pushy_token", pushyToken);
 		nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
 		HomeUtil.putDefaultParams(nameValuePairs);
@@ -270,5 +282,4 @@ public class DriverLocationDispatcher {
 		}
 	}
 
-	
 }

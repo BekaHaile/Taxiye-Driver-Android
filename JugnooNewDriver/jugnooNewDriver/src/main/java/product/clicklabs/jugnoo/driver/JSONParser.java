@@ -61,6 +61,7 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -280,20 +281,7 @@ public class JSONParser implements Constants {
 		if (userData.has("multiple_vehicles_enabled")) {
 			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
         }
-		if(userData.has("external_gps_enabled")){
-			Data.setExternalGpsEnabled(userData.getInt(Constants.EXTERNAL_GPS_ENABLED));
-			if(userData.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
-				if(userData.has("external_gps_data")){
-					JSONObject obj = new JSONObject();
-					obj= userData.getJSONObject("external_gps_data");
-					Data.setGpsPreference(obj.getInt("gps_preference"));
-					Data.setGpsDeviceImeiNo(obj.getString("device_imei_number"));
-					if(obj.getInt("gps_preference")==1){
-						//startSocketLocationUpdateService
-					}
-				}
-			}
-		}
+		parseGpsData(userData);
 		if(userData.has(Constants.ACTIVE_VEHICLE)){
 			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
 			if(vehObj.length()>0) {
@@ -827,7 +815,7 @@ public class JSONParser implements Constants {
 				return Constants.SERVER_TIMEOUT;
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
-
+				parseGpsData(jObject1);
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
                 parseDestRide(jObject1, context);
@@ -1019,6 +1007,31 @@ public class JSONParser implements Constants {
 		}
 
 		return "";
+	}
+
+	private void parseGpsData(JSONObject jObject1) {
+		if(jObject1.has("external_gps_enabled")){
+			try {
+				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
+				if(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
+					if(jObject1.has("external_gps_data")){
+						JSONObject obj = new JSONObject();
+						obj= jObject1.getJSONObject("external_gps_data");
+						Data.setGpsPreference(obj.getInt("gps_preference"));
+						Data.setGpsDeviceImeiNo(obj.getString("device_imei_number"));
+						TrackerLocationUpdater tracker = new TrackerLocationUpdater();
+						if(obj.getInt("gps_preference")==1){
+							//startSocketLocationUpdateService
+							tracker.connectGpsDevice("0866551037048951");
+						}else if (obj.getInt("gps_preference")==1){
+							tracker.stopTracker();
+						}
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void updateDropAddressLatlng(Context context, JSONObject jObjCustomer, CustomerInfo customerInfo) {
