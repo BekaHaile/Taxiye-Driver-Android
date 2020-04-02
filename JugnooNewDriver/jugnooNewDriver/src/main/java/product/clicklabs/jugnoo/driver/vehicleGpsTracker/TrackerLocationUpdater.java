@@ -27,6 +27,7 @@ public class TrackerLocationUpdater extends AppCompatActivity {
     private DriverLocationDispatcher locUpdater;
 
    public void connectGpsDevice(String deviceImei){
+       Log.e("external location updater initiated","---"+deviceImei);
        locUpdater = new DriverLocationDispatcher();
        try {
            mSocket = IO.socket("http://elnetech.com:8081/single-tracking");
@@ -61,7 +62,7 @@ public class TrackerLocationUpdater extends AppCompatActivity {
                    }
                }
                locUpdater.onLocationUpdate(lattitude,longitude);
-               Log.e("external location updater start1",lattitude+"---"+longitude);
+               Log.e("external location updater running now",lattitude+"---"+longitude);
 
 
            }

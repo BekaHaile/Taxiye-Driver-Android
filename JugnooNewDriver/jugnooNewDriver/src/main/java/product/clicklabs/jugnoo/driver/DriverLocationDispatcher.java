@@ -158,11 +158,6 @@ public class DriverLocationDispatcher  {
 	}
 
 	private void sendLocationToServer(Context context, long responseTime, String pushyToken, Location location, HashMap<String, String> nameValuePairs) {
-		if(Data.getGpsPreference()==1){
-			location.setLatitude(gpslat);
-			location.setLongitude(gpsLong);
-			Log.e("external location updater",gpslat+"---"+gpsLong);
-		}
 		nameValuePairs.put("pushy_token", pushyToken);
 		nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
 		HomeUtil.putDefaultParams(nameValuePairs);
@@ -186,7 +181,11 @@ public class DriverLocationDispatcher  {
 
 		Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
-
+		if(Data.getGpsPreference()==1){
+			location.setLatitude(gpslat);
+			location.setLongitude(gpsLong);
+			Log.e("external location updater final",gpslat+"---"+gpsLong);
+		}
 		try {
 			Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());

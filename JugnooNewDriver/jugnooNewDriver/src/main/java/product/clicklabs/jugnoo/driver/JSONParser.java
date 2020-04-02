@@ -1022,8 +1022,10 @@ public class JSONParser implements Constants {
 						TrackerLocationUpdater tracker = new TrackerLocationUpdater();
 						if(obj.getInt("gps_preference")==1){
 							//startSocketLocationUpdateService
+							// 0866551037048951 demo imei
+							/*tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());*/
 							tracker.connectGpsDevice("0866551037048951");
-						}else if (obj.getInt("gps_preference")==1){
+						}else if (obj.getInt("gps_preference")==0){
 							tracker.stopTracker();
 						}
 					}

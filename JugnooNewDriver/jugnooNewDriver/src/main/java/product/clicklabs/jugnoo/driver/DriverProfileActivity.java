@@ -60,6 +60,7 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -94,6 +95,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 	private SwitchCompat switchOnlyCashRides;
 	private SwitchCompat switchOnlyLongRides,externalGps;
+	private  TrackerLocationUpdater tracker;
 
     @Override
     protected void onResume() {
@@ -418,6 +420,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }else{
 		    externalGps.setVisibility(View.GONE);
         }
+        tracker = new TrackerLocationUpdater();
 		externalGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -443,9 +446,13 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                             if(checked==true){
                                 externalGps.setChecked(true);
                                 //startExternalGpsLocationUpdateService
+                                /*tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());*/
+                                tracker.connectGpsDevice("0866551037048951");
                             }else{
                                 externalGps.setChecked(false);
                                 //stopExternalGpsLocationUpdateService
+                                if(tracker!=null)
+                                tracker.stopTracker();
                             }
                         }
                     }
