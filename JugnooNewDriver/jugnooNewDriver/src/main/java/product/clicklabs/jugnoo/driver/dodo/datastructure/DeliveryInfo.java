@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.dodo.datastructure;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import product.clicklabs.jugnoo.driver.Data;
+
 /**
  * Created by aneeshbansal on 30/05/16.
  */
@@ -56,7 +58,7 @@ public class DeliveryInfo {
 
 
 	public String getCurrency() {
-		return currency;
+		return Data.getCurrencyNullSafety(currency);
 	}
 
 	public void setCurrency(String currency) {

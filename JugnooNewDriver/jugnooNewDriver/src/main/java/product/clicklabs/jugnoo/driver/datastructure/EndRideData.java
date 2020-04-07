@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.Data;
+
 public class EndRideData {
 	
 	public String engagementId;
@@ -34,7 +36,7 @@ public class EndRideData {
 	}
 
 	public String getCurrency() {
-		return currency;
+		return Data.getCurrencyNullSafety(currency);
 	}
 
 	public ArrayList<FareDetail> getFareDetails() {
