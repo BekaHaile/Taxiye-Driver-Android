@@ -12097,22 +12097,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     public void changeOnOFFStateTop() {
-        if (Data.userData.autosAvailable == 1) {
-            tvOnlineTop.setSelected(true);
-            tvOfflineTop.setSelected(false);
-            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_theme_rounded));
-            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
-            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-            switchContainer.post(() -> slidingSwitch.setSlideRight());
-            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_stroke_red_white_theme));
-        } else {
-            tvOnlineTop.setSelected(false);
-            tvOfflineTop.setSelected(true);
-            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_theme_rounded));
-            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
-            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-            switchContainer.post(()-> slidingSwitch.setSlideLeft());
-            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_stroke_white_theme));
+        try {
+            if (Data.userData.autosAvailable == 1) {
+                tvOnlineTop.setSelected(true);
+                tvOfflineTop.setSelected(false);
+                viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_theme_rounded));
+                slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+                slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+                switchContainer.post(() -> slidingSwitch.setSlideRight());
+                rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_stroke_red_white_theme));
+            } else {
+                tvOnlineTop.setSelected(false);
+                tvOfflineTop.setSelected(true);
+                viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_theme_rounded));
+                slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+                slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+                switchContainer.post(() -> slidingSwitch.setSlideLeft());
+                rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_stroke_white_theme));
+            }
+        } catch(Exception e){
+            e.printStackTrace();
         }
     }
 

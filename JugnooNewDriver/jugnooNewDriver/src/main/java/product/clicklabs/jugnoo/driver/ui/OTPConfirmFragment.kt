@@ -480,7 +480,9 @@ class OTPConfirmFragment : Fragment(){
         val task = client.startSmsRetriever()
         task.addOnSuccessListener{
             smsReceiver = createSmsBroadcastReceiver()
-            requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
+            if(activity != null) {
+                requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
+            }
         }
         task.addOnFailureListener{ }
 

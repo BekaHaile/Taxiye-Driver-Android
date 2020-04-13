@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -116,13 +117,18 @@ class SplashFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({},
                 { showBlockerDialog(getString(R.string.device_token_not_found_message))},
                 {
-                    if(!isMockLocationEnabled()){
-                        subscribeSubjectForAccessTokenLogin()
-                        startExecutionForPendingAPis()
-                    } else {
-                        showBlockerDialog(getString(R.string.disable_mock_location))
-                    }
+                    proceedAccessTokenLogin()
                 }))
+        fetchTokenAndSendToObserver()
+    }
+
+    private fun proceedAccessTokenLogin() {
+        if (!isMockLocationEnabled()) {
+            subscribeSubjectForAccessTokenLogin()
+            startExecutionForPendingAPis()
+        } else {
+            showBlockerDialog(getString(R.string.disable_mock_location))
+        }
     }
 
     private fun isMockLocationEnabled():Boolean{
@@ -153,7 +159,7 @@ class SplashFragment : Fragment() {
 
             if(it.isDisposed) return@create
 
-            val pendingAPICalls: ArrayList<PendingAPICall> = Database2.getInstance(context).allPendingAPICalls
+            val pendingAPICalls: ArrayList<PendingAPICall> = Database2.getInstance(MyApplication.getInstance()).allPendingAPICalls
 
             for (pendingAPICall in pendingAPICalls) {
                 PendingApiHit().startAPI(context, pendingAPICall)
@@ -371,6 +377,9 @@ class SplashFragment : Fragment() {
                 , { parentActivity?.finish(); })
     }
 
+    private var handler: Handler? = null
+    private var resumeCalled = false
+
     override fun onResume() {
         super.onResume()
 
@@ -378,24 +387,41 @@ class SplashFragment : Fragment() {
         // check if device token has been generated in paused state,
         // complete subject if generated else register broadcast
 
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
-            if(!it.isSuccessful) {
-                Log.w(TAG,"device_token_unsuccessful - onReceive",it.exception)
-                deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
-                return@addOnCompleteListener
-            }
-            if(it.result?.token != null) {
-                Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG  onResume", it.result?.token)
-                deviceTokenObservable.onComplete()
-            } else {
-                deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
-            }
+        if(resumeCalled){
+            fetchTokenAndSendToObserver()
         }
+        resumeCalled = true
+
 
         // if the pending api execution has already been subscribed once, resubscribe
         if (isPendingExecutionOngoing && apiDisposable?.isDisposed == true) {
             Log.i(TAG,"onResume resubscribing to subscribeSubjectForAccessTokenLogin")
             subscribeSubjectForAccessTokenLogin()
+        }
+    }
+
+    private fun fetchTokenAndSendToObserver() {
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            if (handler == null) {
+                handler = Handler()
+            }
+            handler!!.postDelayed({
+                if (deviceTokenObservable.hasObservers() && !deviceTokenObservable.hasComplete()) {
+                    if (!it.isSuccessful) {
+                        Log.w(TAG, "device_token_unsuccessful - onReceive", it.exception)
+                        deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
+                        return@postDelayed
+                    }
+                    if (it.result?.token != null) {
+                        Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG  onResume", it.result?.token)
+                        deviceTokenObservable.onComplete()
+                    } else {
+                        deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
+                    }
+                } else {
+                    proceedAccessTokenLogin()
+                }
+            }, 2000)
         }
     }
 
