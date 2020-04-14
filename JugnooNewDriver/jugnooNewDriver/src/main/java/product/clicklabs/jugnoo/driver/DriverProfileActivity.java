@@ -446,8 +446,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                             if(checked==true){
                                 externalGps.setChecked(true);
                                 //startExternalGpsLocationUpdateService
-                                /*tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());*/
-                                tracker.connectGpsDevice("0866551037048951");
+                               // tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());
+                                tracker.connectGpsDevice("0866551037048951",DriverProfileActivity.this);
                             }else{
                                 externalGps.setChecked(false);
                                 //stopExternalGpsLocationUpdateService

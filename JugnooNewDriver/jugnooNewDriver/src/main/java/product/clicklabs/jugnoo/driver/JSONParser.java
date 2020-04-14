@@ -228,7 +228,7 @@ public class JSONParser implements Constants {
         }
     }
 
-	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
+	public UserData parseUserData(Context context, JSONObject userData,Activity activity) throws Exception {
 
 
 		int freeRideIconDisable = 1;
@@ -281,7 +281,7 @@ public class JSONParser implements Constants {
 		if (userData.has("multiple_vehicles_enabled")) {
 			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
         }
-		parseGpsData(userData);
+		parseGpsData(userData,activity);
 		if(userData.has(Constants.ACTIVE_VEHICLE)){
 			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
 			if(vehObj.length()>0) {
@@ -719,7 +719,7 @@ public class JSONParser implements Constants {
 
 	}
 
-	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
+	public String parseAccessTokenLoginData(Activity context, String response) throws Exception {
 
 
 		Log.e("response ==", "=" + response);
@@ -729,7 +729,7 @@ public class JSONParser implements Constants {
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
-		Data.userData = parseUserData(context, jLoginObject);
+		Data.userData = parseUserData(context, jLoginObject,context);
         if (jLoginObject.has("user_saved_addresses") && Data.userData != null) {
             parseSavedAddresses(jLoginObject.getJSONArray("user_saved_addresses"));
         }
@@ -781,7 +781,7 @@ public class JSONParser implements Constants {
 		return resp;
 	}
 
-	public String getUserStatus(Context context, String accessToken) {
+	public String getUserStatus(Activity context, String accessToken) {
 		String returnResponse = "";
 		try {
 			HashMap<String, String> params = new HashMap<>();
@@ -808,14 +808,14 @@ public class JSONParser implements Constants {
 
 
 
-	public String parseCurrentUserStatus(Context context, JSONObject jObject1) {
+	public String parseCurrentUserStatus(Activity context, JSONObject jObject1) {
 		HomeActivity.userMode = UserMode.DRIVER;
 		try {
 			if (jObject1.has(KEY_ERROR)) {
 				return Constants.SERVER_TIMEOUT;
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
-				parseGpsData(jObject1);
+				parseGpsData(jObject1,context);
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
                 parseDestRide(jObject1, context);
@@ -1009,7 +1009,7 @@ public class JSONParser implements Constants {
 		return "";
 	}
 
-	private void parseGpsData(JSONObject jObject1) {
+	private void parseGpsData(JSONObject jObject1,Activity activity) {
 		if(jObject1.has("external_gps_enabled")){
 			try {
 				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
@@ -1023,8 +1023,8 @@ public class JSONParser implements Constants {
 						if(obj.getInt("gps_preference")==1){
 							//startSocketLocationUpdateService
 							// 0866551037048951 demo imei
-							/*tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());*/
-							tracker.connectGpsDevice("0866551037048951");
+							//tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());
+							tracker.connectGpsDevice("0866551037048951",activity);
 						}else if (obj.getInt("gps_preference")==0){
 							tracker.stopTracker();
 						}

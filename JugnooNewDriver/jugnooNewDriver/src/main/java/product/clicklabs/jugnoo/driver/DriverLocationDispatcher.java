@@ -44,7 +44,7 @@ public class DriverLocationDispatcher  {
 	public void onLocationUpdate(Double lattitude, Double longitude) {
 		gpslat = lattitude;
 		gpsLong = longitude;
-		Log.e("external location updater recieved",gpslat+"---"+gpsLong);
+		Log.e("external location updater location recieved",gpslat+"---"+gpsLong);
 	}
 
 	public void sendLocationToServer(Context context){
