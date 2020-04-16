@@ -281,7 +281,7 @@ public class JSONParser implements Constants {
 		if (userData.has("multiple_vehicles_enabled")) {
 			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
         }
-		parseGpsData(userData,activity);
+		parseGpsData(userData,context);
 		if(userData.has(Constants.ACTIVE_VEHICLE)){
 			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
 			if(vehObj.length()>0) {
@@ -1009,7 +1009,7 @@ public class JSONParser implements Constants {
 		return "";
 	}
 
-	private void parseGpsData(JSONObject jObject1,Activity activity) {
+	private void parseGpsData(JSONObject jObject1,Context context) {
 		if(jObject1.has("external_gps_enabled")){
 			try {
 				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
@@ -1023,8 +1023,8 @@ public class JSONParser implements Constants {
 						if(obj.getInt("gps_preference")==1){
 							//startSocketLocationUpdateService
 							// 0866551037048951 demo imei
-							tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),activity);
-							//tracker.connectGpsDevice("0866551037048951",activity);
+							tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),context);
+							//tracker.connectGpsDevice("0866551037048951",context);
 						}else if (obj.getInt("gps_preference")==0){
 							tracker.stopTracker();
 						}

@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -37,11 +38,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverLocationDispatcher implements TrackerLocationUpdater.LocationSwitchUpdater {
+public class DriverLocationDispatcher {
 
 	private final String TAG = DriverLocationDispatcher.class.getSimpleName();
-	private Double gpslat=0.0,gpsLong=0.0;
-
 
 	public void sendLocationToServer(Context context){
 		
@@ -80,8 +79,14 @@ public class DriverLocationDispatcher implements TrackerLocationUpdater.Location
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
-							nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
-							nameValuePairs.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
+							if(Data.getGpsPreference()==1){
+								nameValuePairs.put(Constants.KEY_LATITUDE, Prefs.with(context).getString(Constants.KEY_GPS_LATITUDE,""));
+								nameValuePairs.put(Constants.KEY_LONGITUDE, Prefs.with(context).getString(Constants.KEY_GPS_LONGITUDE,""));
+								Log.e("external location updater final",Prefs.with(context).getString(Constants.KEY_GPS_LATITUDE,"")+"---"+Prefs.with(context).getString(Constants.KEY_GPS_LONGITUDE,""));
+							}else {
+								nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
+								nameValuePairs.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
+							}
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
 							FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 								@Override
@@ -177,11 +182,7 @@ public class DriverLocationDispatcher implements TrackerLocationUpdater.Location
 
 		Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
-		if(Data.getGpsPreference()==1){
-			location.setLatitude(gpslat);
-			location.setLongitude(gpsLong);
-			Log.e("external location updater final",gpslat+"---"+gpsLong);
-		}
+
 		try {
 			Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -277,10 +278,4 @@ public class DriverLocationDispatcher implements TrackerLocationUpdater.Location
 		}
 	}
 
-	@Override
-	public void updateExternalGpsToggle(Boolean switchState, Double lat, Double longitude) {
-		gpslat = lat;
-		gpsLong = longitude;
-		Log.e("external location updater location recieved",gpslat+"---"+gpsLong);
-	}
 }
