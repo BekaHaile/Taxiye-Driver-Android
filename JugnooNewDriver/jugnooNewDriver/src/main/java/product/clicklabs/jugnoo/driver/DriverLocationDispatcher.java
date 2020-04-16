@@ -32,20 +32,16 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverLocationDispatcher  {
+public class DriverLocationDispatcher implements TrackerLocationUpdater.LocationSwitchUpdater {
 
 	private final String TAG = DriverLocationDispatcher.class.getSimpleName();
 	private Double gpslat=0.0,gpsLong=0.0;
 
-	public void onLocationUpdate(Double lattitude, Double longitude) {
-		gpslat = lattitude;
-		gpsLong = longitude;
-		Log.e("external location updater location recieved",gpslat+"---"+gpsLong);
-	}
 
 	public void sendLocationToServer(Context context){
 		
@@ -281,4 +277,10 @@ public class DriverLocationDispatcher  {
 		}
 	}
 
+	@Override
+	public void updateExternalGpsToggle(Boolean switchState, Double lat, Double longitude) {
+		gpslat = lat;
+		gpsLong = longitude;
+		Log.e("external location updater location recieved",gpslat+"---"+gpsLong);
+	}
 }

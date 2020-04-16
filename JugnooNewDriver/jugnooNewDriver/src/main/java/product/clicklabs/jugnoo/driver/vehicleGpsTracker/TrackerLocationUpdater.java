@@ -40,11 +40,12 @@ public class TrackerLocationUpdater extends AppCompatActivity {
     private Double longitude=0.0;
     private DriverLocationDispatcher locUpdater;
     private Activity activity;
-
+    private LocationSwitchUpdater locationSwitchUpdater;
    public void connectGpsDevice(String deviceImei,Activity activity){
        Log.e("external location updater initiated","---"+deviceImei);
        locUpdater = new DriverLocationDispatcher();
        this.activity = activity;
+       locationSwitchUpdater= (LocationSwitchUpdater) activity;
        try {
            mSocket = IO.socket("http://elnetech.com:8081/single-tracking");
        } catch (URISyntaxException e) {
@@ -77,7 +78,8 @@ public class TrackerLocationUpdater extends AppCompatActivity {
                        e.printStackTrace();
                    }
                }
-               locUpdater.onLocationUpdate(lattitude,longitude);
+               //locUpdater.onLocationUpdate(lattitude,longitude);
+               locationSwitchUpdater.updateExternalGpsToggle(true,lattitude,longitude);
                Log.e("external location updater running now",lattitude+"---"+longitude);
 
 
@@ -93,35 +95,16 @@ public class TrackerLocationUpdater extends AppCompatActivity {
        }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
            @Override
            public void call(Object... args) {
-
-               Log.e("external location updater unable to connect ","connection failed");
-               DialogPopup.alertPopup(activity, "", "Location from vehcile gps is not available at this moment", false, true, new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       HashMap<String, String> params = new HashMap<>();
-                       params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
-                           params.put(Constants.GPS_PREFERENCE,"0");
-                       new ApiCommonKt<FeedCommonResponseKotlin>(activity, true, false, true)
-                               .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
-                                   @Override
-                                   public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                                       if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                                           Data.setGpsPreference(0);
-                                       }
-                                   }
-
-                                   @Override
-                                   public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                                       return false;
-                                   }
-
-                                   @Override
-                                   public boolean onFailure(RetrofitError error) {
-                                       return super.onFailure(error);
-                                   }
-                               });
+               mSocket.disconnect();
+               activity.runOnUiThread(new Runnable() {
+                   public void run() {
+                       if (!((Activity) activity).isFinishing()) {
+                           showDisconnectPopup();
+                       }
                    }
                });
+
+
            }
        });
        mSocket.connect();
@@ -131,6 +114,42 @@ public class TrackerLocationUpdater extends AppCompatActivity {
        if(mSocket!=null)
         mSocket.disconnect();
    }
+
+   public void showDisconnectPopup(){
+       Log.e("external location updater unable to connect ","connection failed");
+       DialogPopup.alertPopup(activity, "", "Location data from vehcile gps is not available at this moment.", false, true, new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               HashMap<String, String> params = new HashMap<>();
+               params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
+               params.put(Constants.GPS_PREFERENCE,"0");
+               new ApiCommonKt<FeedCommonResponseKotlin>(activity, true, false, true)
+                       .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+                           @Override
+                           public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                               if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+                                   Data.setGpsPreference(0);
+                                   locationSwitchUpdater.updateExternalGpsToggle(false,0.0,0.0);
+                               }
+                           }
+
+                           @Override
+                           public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                               return false;
+                           }
+
+                           @Override
+                           public boolean onFailure(RetrofitError error) {
+                               return super.onFailure(error);
+                           }
+                       });
+           }
+       });
+   }
+
+    public interface LocationSwitchUpdater {
+        void updateExternalGpsToggle(Boolean switchState,Double lat,Double longitude);
+    }
 
 
 }

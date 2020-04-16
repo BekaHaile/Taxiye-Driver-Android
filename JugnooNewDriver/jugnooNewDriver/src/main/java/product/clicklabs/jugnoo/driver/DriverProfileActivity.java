@@ -66,7 +66,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverProfileActivity extends BaseFragmentActivity implements VehicleDetailsFragment.VehicleDetailsInteractor {
+public class DriverProfileActivity extends BaseFragmentActivity implements VehicleDetailsFragment.VehicleDetailsInteractor, TrackerLocationUpdater.LocationSwitchUpdater {
 
     RelativeLayout relative;
     RelativeLayout driverDetailsRL;
@@ -446,8 +446,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                             if(checked==true){
                                 externalGps.setChecked(true);
                                 //startExternalGpsLocationUpdateService
-                               // tracker.connectGpsDevice(Data.getGpsDeviceImeiNo());
-                                tracker.connectGpsDevice("0866551037048951",DriverProfileActivity.this);
+                                tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),DriverProfileActivity.this);
+                              //  tracker.connectGpsDevice("0866551037048951",DriverProfileActivity.this);
                             }else{
                                 externalGps.setChecked(false);
                                 //stopExternalGpsLocationUpdateService
@@ -853,4 +853,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 		});
 	}
 
+    @Override
+    public void updateExternalGpsToggle(Boolean switchState, Double lat, Double longitude) {
+        if(externalGps!=null) {
+            externalGps.setChecked(switchState);
+        }
+    }
 }
