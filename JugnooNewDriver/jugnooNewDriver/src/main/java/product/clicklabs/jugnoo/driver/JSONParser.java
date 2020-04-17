@@ -796,6 +796,18 @@ public class JSONParser implements Constants {
 				return returnResponse;
 			} else {
 				JSONObject jObject1 = new JSONObject(result);
+				((Activity)context).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if(jObject1.has("external_gps_data")){
+							try {
+								configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
 				returnResponse = parseCurrentUserStatus(context, jObject1);
 				return returnResponse;
 			}
@@ -1015,24 +1027,32 @@ public class JSONParser implements Constants {
 				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
 				if(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
 					if(jObject1.has("external_gps_data")){
-						JSONObject obj = new JSONObject();
-						obj= jObject1.getJSONObject("external_gps_data");
-						Data.setGpsPreference(obj.getInt("gps_preference"));
-						Data.setGpsDeviceImeiNo(obj.getString("device_imei_number"));
-						TrackerLocationUpdater tracker = new TrackerLocationUpdater();
-						if(obj.getInt("gps_preference")==1){
-							//startSocketLocationUpdateService
-							// 0866551037048951 demo imei
-							tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),context);
-							//tracker.connectGpsDevice("0866551037048951",context);
-						}else if (obj.getInt("gps_preference")==0){
-							tracker.stopTracker();
-						}
+						configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
 					}
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private void configureExternalGps(JSONObject external_gps_data,Context context) {
+		try {
+			Data.setGpsPreference(external_gps_data.getInt("gps_preference"));
+			Data.setGpsDeviceImeiNo(external_gps_data.getString("device_imei_number"));
+			TrackerLocationUpdater tracker = new TrackerLocationUpdater();
+			Prefs.with(context).save(Constants.KEY_GPS_LONGITUDE,"");
+			Prefs.with(context).save(Constants.KEY_GPS_LATITUDE,"");
+			if(external_gps_data.getInt("gps_preference")==1){
+				//startSocketLocationUpdateServiceq
+				// 0866551037048951 demo imei
+				tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),context);
+				//tracker.connectGpsDevice("0866551037048951",context);
+			}else if (external_gps_data.getInt("gps_preference")==0){
+				tracker.stopTracker();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 	}
 

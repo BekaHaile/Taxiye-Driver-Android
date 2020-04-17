@@ -446,15 +446,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                             if(checked==true){
                                 externalGps.setChecked(true);
                                 Data.setGpsPreference(1);
-                                //startExternalGpsLocationUpdateService
                                 Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LONGITUDE,"");
                                 Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LATITUDE,"");
                                 tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),DriverProfileActivity.this);
-                              //  tracker.connectGpsDevice("0866551037048951",DriverProfileActivity.this);
                             }else{
                                 externalGps.setChecked(false);
                                 Data.setGpsPreference(0);
-                                //stopExternalGpsLocationUpdateService
                                 if(tracker!=null)
                                 tracker.stopTracker();
                             }
@@ -865,34 +862,6 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             @Override
             public void onClick(View v) {
                 updateGpsPreference(false);
-               /* HashMap<String, String> params = new HashMap<>();
-                params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
-                params.put(Constants.GPS_PREFERENCE,"0");
-                new ApiCommonKt<FeedCommonResponseKotlin>(DriverProfileActivity.this, true, false, true)
-                        .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
-                            @Override
-                            public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                                if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                                    Data.setGpsPreference(0);
-                                    if(externalGps!=null) {
-                                        externalGps.setChecked(switchState);
-                                    }
-                                }else{
-                                    Toast.makeText(DriverProfileActivity.this,message,Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                            @Override
-                            public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                                Toast.makeText(DriverProfileActivity.this,message,Toast.LENGTH_LONG).show();
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onFailure(RetrofitError error) {
-                                return super.onFailure(error);
-                            }
-                        });*/
             }
         });
     }
