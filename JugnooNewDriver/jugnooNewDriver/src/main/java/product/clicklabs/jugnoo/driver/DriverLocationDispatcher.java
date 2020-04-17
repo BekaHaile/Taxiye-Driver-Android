@@ -79,7 +79,7 @@ public class DriverLocationDispatcher {
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
-							if(Data.getGpsPreference()==1){
+							if(Data.getGpsPreference()==1 && !Prefs.with(context).getString(Constants.KEY_GPS_LATITUDE,"").equalsIgnoreCase("") && !Prefs.with(context).getString(Constants.KEY_GPS_LONGITUDE,"").equalsIgnoreCase("")){
 								nameValuePairs.put(Constants.KEY_LATITUDE, Prefs.with(context).getString(Constants.KEY_GPS_LATITUDE,""));
 								nameValuePairs.put(Constants.KEY_LONGITUDE, Prefs.with(context).getString(Constants.KEY_GPS_LONGITUDE,""));
 								Log.e("external location updater final",Prefs.with(context).getString(Constants.KEY_GPS_LATITUDE,"")+"---"+Prefs.with(context).getString(Constants.KEY_GPS_LONGITUDE,""));
