@@ -31,8 +31,10 @@ import product.clicklabs.jugnoo.driver.Constants.DOB_DATE_FORMAT
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.adapters.DropDownListAdapter
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails
 import product.clicklabs.jugnoo.driver.datastructure.Gender
 import product.clicklabs.jugnoo.driver.datastructure.GenderValues
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.*
@@ -520,9 +522,9 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
 //                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
 //                edtPromo.isEnabled = false
 //            } else {
-                edtPromo.isEnabled = true
-                edtPromo.setText(promoText)
-                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,0,0)
+            edtPromo.isEnabled = true
+            edtPromo.setText(promoText)
+            edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code, 0, 0, 0)
 //            }
         } else {
             promoGroupView.gone()
@@ -538,7 +540,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivity(intent)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
         toolbarChangeListener = context as ToolbarChangeListener

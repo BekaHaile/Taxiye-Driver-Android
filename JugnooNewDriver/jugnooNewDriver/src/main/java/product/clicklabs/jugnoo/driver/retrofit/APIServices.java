@@ -45,6 +45,7 @@ import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
+import product.clicklabs.jugnoo.driver.ui.models.ProgramModel;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
@@ -748,6 +749,11 @@ public interface APIServices {
 	@POST("/emergency/alert")
 	void emergencyAlert(@FieldMap Map<String, String> params,
 						Callback<SettleUserDebt> callback);
+	@FormUrlEncoded
+	@POST("/fetch_incentive_data")
+	void fetchPrograms(@FieldMap Map<String, String> params,
+							   Callback<ProgramModel> callback);
+
 
 	@FormUrlEncoded
 	@POST("/emergency/disable")
@@ -778,6 +784,29 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	Response fetchTutorialData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/v2/add_home_and_work_address")
+	void addHomeAndWorkAddress(@FieldMap Map<String, String> params,
+							   Callback<Object> callback);
+	@FormUrlEncoded
+	@POST("/toggle_driver_destination")
+	void toggleDriverDest(@FieldMap Map<String, String> params,
+							   Callback<Object> callback);
+
+    @GET("/driver/fetch_driver_vehicles")
+    void fetchDriverVehicles(@QueryMap Map<String, String> params, Callback<Object> callback);
+
+    @FormUrlEncoded
+    @POST("/driver/add_new_vehicle")
+    void addNewVehicle(@FieldMap Map<String, String> params, Callback<Object> callback);
+
+    @FormUrlEncoded
+    @POST("/driver/remove_vehicle")
+    void removeVehicle(@FieldMap Map<String, String> params, Callback<Object> callback);
+
+    @GET("/driver/fetch_driver_vehicle_document")
+    void fetchDriverVehicleDocuments(@QueryMap Map<String, String> params, Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/update_driver_property")
@@ -813,4 +842,8 @@ public interface APIServices {
 	@POST("/paytm/login_with_otp")
 	void paytmLoginWithOtpJava(@FieldMap Map<String, String> params,
 						   Callback<FeedCommonResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/set_gps_preference")
+	void updateGpsPreference(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 }

@@ -5,14 +5,18 @@ import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -20,6 +24,8 @@ import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedString;
+
+import static com.crashlytics.android.beta.Beta.TAG;
 
 /**
  * Created by shankar on 16/11/17.

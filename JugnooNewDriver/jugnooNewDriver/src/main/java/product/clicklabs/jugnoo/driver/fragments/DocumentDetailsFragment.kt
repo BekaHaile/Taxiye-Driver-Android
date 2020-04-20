@@ -24,6 +24,7 @@ import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
@@ -272,7 +273,7 @@ class DocumentDetailsFragment: Fragment(){
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is InteractionListener){
             listener = context

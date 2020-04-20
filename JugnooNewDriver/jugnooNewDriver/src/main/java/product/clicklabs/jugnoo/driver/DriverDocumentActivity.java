@@ -5,10 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +23,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
@@ -62,6 +61,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	DocumentListFragment documentListFragment;
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
+	int driverVehicleMappingId=-1;
+	boolean fromVehicleDetailsScreen=false;
 	private SlidingSwitch slidingSwitch;
 	private RelativeLayout containerSwitch, viewSlide;
 	private LinearLayout rlOnOff;
@@ -76,7 +77,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 			return;
 		}
 		setContentView(R.layout.activity_driver_documents);
-
+		if(getIntent().hasExtra(Constants.DRIVER_VEHICLE_MAPPING_ID))
+			driverVehicleMappingId=getIntent().getIntExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,-1);
 		submitButton = (Button) findViewById(R.id.submitButton);
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
@@ -89,6 +91,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		accessToken = getIntent().getExtras().getString("access_token");
 		if(getIntent().getExtras().getBoolean("in_side")){
 			inSideApp = true;
+		}
+		if(getIntent().getExtras().getBoolean(Constants.FROM_VEHICLE_DETAILS_SCREEN)){
+			fromVehicleDetailsScreen = true;
 		}
 		requirement  = getIntent().getExtras().getInt("doc_required");
 		brandingImagesOnly  = getIntent().getIntExtra(Constants.BRANDING_IMAGES_ONLY, 0);
@@ -103,6 +108,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		bundle.putInt(Constants.KEY_TASK_TYPE, taskType);
 		bundle.putDouble(Constants.KEY_LATITUDE, latitude);
 		bundle.putDouble(Constants.KEY_LONGITUDE, longitude);
+		bundle.putInt(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId);
 		documentListFragment.setArguments(bundle);
 
 		if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()){
@@ -267,6 +273,22 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag, null)) {
                                 DialogPopup.dismissLoadingDialog();
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									Data.setDriverMappingIdOnBoarding(-1);
+									if(fromVehicleDetailsScreen)
+									{
+										setResult(Activity.RESULT_OK);
+										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												performbackPressed();
+												finish();
+											}
+										});
+//										startActivity(new Intent(DriverDocumentActivity.this,VehicleDetailsActivity.class));
+										return;
+									}
+
+
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
 									} else {
@@ -478,7 +500,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 								DialogPopup.dismissLoadingDialog();
 							}
 						} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
-							JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
+                            if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+                                Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED,0));
+                            }
+						    JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 							Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
 							intent.putExtra("access_token",jObj.getString("access_token"));
 							intent.putExtra("in_side", false);

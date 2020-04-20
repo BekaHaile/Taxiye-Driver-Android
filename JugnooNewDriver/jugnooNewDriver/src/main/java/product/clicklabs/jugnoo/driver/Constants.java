@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.List;
-
 /**
  * Created by Shankar on 12/1/2015.
  */
@@ -24,6 +22,8 @@ public interface Constants {
     String SP_ANALYTICS_LAST_MESSAGE_READ_TIME = "sp_analytics_last_message_read_time";
 	String KEY_ANALYTICS_SMS_LIST= "analytics_sms_list";
 	String KEY_ACCESS_TOKEN = "access_token";
+	String KEY_GPS_LATITUDE = "gps_latitude";
+	String KEY_GPS_LONGITUDE = "gps_longitude";
 
 	String JUGNOO_AUDIO = "jugnoo_audio";
 
@@ -53,6 +53,10 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+	String KEY_IS_CONFIRMED = "is_confirmed";
+	String KEY_KEEP_DUPLICATE = "keep_duplicate";
+	String KEY_DELETE_FLAG = "delete_flag";
+	String KEY_ADDRESS_ID = "address_id";
 
     String KEY_CURRENT_LATITUDE= "current_latitude";
     String KEY_CURRENT_LONGITUDE= "current_longitude";
@@ -279,6 +283,8 @@ public interface Constants {
 	String CHAT_SUPPORT = "chat_support";
 	String TICKET_SUPPORT = "ticket_support";
 	String MAIL_SUPPORT = "mail_support";
+	String INCENTIVE = "incentive";
+	String VEHICLE_DETAILS = "vehicle_details";
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
 	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
@@ -505,6 +511,7 @@ public interface Constants {
 	String KEY_LOCATIONS_COORDINATES = "locations_coordinates";
 	String KEY_LOGIN = "login";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
+	String KEY_DRIVER_DESTINATION="driver_destination";
 	String KEY_DRIVER_DIRECTIONS_CACHING = "driver_directions_caching";
 
 	long SECOND_MILLIS = 1000l;
@@ -534,6 +541,22 @@ public interface Constants {
 	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 	String KEY_FROM_CHAT_PUSH = "from_chat_push";
+	String KEY_DATA = "data";
+	String DRIVER_VEHICLE_MAPPING_ID = "driver_vehicle_mapping_id";
+	String DRIVER_VEHICLE_MAPPING_ID_ONBOARDING = "driver_vehicle_mapping_id_onboarding";
+
+	String DRIVER_VEHICLE_MAPPING_STATUS = "driver_vehicle_mapping_status";
+	String VEHICLE_NO = "vehicle_no";
+	String BRAND = "brand";
+	String MODEL_NAME = "model_name";
+	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
+	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
+	String EXTERNAL_GPS_ENABLED="external_gps_enabled";
+	String DEVICE_IMEI_NUMBER= "device_imei_number";
+	String GPS_PREFERENCE ="gps_preference";
+	String OPEN_ACTIVITY_TO_SELECT_VEHICLE="open_activity_to_select_vehicle";
+	String ACTIVE_VEHICLE = "active_vehicle";
+	String REJECT_REASON = "reason";
 
 	String KEY_DRIVER_PLANS_URL = "driver_plans_url";
 
@@ -571,5 +594,7 @@ public interface Constants {
 	String KEY_DATE_OF_BIRTH = "date_of_birth";
 	String KEY_DRIVER_GENDER_FILTER = "driver_gender_filter";
 	String KEY_DRIVER_DOB_INPUT = "driver_dob_input";
+	String KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER = "jungle_fm_api_key_android_driver";
+	String KEY_JUNGLE_FM_TOKEN = "fm_token";
 }
 

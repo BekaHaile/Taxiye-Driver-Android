@@ -153,6 +153,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -285,15 +286,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     ImageView profileImg;
-    TextView userName, ratingValue, textViewAutosOn, tvCredits;
+    TextView userName, ratingValue, textViewAutosOn, tvCredits,tvVehicleName;
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
-    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
+    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle,ivDestRideToggle;
 
-    RelativeLayout inviteFriendRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
     TextView inviteFriendText;
+    TextView destRideStatus;
 
     RelativeLayout rlNotificationCenter, etaTimerRLayout;
     TextView etaTimerText;
@@ -305,7 +307,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     RelativeLayout callUsRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
             relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain, rlPlansNew,
-            rlSupportTicket, rlMailSupport;
+            rlSupportTicket, rlMailSupport,vehiclesDetailRL;
     TextView callUsText, tvGetSupport, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
 
@@ -358,7 +360,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     // Driver Engaged layout
     RelativeLayout driverEngagedLayout;
 
-    RelativeLayout perfectRidePassengerCallRl;
+    RelativeLayout perfectRidePassengerCallRl, incentivesRL;
     LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
     TextView driverPerfectRidePassengerName, textViewRideInstructions;
     Button driverEngagedMyLocationBtn;
@@ -421,7 +423,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
     RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow, rlLowWalletBalance;
+            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow,rlLowWalletBalance;
     View viewRefreshUSLBar;
     ProgressBar progressBarUSL;
     TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -576,7 +578,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TabLayout tabDots;
     private ViewPager vpRequests;
     private ConstraintLayout containerRequestBidNew;
-
+    public static Handler updateHandler=new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -630,10 +632,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             profileImg = (ImageView) findViewById(R.id.profileImg);
             userName = (TextView) findViewById(R.id.userName);
             tvCredits = (TextView) findViewById(R.id.tvCredits);
+            tvVehicleName=findViewById(R.id.tvVehicleName);
             ratingValue = (TextView) findViewById(R.id.ratingValue);
             userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             tvCredits.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-
+            tvVehicleName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
             linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 
@@ -659,14 +662,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
             textViewDeliveryOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
+            ivDestRideToggle = (ImageView) findViewById(R.id.ivDestRideToggle);
 
 
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+            destRidesRl = (RelativeLayout) findViewById(R.id.destRidesRl);
             driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
             manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
             driverRatingRl = findViewById(R.id.driverRatingRl);
             walletRl = (RelativeLayout) findViewById(R.id.walletRl);
             inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
+            destRideStatus = (TextView) findViewById(R.id.destRideStatus);
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             inviteFriendText.setText(getStringText(R.string.invite_earn));
 
@@ -706,6 +712,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
             relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
             rlMailSupport = (RelativeLayout) findViewById(R.id.rlMailSupport);
+            vehiclesDetailRL = (RelativeLayout) findViewById(R.id.vehiclesDetailRL);
+
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
@@ -765,6 +773,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             languagePrefrencesText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
+            incentivesRL = (RelativeLayout) findViewById(R.id.incentivesRL);
             logoutText = (TextView) findViewById(R.id.logoutText);
             logoutText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			rlHereMaps = findViewById(R.id.rlHereMaps);
@@ -1560,6 +1569,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            incentivesRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, IncentiveActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
             relativeLayoutPlans.setOnClickListener(new OnClickListener() {
@@ -2464,6 +2481,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 rlMailSupport.setVisibility(View.GONE);
             }
 
+            if (Prefs.with(HomeActivity.this).getInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
+                vehiclesDetailRL.setVisibility(View.VISIBLE);
+            } else {
+                vehiclesDetailRL.setVisibility(View.GONE);
+            }
+
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU, 0) == 1) {
                 relativeLayoutPlans.setVisibility(View.VISIBLE);
             } else {
@@ -2552,11 +2575,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 walletRl.setVisibility(View.GONE);
             }
 
+            if (Prefs.with(HomeActivity.this).getInt(Constants.INCENTIVE, 1) == 1) {
+                incentivesRL.setVisibility(View.VISIBLE);
+            } else {
+                incentivesRL.setVisibility(View.GONE);
+            }
+
 			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_HERE_MAPS_FEEDBACK, 0) == 1) {
 				rlHereMaps.setVisibility(View.VISIBLE);
 			} else {
 				rlHereMaps.setVisibility(View.GONE);
 			}
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_DESTINATION, 1) == 1) {
+                destRidesRl.setVisibility(View.VISIBLE);
+            } else {
+                destRidesRl.setVisibility(View.GONE);
+            }
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
                 textViewSuperDrivers.setText(R.string.leaderboard);
@@ -8895,7 +8929,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 return;
             }
-
+            if(resultCode==Activity.RESULT_OK) {
+                if(requestCode==20){
+                    relativeLayoutAutosOn.performClick();
+                }
+            }
 
             if (requestCode == 12) {
                 boolean state = data.getBooleanExtra("result", true);

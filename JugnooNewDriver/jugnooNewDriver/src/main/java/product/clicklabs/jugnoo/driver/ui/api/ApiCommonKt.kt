@@ -191,6 +191,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.BRANCH_GENERATE_URL-> RestClient.getBranchApi().generateUrl(bodyParams as BranchUrlRequest, callback as Callback<BranchUrlResponse>)
 //            ApiName.UPDATE_DRIVER_PROPERTY-> RestClient.getApiServices().updateDriverProperty(params, callback as Callback<FeedCommonResponseKotlin>)
           //  ApiName.GET_SUBSCRIPTION-> RestClient.getApiServices().getAllSubscription(params, callback as Callback<SubscriptionPlan>)
+            ApiName.UPDATE_GPS_PREFERENCE-> RestClient.getApiServices().updateGpsPreference(params,callback as Callback<FeedCommonResponseKotlin>)
             ApiName.PAYTM_REQUEST_OTP-> RestClient.getApiServices().paytmRequestOtp(params, callback as Callback<FeedCommonResponseKotlin>)
 //            ApiName.PAYTM_LOGIN_WITH_OTP-> RestClient.getApiServices().paytmLoginWithOtp(params, callback as Callback<FeedCommonResponseKotlin>)
 //            ApiName.PURCHASE_SUBSCRIPTION-> RestClient.getApiServices().purchaseSubscriptions(params, callback as Callback<PurchasePlan>)

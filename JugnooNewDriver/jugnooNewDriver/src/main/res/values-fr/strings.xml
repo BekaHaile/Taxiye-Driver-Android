@@ -1753,6 +1753,7 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="hint_edt_phone">Numéro de téléphone</string>
     <string name="enter_one_time_pwd">Entrez un mot de passe unique</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="incentive">Incentives</string>
     <string name="you_can_add_only_three_contacts">Vous pouvez ajouter seulement trois contacts.</string>
     <string name="emergency_contacts">Contacts d\'urgence</string>
     <string name="add_contacts">Ajouter des contacts</string>

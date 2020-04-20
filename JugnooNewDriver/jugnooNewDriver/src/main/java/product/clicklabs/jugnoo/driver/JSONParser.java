@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -47,6 +48,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -59,6 +61,7 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -212,7 +215,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
+	public UserData parseUserData(Context context, JSONObject userData,Activity activity) throws Exception {
 
 
 		int freeRideIconDisable = 1;
@@ -673,6 +676,7 @@ public class JSONParser implements Constants {
 			if(jungleObj != null){
 				jungleObjStr = jungleObj.toString();
 			}
+			Prefs.with(context).save(KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, context.getString(R.string.jungle_map_fm_token));
 
 			Prefs.with(context).save(KEY_JUNGLE_DIRECTIONS_OBJ, jungleObjStr);
 
@@ -691,7 +695,7 @@ public class JSONParser implements Constants {
 
 	}
 
-	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
+	public String parseAccessTokenLoginData(Activity context, String response) throws Exception {
 
 
 		Log.e("response ==", "=" + response);
@@ -701,7 +705,7 @@ public class JSONParser implements Constants {
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
-		Data.userData = parseUserData(context, jLoginObject);
+		Data.userData = parseUserData(context, jLoginObject,context);
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
@@ -750,7 +754,7 @@ public class JSONParser implements Constants {
 		return resp;
 	}
 
-	public String getUserStatus(Context context, String accessToken) {
+	public String getUserStatus(Activity context, String accessToken) {
 		String returnResponse = "";
 		try {
 			HashMap<String, String> params = new HashMap<>();
@@ -765,6 +769,18 @@ public class JSONParser implements Constants {
 				return returnResponse;
 			} else {
 				JSONObject jObject1 = new JSONObject(result);
+				((Activity)context).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if(jObject1.has("external_gps_data")){
+							try {
+								configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
 				returnResponse = parseCurrentUserStatus(context, jObject1);
 				return returnResponse;
 			}
@@ -777,17 +793,16 @@ public class JSONParser implements Constants {
 
 
 
-	public String parseCurrentUserStatus(Context context, JSONObject jObject1) {
+	public String parseCurrentUserStatus(Activity context, JSONObject jObject1) {
 		HomeActivity.userMode = UserMode.DRIVER;
 		try {
 			if (jObject1.has(KEY_ERROR)) {
 				return Constants.SERVER_TIMEOUT;
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
-
+				parseGpsData(jObject1,context);
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
-
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
@@ -976,6 +991,41 @@ public class JSONParser implements Constants {
 		}
 
 		return "";
+	}
+
+	private void parseGpsData(JSONObject jObject1,Context context) {
+		if(jObject1.has("external_gps_enabled")){
+			try {
+				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
+				if(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
+					if(jObject1.has("external_gps_data")){
+						configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void configureExternalGps(JSONObject external_gps_data,Context context) {
+		try {
+			Data.setGpsPreference(external_gps_data.getInt("gps_preference"));
+			Data.setGpsDeviceImeiNo(external_gps_data.getString("device_imei_number"));
+			TrackerLocationUpdater tracker = new TrackerLocationUpdater();
+			Prefs.with(context).save(Constants.KEY_GPS_LONGITUDE,"");
+			Prefs.with(context).save(Constants.KEY_GPS_LATITUDE,"");
+			if(external_gps_data.getInt("gps_preference")==1){
+				//startSocketLocationUpdateServiceq
+				// 0866551037048951 demo imei
+				tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),context);
+				//tracker.connectGpsDevice("0866551037048951",context);
+			}else if (external_gps_data.getInt("gps_preference")==0){
+				tracker.stopTracker();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void updateDropAddressLatlng(Context context, JSONObject jObjCustomer, CustomerInfo customerInfo) {
@@ -1395,10 +1445,14 @@ public class JSONParser implements Constants {
 //				Constants.KEY_SHOW_TOLL_CHARGE,
                 Constants.WALLET,
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
+				Constants.INCENTIVE,
+				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
-				Constants.DRIVER_PLANS_COMMISSION
-		);
+				Constants.DRIVER_PLANS_COMMISSION,
+                Constants.KEY_DRIVER_DESTINATION,
+                Constants.MULTIPLE_VEHICLES_ENABLED
+        );
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
 		}

@@ -10,7 +10,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo;
 public class DocInfo {
 
 	public String docType;
-	public Integer docTypeNum, docCount, isEditable;
+	public Integer docTypeNum, docCount, isEditable,docCategory;
 	public Integer docRequirement;
 	public String status, reason;
 	public boolean isExpended;
@@ -24,7 +24,7 @@ public class DocInfo {
 
 	public DocInfo(String docType, Integer docTypeNum, Integer docRequirement,
 				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable,
-				   String docInstructions, Integer galleryRestricted, ArrayList<DocFieldsInfo> listDocFieldsInfo,boolean docInfoEditable) {
+				   String docInstructions, Integer galleryRestricted, ArrayList<DocFieldsInfo> listDocFieldsInfo,boolean docInfoEditable,int docCategory) {
 		this.docType = docType;
 		this.docTypeNum = docTypeNum;
 		this.docRequirement = docRequirement;
@@ -33,6 +33,7 @@ public class DocInfo {
 		this.isEditable = isEditable;
 		this.isExpended = false;
 		this.docCount = docCount;
+		this.docCategory=docCategory;
 
 		docImages = new ArrayList<>();
 		for(int i=0; i<docCount; i++){
@@ -81,5 +82,9 @@ public class DocInfo {
 
 	public ArrayList<DocImage> getDocImages(){
 		return docImages;
+	}
+
+	public Integer getDocCategory() {
+		return docCategory;
 	}
 }

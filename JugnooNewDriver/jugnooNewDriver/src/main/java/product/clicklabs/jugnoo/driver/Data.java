@@ -57,10 +57,53 @@ public class Data {
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
+	private static int multipleVehiclesEnabled=0;
+	private static int driverMappingIdOnBoarding=-1;
 
+	public static String getGpsDeviceImeiNo() {
+		return GPS_DEVICE_IMEI_NO;
+	}
+	public static void setGpsDeviceImeiNo(String imei){
+		Data.GPS_DEVICE_IMEI_NO = imei;
+	}
 
+	private static String GPS_DEVICE_IMEI_NO = "device_imei_no";
 
+	public static int getExternalGpsEnabled() {
+		return externalGpsEnabled;
+	}
 
+	public static void setExternalGpsEnabled(int externalGpsEnabled) {
+		Data.externalGpsEnabled = externalGpsEnabled;
+	}
+
+	private static int externalGpsEnabled = 0;
+
+	public static int getGpsPreference() {
+		return gpsPreference;
+	}
+
+	public static void setGpsPreference(int gpsPreference) {
+		Data.gpsPreference = gpsPreference;
+	}
+
+	private static int gpsPreference = 0;
+
+	public static int getMultipleVehiclesEnabled() {
+		return multipleVehiclesEnabled;
+	}
+
+	public static int getDriverMappingIdOnBoarding() {
+		return driverMappingIdOnBoarding;
+	}
+
+	public static void setDriverMappingIdOnBoarding(int driverMappingId) {
+		Data.driverMappingIdOnBoarding = driverMappingId;
+	}
+
+	public static void setMultipleVehiclesEnabled(int multipleVehiclesEnabled) {
+		Data.multipleVehiclesEnabled = multipleVehiclesEnabled;
+	}
 	// dev review http://107.21.79.63:4001
 	//Dev staged :  "http://54.81.229.172:7000";
 

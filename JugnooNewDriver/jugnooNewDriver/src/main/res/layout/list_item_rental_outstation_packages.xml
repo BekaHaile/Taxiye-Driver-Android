@@ -88,11 +88,11 @@
             android:id="@+id/textViewBeforeRide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="8dp"
+            android:layout_gravity="start"
+            android:layout_marginBottom="10dp"
             android:text="@string/before_ride"
-            android:textColor="@color/themeColor"
-            android:textSize="14sp"
+            android:textColor="@color/yellow_jugnoo"
+            android:textSize="16sp"
 
             />
 
@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pickup_charges"
                 android:textColor="@color/textColor"
+
                 android:textSize="14sp"/>
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -153,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="@string/NA"
+                android:textStyle="bold"
                 android:textColor="@color/textColor"
                 android:textSize="14sp"/>
 
@@ -178,11 +180,11 @@
             android:id="@+id/textViewInRide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="8dp"
+            android:layout_gravity="start"
             android:text="@string/in_ride_rate"
-            android:textColor="@color/themeColor"
-            android:textSize="14sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/yellow_jugnoo"
+            android:textSize="16sp"
 
             />
 
@@ -195,24 +197,27 @@
                 android:id="@+id/textViewBaseFare"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:text="@string/base_fare"
+                android:textStyle="bold"
                 android:textColor="@color/textColor"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/imageViewHorizontal5"
                 android:layout_width="5dp"
                 android:layout_height="5dp"
                 android:layout_gravity="bottom"
+                android:visibility="gone"
                 android:src="@drawable/ring_orange_dark"/>
 
             <RelativeLayout
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center">
 
@@ -224,6 +229,7 @@
                     android:gravity="center"
                     android:text="@string/distance_lower"
                     android:textColor="@color/textColor"
+                    android:textStyle="bold"
                     android:textSize="14sp"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -244,6 +250,7 @@
                 android:layout_width="5dp"
                 android:layout_height="5dp"
                 android:layout_gravity="bottom"
+                android:visibility="gone"
                 android:src="@drawable/ring_orange_dark"/>
 
             <RelativeLayout
@@ -258,6 +265,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:text="@string/time"
                     android:textColor="@color/textColor"
@@ -282,6 +290,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:layout_gravity="center">
 

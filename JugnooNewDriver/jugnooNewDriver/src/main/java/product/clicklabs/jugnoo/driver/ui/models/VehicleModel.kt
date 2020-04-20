@@ -25,8 +25,8 @@ data class VehicleModelDetails(
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
+            parcel.readString()!!,
+            parcel.readString()!!,
             parcel.readInt()) {
     }
 
@@ -104,7 +104,7 @@ data class  VehicleModelCustomisationDetails (
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString()!!,
             parcel.readInt()) {
     }
 

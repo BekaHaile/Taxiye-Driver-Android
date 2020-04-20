@@ -3,4 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">nominatim-api-live.jungleworks.com</domain>
     </domain-config>
+    <base-config cleartextTrafficPermitted="true" />
 </network-security-config>

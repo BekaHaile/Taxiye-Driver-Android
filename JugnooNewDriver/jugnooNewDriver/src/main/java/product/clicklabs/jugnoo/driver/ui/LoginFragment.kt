@@ -440,7 +440,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as Activity
         toolbarChangeListener = context as ToolbarChangeListener
@@ -459,7 +459,7 @@ class LoginFragment : Fragment() {
     }
 
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
         try {

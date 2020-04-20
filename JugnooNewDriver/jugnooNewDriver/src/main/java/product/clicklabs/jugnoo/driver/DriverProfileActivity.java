@@ -63,6 +63,7 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -96,7 +97,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     boolean checked = false;
 
 	private SwitchCompat switchOnlyCashRides;
-	private SwitchCompat switchOnlyLongRides;
+	private SwitchCompat switchOnlyLongRides,externalGps;
+	private  TrackerLocationUpdater tracker;
 
     @Override
     protected void onResume() {
@@ -385,6 +387,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
 		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+		externalGps = findViewById(R.id.switchExternalGps);
 
 		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
 			switchOnlyCashRides.setVisibility(View.VISIBLE);
@@ -410,7 +413,66 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			switchOnlyLongRides.setVisibility(View.GONE);
 			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
 		}
+		if(Data.getExternalGpsEnabled()==1){
+		    externalGps.setVisibility(View.VISIBLE);
+		    if(Data.getGpsPreference()==1){
+		        externalGps.setChecked(true);
+            }else{
+		        externalGps.setChecked(false);
+            }
+        }else{
+		    externalGps.setVisibility(View.GONE);
+        }
+        tracker = new TrackerLocationUpdater();
+		externalGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateGpsPreference(externalGps.isChecked());
+            }
+        });
 
+    }
+
+    private void updateGpsPreference(boolean checked) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
+        if(checked){
+            params.put(Constants.GPS_PREFERENCE,"1");
+        }else{
+            params.put(Constants.GPS_PREFERENCE,"0")  ;
+        }
+        new ApiCommonKt<FeedCommonResponseKotlin>(this, true, false, true)
+                .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+                    @Override
+                    public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                        if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+                            if(checked==true){
+                                externalGps.setChecked(true);
+                                Data.setGpsPreference(1);
+                                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LONGITUDE,"");
+                                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LATITUDE,"");
+                                tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),DriverProfileActivity.this);
+                            }else{
+                                externalGps.setChecked(false);
+                                Data.setGpsPreference(0);
+                                if(tracker!=null)
+                                tracker.stopTracker();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+                        externalGps.setChecked(checked != true);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onFailure(RetrofitError error) {
+                        externalGps.setChecked(checked != true);
+                        return super.onFailure(error);
+                    }
+                });
     }
 
     private void setDefaultValue() {
@@ -695,6 +757,9 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
 
         vehicleDetails.setVisibility(View.VISIBLE);
+        if(Data.getMultipleVehiclesEnabled()==1){
+            vehicleDetails.setVisibility(View.GONE);
+        }
 
 
         if(Data.userData.getVehicleDetailsLogin()!=null){
@@ -792,5 +857,17 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			}
 		});
 	}
+
+
+
+    public void showDisconnectPopup(Boolean switchState){
+        Log.e("external location updater unable to connect ","connection failed");
+        DialogPopup.alertPopup(DriverProfileActivity.this, "", "Location data from vehcile gps is not available at this moment.", false, true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateGpsPreference(false);
+            }
+        });
+    }
 
 }

@@ -6,13 +6,13 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
@@ -286,7 +286,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         }
         if (HomeActivity.activity != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         } else {
             startActivity(intent)
