@@ -264,7 +264,7 @@ public class JSONParser implements Constants {
 		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
 		}
-
+		parseGpsData(userData,context);
 		if (1 != autosEnabled) {
 			autosAvailable = 0;
 		}
