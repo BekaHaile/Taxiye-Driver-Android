@@ -492,7 +492,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
 
-    public static final long DRIVER_START_RIDE_CHECK_METERS = 400; //in meters
+    public static final long DRIVER_START_RIDE_CHECK_METERS = 700; //in meters
 
     public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
