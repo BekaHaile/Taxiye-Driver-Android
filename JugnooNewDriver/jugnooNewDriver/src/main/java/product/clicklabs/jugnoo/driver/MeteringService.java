@@ -16,11 +16,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import androidx.core.app.NotificationCompat;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -44,11 +45,9 @@ public class MeteringService extends Service {
     	super.onStartCommand(intent, flags, startId);
 		cancelAlarm();
 		gpsInstance(this).start();
-		try {
-			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,getString(R.string.metering_service_notif_label),METER_NOTIF_ID));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,getString(R.string.metering_service_notif_label),METER_NOTIF_ID));
+
 		return Service.START_STICKY;
     }
     
@@ -56,7 +55,6 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
-//    	restartServiceViaAlarm();
     }
 
 	@Override
@@ -64,17 +62,6 @@ public class MeteringService extends Service {
 		Log.e("MeteringService onDestroy","=");
 		restartServiceViaAlarm();
 	}
-
-
-
-    public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
-	public static final String UPLOAD_IN_RIDE_DATA = "product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA";
-
-
-
-
-
-
 
 
 
@@ -89,8 +76,7 @@ public class MeteringService extends Service {
     	}
     	try {
     		String meteringState = Database2.getInstance(this).getMetringState();
-			String meteringStateSp= Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
-    		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
+    		if(!Database2.ON.equalsIgnoreCase(meteringState)){
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
 				stopForeground(true);
@@ -101,7 +87,9 @@ public class MeteringService extends Service {
 				restartService.setPackage(getPackageName());
 				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 				AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+				if (alarmService != null) {
+					alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+				}
 				Log.e("MeteringService restartServiceViaAlarm","="+restartService);
     		}
 		} catch (Exception e) {
@@ -114,8 +102,10 @@ public class MeteringService extends Service {
 		restartService.setPackage(getPackageName());
 		PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-		alarmService.cancel(restartServicePI);
-    }
+		if (alarmService != null) {
+			alarmService.cancel(restartServicePI);
+		}
+	}
     
  
 
@@ -137,10 +127,8 @@ public class MeteringService extends Service {
 				@Override
 				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
-					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
-							DriverScreenMode.D_INITIAL.getOrdinal());
-					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
-						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
+					ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getKOrdinal());
+						if (fromGPS && customerInfos.size() > 0) {
 							String message = context.getString(R.string.metering_service_notif_label);
 							if(Prefs.with(context).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 0){
 								message = context.getResources().getString(R.string.total_distance)
@@ -156,11 +144,6 @@ public class MeteringService extends Service {
 									lastGPSLocation,
 									lastFusedLocation, totalHaversineDistance);
 						}
-					} else{
-						Database2.getInstance(context).updateMetringState(Database2.OFF);
-						Prefs.with(context).save(SPLabels.METERING_STATE, Database2.OFF);
-						context.stopService(new Intent(context, MeteringService.class));
-					}
 				}
 				
 				@Override
@@ -210,7 +193,7 @@ public class MeteringService extends Service {
 	public static Notification generateNotification(Context context, String message,int notificationId) {
 		try {
 			long when = System.currentTimeMillis();
-			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManagerSilent(context, Constants.NOTIF_CHANNEL_METERING);
 			
 			Intent notificationIntent = new Intent(context, DriverSplashActivity.class);
 			
@@ -218,13 +201,13 @@ public class MeteringService extends Service {
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_METERING);
 			builder.setAutoCancel(false);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
-			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_METERING);
 
 			builder.setWhen(when);
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), GCMIntentService.NOTIFICATION_BIG_ICON));
@@ -244,7 +227,9 @@ public class MeteringService extends Service {
 	
 	public static void clearNotifications(Context context){
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancel(METER_NOTIF_ID);
-    }
+		if (notificationManager != null) {
+			notificationManager.cancel(METER_NOTIF_ID);
+		}
+	}
 
 }

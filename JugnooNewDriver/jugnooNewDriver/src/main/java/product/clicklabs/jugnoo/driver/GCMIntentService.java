@@ -90,7 +90,7 @@ import retrofit.mime.TypedByteArray;
 public class GCMIntentService extends FirebaseMessagingService {
 
 	public static int PROMOTION_ID = 100;
-	public static final long REQUEST_TIMEOUT = 60000;
+	public static final long REQUEST_TIMEOUT = 120000;
 	private static final long WAKELOCK_TIMEOUT = 5000;
 
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
@@ -146,7 +146,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl;
 			if (pm != null) {
-				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, BuildConfig.FLAVOR+":notification");
 				wl.acquire(WAKELOCK_TIMEOUT);
 			}
 
@@ -311,7 +311,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl;
 			if (pm != null) {
-				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, BuildConfig.FLAVOR+":notification");
 				wl.acquire(WAKELOCK_TIMEOUT);
 			}
 
@@ -362,7 +362,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl;
 			if (pm != null) {
-				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, BuildConfig.FLAVOR+":notification");
 				wl.acquire(WAKELOCK_TIMEOUT);
 			}
 
@@ -456,7 +456,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl;
 			if (pm != null) {
-				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, BuildConfig.FLAVOR+":notification");
 				wl.acquire(WAKELOCK_TIMEOUT);
 			}
 
@@ -529,14 +529,19 @@ public class GCMIntentService extends FirebaseMessagingService {
 								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
 								int isDeliveryPool = 0;
 								int changeRing = jObj.optInt(Constants.KEY_RING_TYPE, 0);
-								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
-										DriverScreenMode.D_INITIAL.getOrdinal());
+
+								//to check if any customer is engaged with driver
+								ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+								//to check if only one engaged customer and its state is started
+								boolean isSingleCustomerInStart = customerInfos.size() == 1 && customerInfos.get(0).getStatus() == EngagementStatus.STARTED.getKOrdinal();
+
 								boolean entertainRequest = false;
 								if(jObj.optInt(Constants.KEY_RIDE_TYPE,0) == 4){
 									isDeliveryPool =1;
 								}
 								if (1 == perfectRide
-										&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
+										&& isSingleCustomerInStart
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								} else if (1 == isPooled
@@ -546,7 +551,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								} else if (0 == perfectRide && 0 == isPooled
-										&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)
+										&& (customerInfos.size() == 0)
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								}
@@ -684,7 +689,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery, isDeliveryPool, reverseBid);
 									}
-									flurryEventForRequestPush(engagementId, driverScreenMode);
 
 									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 										startTimeoutAlarm(this);
@@ -724,7 +728,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-								Location location = Database2.getInstance(this).getDriverCurrentLocation(this);
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag
 									|| PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag
@@ -775,7 +778,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								int playRing = jObj.optInt("play_ring", 0);
-								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "", playRing);
 									notificationManagerResume(this, logMessage, false);
@@ -916,13 +918,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 								intent1.putExtra("downloadOnly", downloadList);
 								startService(intent1);
 
-							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
-								if(PermissionCommon.isGranted(Manifest.permission.READ_CONTACTS, this)) {
-									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
-									intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
-									startService(intent1);
-								}
-
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
 								intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
@@ -1030,7 +1025,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 
 	public static MediaPlayer mediaPlayer;
-	public static Vibrator vibrator;
 
 	public static void startTimeoutAlarm(Context context) {
 
@@ -1061,21 +1055,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 
 			stopRing(true, context);
-			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
-				long[] pattern = {0, 1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900};
-				vibrator.vibrate(pattern, 1);
-			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
@@ -1088,7 +1067,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 				@Override
 				public void onCompletion(MediaPlayer mp) {
 					try {
-						vibrator.cancel();
 						mediaPlayer.stop();
 						mediaPlayer.reset();
 						mediaPlayer.release();
@@ -1107,23 +1085,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static void startRingCustom(Context context, String file) {
 		try {
 			stopRing(true, context);
-			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
-				long[] pattern = {0, 1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900};
-				vibrator.vibrate(pattern, 1);
-			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			Log.i("Music Path", "" + file);
@@ -1133,7 +1095,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 				@Override
 				public void onCompletion(MediaPlayer mp) {
 					try {
-						vibrator.cancel();
 						mediaPlayer.stop();
 						mediaPlayer.reset();
 						mediaPlayer.release();
@@ -1153,23 +1114,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static void startRingWithStopHandler(final Context context, long time) {
 		try {
 			stopRing(true, context);
-			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
-				long[] pattern = {0, 1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900,
-						1350, 3900};
-				vibrator.vibrate(pattern, 1);
-			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, 0, true);
@@ -1178,7 +1123,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 				@Override
 				public void onCompletion(MediaPlayer mp) {
 					try {
-						vibrator.cancel();
 						mediaPlayer.stop();
 						mediaPlayer.reset();
 						mediaPlayer.release();
@@ -1228,9 +1172,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 		}
 		if (stopRing) {
 			try {
-				if (vibrator != null) {
-					vibrator.cancel();
-				}
 				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 					mediaPlayer.reset();
@@ -1506,13 +1447,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 	//context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
 
 
-	private void flurryEventForRequestPush(String engagementId, int driverScreenMode) {
-		if (DriverScreenMode.D_INITIAL.getOrdinal() != driverScreenMode
-				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != driverScreenMode
-				&& DriverScreenMode.D_RIDE_END.getOrdinal() != driverScreenMode) {
-			FlurryEventLogger.logStartRing(this, driverScreenMode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
-		}
-	}
 
 
 	private class BigImageNotifAsync extends AsyncTask<String, String, Bitmap> {
@@ -1573,6 +1507,23 @@ public class GCMIntentService extends FirebaseMessagingService {
 			// The user-visible description of the channel.
 			String description = context.getString(R.string.notification_channel_description_default);
 			int importance = NotificationManager.IMPORTANCE_HIGH;
+			NotificationChannel mChannel = new NotificationChannel(channel, name, importance);
+			// Configure the notification channel.
+			mChannel.setDescription(description);
+			notificationManager.createNotificationChannel(mChannel);
+		}
+		return notificationManager;
+	}
+	public static NotificationManager getNotificationManagerSilent(final Context context, String channel){
+
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			// The user-visible name of the channel.
+			CharSequence name = context.getString(R.string.notification_channel_metering);
+			// The user-visible description of the channel.
+			String description = context.getString(R.string.notification_channel_description_metering);
+			int importance = NotificationManager.IMPORTANCE_LOW;
 			NotificationChannel mChannel = new NotificationChannel(channel, name, importance);
 			// Configure the notification channel.
 			mChannel.setDescription(description);

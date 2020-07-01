@@ -38,4 +38,8 @@ public enum EngagementStatus {
 	public int getOrdinal() {
 		return ordinal;
 	}
+
+	public int getKOrdinal() {
+		return ordinal;
+	}
 }

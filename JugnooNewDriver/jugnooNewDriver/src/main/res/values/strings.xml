@@ -1047,7 +1047,9 @@
     <string name="app_needs_phone_state_permission">App needs Phone State permission to continue</string>
 
     <string name="notification_channel_default">Notifications</string>
+    <string name="notification_channel_metering">Metering</string>
     <string name="notification_channel_description_default">Latest Updates</string>
+    <string name="notification_channel_description_metering">Calculation services</string>
     <string name="driver_agreement">Driver Agreement</string>
 
 
