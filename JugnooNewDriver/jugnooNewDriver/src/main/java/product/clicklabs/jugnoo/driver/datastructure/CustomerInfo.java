@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,9 +157,6 @@ public class CustomerInfo {
 
 
 		setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, "0");
-//		setMapValue(engagementId, Constants.KEY_CSV_PATH, "");
-//		setMapValue(engagementId, Constants.KEY_CSV_WAYPOINTS, "");
-//		setMapValue(engagementId, Constants.KEY_NUM_WAYPOINTS, "0");
 	}
 
 
@@ -265,9 +260,7 @@ public class CustomerInfo {
 
 	@Override
 	public String toString() {
-		return "engagementId = "+engagementId+" userId = "+userId+" referenceId = "+referenceId+
-				" name = "+name+" requestlLatLng = "+requestlLatLng+
-				", cachedApiEnabled="+cachedApiEnabled;
+		return "id="+engagementId;
 	}
 
 	@Override
@@ -578,12 +571,12 @@ public class CustomerInfo {
 	public double getTotalDistance(double distance, Context context, boolean onEndRide){
 		if(distanceRecover){return totalDistanceRecovered;}
 
-		double meteringDistance = getSPSavedDistance(distance, context);
+		double meteringDistance = getSPSavedDistance(distance);
 
 		//if Waypoint estimation logic is enabled then waypoint_distance would be in customer map values db
 		if(Data.userData != null && Data.userData.getDriverTag().equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())){
 			try {
-				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE);
+				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE, "0");
 				Log.e("CustomerInfo getTotalDistance", "wpDistance = "+wpDistance);
 
 				//check if waypoint distance is in specified range of metering distance
@@ -608,26 +601,19 @@ public class CustomerInfo {
 				return wpDist;
 			} catch (Exception ignored) {}
 		}
-//		if(getIsPooled() == 1 && getPoolFare() != null){
-//			return getPoolFare().getDistance();
-//		} else {
 		if(waypointDistance > 0 && Prefs.with(context).getInt(Constants.KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, 0) == 1){
 			return waypointDistance;
 		}
 		return meteringDistance;
 	}
 
-	public double getSPSavedDistance(double distance, Context context) {
+	public double getSPSavedDistance(double distance) {
 		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if (jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				double startDistance = Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
-				if(distance < startDistance){
-					return 0;
-				} else{
-					return distance - startDistance;
-				}
+			double startDistance = Double.parseDouble(getMapValue(engagementId, Constants.KEY_DISTANCE, "0"));
+			if (distance < startDistance) {
+				return 0;
+			} else {
+				return distance - startDistance;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -643,63 +629,34 @@ public class CustomerInfo {
 		this.waypointDistance = waypointDistance;
 	}
 
-	public double getTotalHaversineDistance(double haversineDistance, Context context){
+	public double getTotalHaversineDistance(double haversineDistance){
 		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if(jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				return haversineDistance - Double.parseDouble(jc.optString(Constants.KEY_HAVERSINE_DISTANCE, "0"));
-			}
+			double haversineDistanceMark = Double.parseDouble(getMapValue(engagementId, Constants.KEY_HAVERSINE_DISTANCE, "0"));
+			return haversineDistance - haversineDistanceMark;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return haversineDistance;
 	}
 
-	public long getElapsedRideTime(Context context){
-		long startTime = System.currentTimeMillis();
-//		if(getIsPooled() == 1 && getPoolFare() != null){
-//			return getPoolFare().getRideTime();
-//		} else {
-			try {
-				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-				if (jObj.has(String.valueOf(getEngagementId()))) {
-					JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-					startTime = Long.parseLong(jc.optString(Constants.KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis())));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-//		}
-		return System.currentTimeMillis() - startTime;
-	}
-
-//	public void resetStartRideTime(Context context) {
-//		try {
-//			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-//			if (jObj.has(String.valueOf(getEngagementId()))) {
-//				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-//				jc.put(Constants.KEY_RIDE_TIME, System.currentTimeMillis());
-//				jObj.put(String.valueOf(getEngagementId()), jc);
-//				Prefs.with(context).save(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-
-	public long getTotalWaitTime(long waitTime, Context context) {
+	public long getElapsedRideTime(){
 		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if (jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				return waitTime - Long.parseLong(jc.optString(Constants.KEY_WAIT_TIME, "0"));
-			}
+			return System.currentTimeMillis() - Long.parseLong(getMapValue(engagementId, Constants.KEY_RIDE_START_TIME, String.valueOf(System.currentTimeMillis())));
 		} catch (Exception e) {
 			e.printStackTrace();
+			return 0;
 		}
-		return waitTime;
+	}
+
+
+
+	public long getTotalWaitTime(long waitTime) {
+		try {
+			return waitTime - Long.parseLong(getMapValue(engagementId, Constants.KEY_WAIT_TIME, "0"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	public String getColor() {
@@ -767,7 +724,7 @@ public class CustomerInfo {
 	}
 
 	public String getCurrencyUnit() {
-		return Data.getCurrencyNullSafety(currencyUnit);
+		return currencyUnit;
 	}
 
 	public void setCurrencyUnit(String currencyUnit) {
@@ -927,18 +884,35 @@ public class CustomerInfo {
 		Database2.getInstance(MyApplication.getInstance()).setKeyValue(key+engagementId, value);
 	}
 
-	public static String getMapValue(int engagementId, String key){
-		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId);
+	public static String getMapValue(int engagementId, String key, String defaultVal){
+		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId, defaultVal);
 	}
 
-	public long getElapsedTime(){
-		try {
-			return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return getElapsedRideTime(MyApplication.getInstance());
-		}
+	public static void clearMapValues(int engagementId){
+		Database2.getInstance(MyApplication.getInstance()).removeKey(Constants.KEY_WAYPOINT_DISTANCE + engagementId);
+
+		Database2.getInstance(MyApplication.getInstance()).removeKey(Constants.KEY_DISTANCE + engagementId);
+		Database2.getInstance(MyApplication.getInstance()).removeKey(Constants.KEY_HAVERSINE_DISTANCE + engagementId);
+		Database2.getInstance(MyApplication.getInstance()).removeKey(Constants.KEY_RIDE_START_TIME + engagementId);
+		Database2.getInstance(MyApplication.getInstance()).removeKey(Constants.KEY_WAIT_TIME + engagementId);
+
+		ArrayList<String> keys = Database2.getInstance(MyApplication.getInstance()).getAllKeys();
+		Log.e("CustomerInfo:clearMapValues", "keys left="+keys);
 	}
+
+	public static void clearAllMapValues(){
+		Database2.getInstance(MyApplication.getInstance()).removeKeyLike(Constants.KEY_WAYPOINT_DISTANCE);
+
+		Database2.getInstance(MyApplication.getInstance()).removeKeyLike(Constants.KEY_DISTANCE);
+		Database2.getInstance(MyApplication.getInstance()).removeKeyLike(Constants.KEY_HAVERSINE_DISTANCE);
+		Database2.getInstance(MyApplication.getInstance()).removeKeyLike(Constants.KEY_RIDE_START_TIME);
+		Database2.getInstance(MyApplication.getInstance()).removeKeyLike(Constants.KEY_WAIT_TIME);
+
+		ArrayList<String> keys = Database2.getInstance(MyApplication.getInstance()).getAllKeys();
+		Log.e("CustomerInfo:clearAllMapValues", "keys left="+keys);
+	}
+
+
 
 	public double getIncrementPercent() {
 		return incrementPercent;

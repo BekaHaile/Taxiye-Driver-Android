@@ -44,7 +44,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -216,22 +215,13 @@ public class Utils {
 
 
     public static boolean mockLocationEnabled(Location location) {
-//		return false;
-        try {
-            if (!BuildConfig.DEBUG_MODE && Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-                boolean isMockLocation = false;
-                if (location != null) {
-                    Bundle extras = location.getExtras();
-                    isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-                }
-                return isMockLocation;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+		if (location != null
+				&& !BuildConfig.DEBUG_MODE
+				&& Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+			return location.isFromMockProvider();
+		} else {
+			return false;
+		}
     }
 
 

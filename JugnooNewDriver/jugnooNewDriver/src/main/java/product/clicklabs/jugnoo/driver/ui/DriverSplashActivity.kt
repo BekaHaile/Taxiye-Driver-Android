@@ -100,11 +100,16 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayShowTitleEnabled(false)
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_back_selector)
+        try {
+            setSupportActionBar(toolbar)
+            supportActionBar?.apply {
+                setDisplayShowTitleEnabled(false)
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_back_selector)
+            }
+        }
+        catch (e: Exception){
+            e.printStackTrace()
         }
 
         // TODO: 08/12/18 remove this
@@ -126,8 +131,13 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         bGrant.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
-                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION_FOR_BUTTON, PermissionCommon.SKIP_RATIONAL_MESSAGE,
-                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION_FOR_BUTTON, PermissionCommon.SKIP_RATIONAL_MESSAGE,
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.READ_PHONE_STATE)
+                } else {
+                    permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION_FOR_BUTTON, PermissionCommon.SKIP_RATIONAL_MESSAGE,
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+                }
             }
         })
 
@@ -155,16 +165,17 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     override fun onResume() {
         super.onResume()
         if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
-                && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+                && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)
+                && ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && PermissionCommon.isGranted(Manifest.permission.ACCESS_BACKGROUND_LOCATION, this))
+                        || Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)){
             if(!grantedCalled){
                 llGrantPermission.gone()
                 permissionCommon.dismissSnackbars()
-                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+                requestAllPermissions()
             }
         } else if (firstTime){
             llGrantPermission.visible()
-            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE)
+            requestAllPermissions()
         }
         firstTime = false
         grantPermissionText()
@@ -172,13 +183,26 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
+    private fun requestAllPermissions(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.READ_PHONE_STATE)
+        } else {
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+        }
+    }
+
     private fun grantPermissionText() {
         if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
                 && !PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)) {
             tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location_phone));
-        } else if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
+        }
+        else if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
             tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location));
-        } else if (!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)) {
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionCommon.isGranted(Manifest.permission.ACCESS_BACKGROUND_LOCATION, this)) {
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location_in_background));
+        }
+        else if (!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)) {
             tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_phone));
         }
     }
@@ -386,10 +410,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         return loginFragment!=null && loginFragment.isVisible/* && (loginFragment as LoginFragment).assist*/
     }
 
-    public fun openVehicleDetails(accessToken: String,cityId:String,vehicleType:String,userName:String ){
+    public fun openVehicleDetails(accessToken: String,cityId:String,vehicleType:String,userName:String,driverDetails:HashMap<String,String>?=null ){
        supportFragmentManager.inTransactionWithAnimation {
 
-            add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType,userName), VehicleDetailsFragment::class.simpleName)
+            add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType,userName,null,false,driverDetails), VehicleDetailsFragment::class.simpleName)
                     .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName)!!)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }

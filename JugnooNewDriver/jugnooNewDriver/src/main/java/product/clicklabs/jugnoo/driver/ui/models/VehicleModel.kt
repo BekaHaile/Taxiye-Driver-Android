@@ -12,13 +12,13 @@ import com.google.gson.annotations.SerializedName
 
 data class VehicleDetailsResponse(
         @Expose @SerializedName("data") val models: Map<String,List<VehicleModelDetails>>
-):FeedCommonResponse()
+):FeedCommonResponseKotlin()
 
 
 
 data class VehicleModelDetails(
-        @Expose @SerializedName("brand") val make:String?,
-        @Expose @SerializedName("name") val modelName:String?,
+        @Expose @SerializedName("brand") val make:String,
+        @Expose @SerializedName("name") val modelName:String,
         @Expose @SerializedName("model_id") val id:Int) :Parcelable,SearchDataModel() {
     override fun isSelected(): Boolean {
         return false
@@ -30,7 +30,7 @@ data class VehicleModelDetails(
             parcel.readInt()) {
     }
 
-    override fun getLabel(): String? {
+    override fun getLabel(): String {
        return modelName;
     }
 
@@ -83,7 +83,7 @@ class VehicleMakeInfo(val makeName:String): SearchDataModel() {
 
 data class VehicleModelCustomisationsResponse(
         @Expose @SerializedName("data") val customisationList: CustomisationData
-):FeedCommonResponse()
+):FeedCommonResponseKotlin()
 
 class CustomisationData(
         @Expose @SerializedName("colors") val colorCustomisationList: List<VehicleModelCustomisationDetails>,
@@ -97,7 +97,7 @@ class CustomisationData(
 
 data class  VehicleModelCustomisationDetails (
 
-        @Expose @SerializedName("value") val value:String?,
+        @Expose @SerializedName("value") val value:String,
         @Expose @SerializedName("id") val id:Int):Parcelable,SearchDataModel() {
     override fun isSelected(): Boolean {
         return false
@@ -117,7 +117,7 @@ data class  VehicleModelCustomisationDetails (
         return false
     }
 
-    override fun getLabel(): String? {
+    override fun getLabel(): String {
         return value;
     }
 

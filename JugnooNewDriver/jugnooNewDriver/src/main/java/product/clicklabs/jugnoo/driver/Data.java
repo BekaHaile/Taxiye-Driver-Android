@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.fugu.FuguColorConfigStrings;
+import product.clicklabs.jugnoo.driver.home.CustomerInfoPaperUtil;
 import product.clicklabs.jugnoo.driver.support.SupportOption;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -96,7 +97,6 @@ public class Data {
 	public static int getDriverMappingIdOnBoarding() {
 		return driverMappingIdOnBoarding;
 	}
-
 	public static void setDriverMappingIdOnBoarding(int driverMappingId) {
 		Data.driverMappingIdOnBoarding = driverMappingId;
 	}
@@ -104,30 +104,6 @@ public class Data {
 	public static void setMultipleVehiclesEnabled(int multipleVehiclesEnabled) {
 		Data.multipleVehiclesEnabled = multipleVehiclesEnabled;
 	}
-	// dev review http://107.21.79.63:4001
-	//Dev staged :  "http://54.81.229.172:7000";
-
-	// Dev staged :   http://54.81.229.172:8000
-
-	// Dev Trial :   http://54.81.229.172:8001
-
-	// live 1st:    http://dev.jugnoo.in:3000
-	// live 2nd:    http://dev.jugnoo.in:4000
-	// live 3rd:    http://dev.jugnoo.in:4002
-	// review 3:    http://dev.jugnoo.in:4003
-	// live 4th:    http://dev.jugnoo.in:4004
-	// live 6th:    https://dev.jugnoo.in:4006
-	// live 8th:    https://dev.jugnoo.in:4008
-	// live 10th:    https://dev.jugnoo.in:4010
-	// live 12th:    https://dev.jugnoo.in:4012     app versions: 126, 127, 128, 129, 130
-	// live 13th:    https://dev.jugnoo.in:4013
-
-	//iOS 4012
-	//
-	// Dev new dispatcher :   https://54.81.229.172:8012
-
-	//https://test.jugnoo.in:8012 to http://54.173.65.120:9000
-
 	//TODO
 	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
 	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
@@ -196,10 +172,9 @@ public class Data {
 	public static ArrayList<CancelOption> cancelOptionsList;
 	public static ArrayList<DeliveryReturnOption> deliveryReturnOptionList;
 
-	public static String dEngagementId = "";
+	private static String dEngagementId = "";
 
-	private static ArrayList<CustomerInfo> assignedCustomerInfos = new ArrayList<>();
-
+	private static ArrayList<CustomerInfo> assignedCustomerInfos;
 
 
 
@@ -287,12 +262,24 @@ public class Data {
 
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfos(){
+		if(assignedCustomerInfos == null){
+			assignedCustomerInfos = CustomerInfoPaperUtil.INSTANCE.readCustomerInfos();
+		}
 		return assignedCustomerInfos;
 	}
-	public static void instantiateAssignedCustomerInfos(){
+
+	public static void saveAssignedCustomers(){
+		Log.e("Data", "saveAssignedCustomers");
+		if(assignedCustomerInfos != null){
+			CustomerInfoPaperUtil.INSTANCE.writeCustomerInfos(assignedCustomerInfos);
+		}
+	}
+	public static void clearAssignedCustomers(){
 		if(assignedCustomerInfos == null){
 			assignedCustomerInfos = new ArrayList<>();
 		}
+		assignedCustomerInfos.clear();
+		CustomerInfoPaperUtil.INSTANCE.writeCustomerInfos(assignedCustomerInfos);
 	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
@@ -326,14 +313,15 @@ public class Data {
 	}
 
 	public static void clearAssignedCustomerInfosListForStatus(int status){
-		if(assignedCustomerInfos != null) {
-			for(int i=0; i<assignedCustomerInfos.size(); i++){
-				if(assignedCustomerInfos.get(i).getStatus() == status){
-					MyApplication.getInstance().getEngagementSP().removeCustomer(assignedCustomerInfos.get(i).getEngagementId());
-					assignedCustomerInfos.remove(i);
+		if(getAssignedCustomerInfos() != null) {
+			for(int i=0; i<getAssignedCustomerInfos().size(); i++){
+				if(getAssignedCustomerInfos().get(i).getStatus() == status){
+					getAssignedCustomerInfos().remove(i);
 					i--;
 				}
 			}
+			Log.e("Data", "clearAssignedCustomerInfosListForStatus");
+			saveAssignedCustomers();
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
@@ -341,15 +329,16 @@ public class Data {
 	}
 
 	public static void clearAssignedCustomerInfosListForStatusWithDelivery(int status, int isDelivery){
-		if(assignedCustomerInfos != null) {
-			for(int i=0; i<assignedCustomerInfos.size(); i++){
-				if(assignedCustomerInfos.get(i).getStatus() == status
-						&& assignedCustomerInfos.get(i).getIsDelivery() == isDelivery){
-					MyApplication.getInstance().getEngagementSP().removeCustomer(assignedCustomerInfos.get(i).getEngagementId());
-					assignedCustomerInfos.remove(i);
+		if(getAssignedCustomerInfos() != null) {
+			for(int i=0; i<getAssignedCustomerInfos().size(); i++){
+				if(getAssignedCustomerInfos().get(i).getStatus() == status
+						&& getAssignedCustomerInfos().get(i).getIsDelivery() == isDelivery){
+					getAssignedCustomerInfos().remove(i);
 					i--;
 				}
 			}
+			Log.e("Data", "clearAssignedCustomerInfosListForStatusWithDelivery");
+			saveAssignedCustomers();
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
@@ -358,42 +347,42 @@ public class Data {
 
 	public static CustomerInfo getCustomerInfo(String engagementId){
 		try {
-			int index = assignedCustomerInfos.indexOf(new CustomerInfo(Integer.parseInt(engagementId)));
+			int index = getAssignedCustomerInfos().indexOf(new CustomerInfo(Integer.parseInt(engagementId)));
 			if(index > -1){
-				return assignedCustomerInfos.get(index);
+				return getAssignedCustomerInfos().get(index);
 			}
 		} catch (Exception ignored) {}
 		return null;
 	}
 
 	public static void addCustomerInfo(CustomerInfo customerInfo){
-		if(assignedCustomerInfos != null) {
-			if (assignedCustomerInfos.contains(customerInfo)) {
-				int index = assignedCustomerInfos.indexOf(customerInfo);
-				assignedCustomerInfos.remove(index);
-				assignedCustomerInfos.add(index, customerInfo);
+		if(getAssignedCustomerInfos() != null) {
+			if (getAssignedCustomerInfos().contains(customerInfo)) {
+				int index = getAssignedCustomerInfos().indexOf(customerInfo);
+				getAssignedCustomerInfos().remove(index);
+				getAssignedCustomerInfos().add(index, customerInfo);
 			} else {
-				assignedCustomerInfos.add(customerInfo);
+				getAssignedCustomerInfos().add(customerInfo);
 			}
+			Log.e("Data", "addCustomerInfo");
+			saveAssignedCustomers();
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
-			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
 	}
 
-	public static boolean removeCustomerInfo(int engagementId, int status){
-		if(assignedCustomerInfos != null) {
-			int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
+	public static boolean removeCustomerInfo(int engagementId){
+		if(getAssignedCustomerInfos() != null) {
+			int index = getAssignedCustomerInfos().indexOf(new CustomerInfo(engagementId));
 			if (index > -1) {
-				if(assignedCustomerInfos.get(index).getStatus() == status) {
-					assignedCustomerInfos.remove(index);
-					if (HomeActivity.appInterruptHandler != null) {
-						HomeActivity.appInterruptHandler.updateCustomers();
-					}
-					MyApplication.getInstance().getEngagementSP().removeCustomer(engagementId);
-					return true;
+				getAssignedCustomerInfos().remove(index);
+				Log.e("Data", "removeCustomerInfo");
+				saveAssignedCustomers();
+				if (HomeActivity.appInterruptHandler != null) {
+					HomeActivity.appInterruptHandler.updateCustomers();
 				}
+				return true;
 			}
 		}
 		return false;
@@ -403,8 +392,9 @@ public class Data {
 		CustomerInfo customerInfo = getCustomerInfo(engagementId);
 		if(customerInfo != null){
 			customerInfo.setStatus(getEngagementStatusFromDriverScreenMode(driverScreenMode).getOrdinal());
-			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
+		Log.e("Data", "setCustomerState");
+		saveAssignedCustomers();
 	}
 
 
@@ -428,6 +418,12 @@ public class Data {
 	}
 
 	public static String getCurrentEngagementId(){
+		if(TextUtils.isEmpty(Data.dEngagementId)){
+			ArrayList<CustomerInfo> customerInfos = getAssignedCustomerInfosListForEngagedStatus();
+			if(customerInfos.size() > 0){
+				Data.dEngagementId = String.valueOf(customerInfos.get(0).getEngagementId());
+			}
+		}
 		return Data.dEngagementId;
 	}
 

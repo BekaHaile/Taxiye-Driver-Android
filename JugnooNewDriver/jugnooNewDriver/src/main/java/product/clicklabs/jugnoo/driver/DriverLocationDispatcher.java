@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,12 +18,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
-import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -50,14 +49,14 @@ public class DriverLocationDispatcher {
 			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
 			long responseTime = System.currentTimeMillis();
 			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
-				
+
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 				WakeLock wakeLock = null;
 				if (powerManager != null) {
-					wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
+					wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, BuildConfig.FLAVOR+":MyWakelockTag2");
 					wakeLock.acquire(5000);
 				}
-				
+
 				String accessToken = JSONParser.getAccessTokenPair(context).first;
 
 				String pushyToken = "";
@@ -66,16 +65,27 @@ public class DriverLocationDispatcher {
 				
 				if(!"".equalsIgnoreCase(accessToken)){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
-						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
-								DriverScreenMode.D_INITIAL.getOrdinal());
 						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000)/2L;
 						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000)/2L;
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 						Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_RECEIVED);
 
-						if (((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() || screenMode == DriverScreenMode.D_OFFLINE.getOrdinal()) && diff >= freeStateTime)
-								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
+						//to check if any customer is engaged with driver
+						ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+						//to check if any engaged customer is in accepted or arrived state
+						boolean isAnyCustomerBeforeStart = false;
+						for(CustomerInfo customerInfo : customerInfos){
+							if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getKOrdinal()
+									|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getKOrdinal()){
+								isAnyCustomerBeforeStart = true;
+								break;
+							}
+						}
+
+						if (((customerInfos.size() == 0) && diff >= freeStateTime)
+								|| (isAnyCustomerBeforeStart && diff >= acceptedStateTime)) {
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
@@ -223,33 +233,37 @@ public class DriverLocationDispatcher {
 		try{
 			double driverArrivedDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_ARRIVED_DISTANCE, 100);
 			double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
-			ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication.getInstance()
-					.getEngagementSP().getEngagementSPDatasArray();
-			for(EngagementSPData engagementSPData : engagementSPDatas){
+			ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+			if(customerInfos.size() == 0){
+				return;
+			}
+			for(CustomerInfo customerInfo : customerInfos){
 				try {
-					if(engagementSPData.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
+					if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
 						double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-								new LatLng(engagementSPData.getPickupLatitude(), engagementSPData.getPickupLongitude())));
+								customerInfo.getRequestlLatLng()));
 
 						if (distance < driverArrivedDistance){
 							if(HomeActivity.appInterruptHandler != null){
+								customerInfo.setStatus(EngagementStatus.ARRIVED.getOrdinal());
 								HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
-										location.getLongitude()), engagementSPData.getEngagementId());
+										location.getLongitude()), customerInfo.getEngagementId());
 							} else{
 								HashMap<String, String> nameValuePairs = new HashMap<>();
 								nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
-								nameValuePairs.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(engagementSPData.getEngagementId()));
-								nameValuePairs.put(Constants.KEY_CUSTOMER_ID, String.valueOf(engagementSPData.getCustomerId()));
+								nameValuePairs.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+								nameValuePairs.put(Constants.KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 								nameValuePairs.put(Constants.KEY_PICKUP_LATITUDE, String.valueOf(location.getLatitude()));
 								nameValuePairs.put(Constants.KEY_PICKUP_LONGITUDE, String.valueOf(location.getLongitude()));
-								nameValuePairs.put(Constants.KEY_REFERENCE_ID, String.valueOf(engagementSPData.getReferenceId()));
+								nameValuePairs.put(Constants.KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 								HomeUtil.putDefaultParams(nameValuePairs);
 
 								RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
-								engagementSPData.setStatus(EngagementStatus.ARRIVED.getOrdinal());
-								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementSPData);
+								customerInfo.setStatus(EngagementStatus.ARRIVED.getOrdinal());
+								Log.e("DriverLocationDispatcher", "checkForMarkArrived");
+								Data.saveAssignedCustomers();
 
-								Database2.getInstance(context).insertRideData(context, "0.0", "0.0", "" + System.currentTimeMillis(), engagementSPData.getEngagementId(), false);
+								Database2.getInstance(context).insertRideData(context, "0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
 
 								Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, true);
 								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, true);
@@ -257,16 +271,15 @@ public class DriverLocationDispatcher {
 								Intent intent1 = new Intent(context, StartRideLocationUpdateService.class);
 								context.startService(intent1);
 								Log.e("startRideAlarmSErvice", "on");
-								Log.writePathLogToFile(context, engagementSPData.getEngagementId() + "m", "arrived sucessful");
+								Log.writePathLogToFile(context, customerInfo.getEngagementId() + "m", "arrived sucessful");
 							}
-							break;
 						} else if(distance < arrivingDistance){
 							if(HomeActivity.appInterruptHandler != null){
-								HomeActivity.appInterruptHandler.notifyArrivedButton(true, engagementSPData.getEngagementId());
+								HomeActivity.appInterruptHandler.notifyArrivedButton(true, customerInfo.getEngagementId());
 							}
 						} else {
 							if(HomeActivity.appInterruptHandler != null){
-								HomeActivity.appInterruptHandler.notifyArrivedButton(false, engagementSPData.getEngagementId());							}
+								HomeActivity.appInterruptHandler.notifyArrivedButton(false, customerInfo.getEngagementId());							}
 						}
 					}
 				} catch (Exception e) {

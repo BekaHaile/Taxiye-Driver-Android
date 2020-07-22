@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -101,6 +102,12 @@
         <activity android:name=".IncomeDetailsActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" />
+
+        <activity
+            android:name=".VehicleDetailsActivity"
+            android:label="@string/title_activity_vehicle_details"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".RequestActivity"
             android:theme="@style/TransparentTheme"
@@ -390,10 +397,7 @@
             android:name=".services.ApiAcceptRideServices"
             android:enabled="true"
             android:exported="true"/>
-        <service
-            android:name=".ContactsUploadService"
-            android:enabled="true"
-            android:exported="true"/>
+
         <service
             android:name=".PushPendingCallsService"
             android:enabled="true"

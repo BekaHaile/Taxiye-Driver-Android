@@ -52,10 +52,11 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import product.clicklabs.jugnoo.driver.chat.ChatActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
@@ -673,7 +674,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
 
-									Data.instantiateAssignedCustomerInfos();
+									//Data.instantiateAssignedCustomerInfos();
 									CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 											Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 											referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
@@ -737,8 +738,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								String messageInternal = jObj.optString(Constants.KEY_MESSAGE);
 								clearNotifications(this);
 
-								Data.instantiateAssignedCustomerInfos();
-								Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
+								Data.removeCustomerInfo(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									if(PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag){
 										HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
@@ -760,7 +760,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 3, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
-								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
+								Data.removeCustomerInfo(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, logMessage, 0);
 									notificationManagerResume(this, logMessage, true);
@@ -1276,8 +1276,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 			timerTask = new TimerTask() {
 				@Override
 				public void run() {
-					if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null) {
-						boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
+					CustomerInfo customerInfo = Data.getCustomerInfo(engagementId);
+					if(customerInfo != null && customerInfo.getStatus() == EngagementStatus.REQUESTED.getOrdinal()) {
+						boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId));
 						if (removed) {
 							if (HomeActivity.appInterruptHandler != null) {
 								HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);

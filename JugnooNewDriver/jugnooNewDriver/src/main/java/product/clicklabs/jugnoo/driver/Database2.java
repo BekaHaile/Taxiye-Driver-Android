@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
-import androidx.core.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.core.util.Pair;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
@@ -57,9 +57,6 @@ public class Database2 {                                                        
 	private static final String TABLE_DRIVER_SCREEN_MODE = "table_driver_screen_mode";
 	private static final String DRIVER_SCREEN_MODE = "driver_screen_mode";
 
-	public static final String VULNERABLE = "vulnerable";
-	public static final String NOT_VULNERABLE = "not_vulnerable";
-
 
 	private static final String TABLE_DRIVER_CURRENT_LOCATION = "table_driver_current_location";
 	private static final String DRIVER_CURRENT_LATITUDE = "driver_current_latitude";
@@ -91,14 +88,18 @@ public class Database2 {                                                        
 	private static final String API_REQUEST_PARAMS = "api_request_params";
 
 
-	private static final String TABLE_RIDE_DATA = "table_ride_data3";
+	private static final String TABLE_RIDE_DATA = "table_ride_data_4";
 	private static final String RIDE_DATA_I = "i";
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
 	private static final String RIDE_DATA_ENGAGEMENT_ID = "engagementId";
 	private static final String RIDE_DATA_ACC_DISTANCE = "accDistance";
-	private static final String RIDE_DATA_IS_WAY_POINT = "isWayPoint";
+
+	private static final String TABLE_RIDE_LOGS = "table_ride_logs";
+	private static final String RIDE_LOGS_I = "i";
+	private static final String RIDE_LOGS_ENG_ID = "engagementId";
+	private static final String RIDE_LOGS_LOG = "log";
 
 
 	private static final String TABLE_RING_DATA = "table_ring_data";
@@ -259,8 +260,13 @@ public class Database2 {                                                        
 				+ RIDE_DATA_LNG + " TEXT, "
 				+ RIDE_DATA_T + " TEXT, "
 				+ RIDE_DATA_ENGAGEMENT_ID + " INTEGER, "
-				+ RIDE_DATA_ACC_DISTANCE + " REAL, "
-				+ RIDE_DATA_IS_WAY_POINT + " INTEGER"
+				+ RIDE_DATA_ACC_DISTANCE + " REAL "
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RIDE_LOGS + " ("
+				+ RIDE_LOGS_I + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ RIDE_LOGS_LOG + " TEXT, "
+				+ RIDE_LOGS_ENG_ID + " INTEGER "
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
@@ -843,7 +849,7 @@ public class Database2 {                                                        
 							Double.parseDouble(cursor.getString(i1)),
 							Double.parseDouble(cursor.getString(i2)),
 							cursor.getLong(i3),
-							cursor.getDouble(i4), 0);
+							cursor.getDouble(i4));
 
 					rideDataStr.append(rideData.toString()).append(newLine);
 					hasValues = true;
@@ -862,49 +868,8 @@ public class Database2 {                                                        
 
 		return rideDataStr.toString();
 	}
-	public ArrayList<RideData> getRideDataWaypoints(int engagementId) {
-		ArrayList<RideData> rideDatas = new ArrayList<>();
-		Cursor cursor = null;
-		try {
-			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T,
-					Database2.RIDE_DATA_ACC_DISTANCE, Database2.RIDE_DATA_IS_WAY_POINT};
-			cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
-					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1", null, null, null, null);
 
-			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
-			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
-			int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
-			int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
-			int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
-			int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
-
-			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-				try {
-					double lat = Double.parseDouble(cursor.getString(i1));
-					double lng = Double.parseDouble(cursor.getString(i2));
-					if(Utils.compareDouble(lat, 0) != 0 && Utils.compareDouble(lng, 0) != 0) {
-						RideData rideData = new RideData(cursor.getInt(i0),
-								lat,
-								lng,
-								cursor.getLong(i3),
-								cursor.getDouble(i4),
-								cursor.getInt(i5));
-						rideDatas.add(rideData);
-					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null){cursor.close();}
-		}
-		return rideDatas;
-	}
-
-	public void insertRideData(Context context, String lat, String lng, String t, int engagementId, boolean isInRideState) {
+	public void insertRideData(Context context, String lat, String lng, String t, int engagementId) {
 		try {
 			double accDistance = 0;
 			try {
@@ -945,13 +910,6 @@ public class Database2 {                                                        
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			int isWayPoint = 0;
-			if(isInRideState && Prefs.with(context).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
-				RideData rideDataLastWP = getLastRideDataWaypoint(engagementId);
-				if (rideDataLastWP == null || (Long.parseLong(t) - rideDataLastWP.t) >= Prefs.with(context).getInt(Constants.KEY_WAYPOINTS_COLLECTION_INTERVAL, 120000)) {
-					isWayPoint = 1;
-				}
-			}
 
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RIDE_DATA_LAT, lat);
@@ -959,7 +917,6 @@ public class Database2 {                                                        
 			contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
 			contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
 			contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
-			contentValues.put(Database2.RIDE_DATA_IS_WAY_POINT, isWayPoint);
 			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -974,7 +931,6 @@ public class Database2 {                                                        
 		contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
 		contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
 		contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
-		contentValues.put(Database2.RIDE_DATA_IS_WAY_POINT, 0);
 		database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 	}
 
@@ -998,7 +954,6 @@ public class Database2 {                                                        
 		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
 		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
-		int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
 		if(cursor.moveToFirst()){
 			if(limit == 2){
 				cursor.moveToLast();
@@ -1007,35 +962,12 @@ public class Database2 {                                                        
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
 					cursor.getLong(i3),
-					cursor.getDouble(i4),
-					cursor.getInt(i5));
+					cursor.getDouble(i4));
 		}
 		cursor.close();
 		return rideData;
 	}
 
-	private RideData getLastRideDataWaypoint(int engagementId){
-		RideData rideData = null;
-		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
-				+" WHERE "+RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1"
-				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT "+1, null);
-		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
-		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
-		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
-		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
-		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
-		int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
-		if(cursor.moveToFirst()){
-			rideData = new RideData(cursor.getInt(i0),
-					Double.parseDouble(cursor.getString(i1)),
-					Double.parseDouble(cursor.getString(i2)),
-					cursor.getLong(i3),
-					cursor.getDouble(i4),
-					cursor.getInt(i5));
-		}
-		cursor.close();
-		return rideData;
-	}
 
 
 	public double checkRideData(int engagementId, long starTime) {
@@ -1097,6 +1029,43 @@ public class Database2 {                                                        
 
 
 
+
+	public void insertRideLog(String log, int engagementId) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(Database2.RIDE_LOGS_LOG, log);
+		contentValues.put(Database2.RIDE_LOGS_ENG_ID, engagementId);
+		database.insert(Database2.TABLE_RIDE_LOGS, null, contentValues);
+		Log.i("Database2 TABLE_RIDE_LOGS", "log="+log+", engagementId="+engagementId);
+	}
+
+	public String getRideLogs(int engagementId){
+		Cursor cursor = null;
+		try {
+			String[] columns = new String[]{Database2.RIDE_LOGS_LOG};
+			cursor = database.query(Database2.TABLE_RIDE_LOGS, columns,
+					RIDE_LOGS_ENG_ID+"="+engagementId, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.RIDE_LOGS_LOG);
+			StringBuilder sb = new StringBuilder();
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				sb.append(cursor.getString(i0)).append("\n");
+			}
+			if(cursor != null){cursor.close();}
+			return sb.toString();
+		} catch (Exception e) {
+			return "";
+		}  finally {
+			if(cursor != null){cursor.close();}
+		}
+	}
+
+	public void deleteRideLogs(int engagementId) {
+		database.delete(TABLE_RIDE_LOGS, RIDE_LOGS_ENG_ID + "=" + engagementId, null);
+	}
+
+	public void deleteRideLogsAll() {
+		database.delete(TABLE_RIDE_LOGS, null, null);
+	}
 
 
 
@@ -1956,17 +1925,44 @@ public class Database2 {                                                        
 	}
 
 
-	public String getKeyValue(String key){
+	public String getKeyValue(String key, String defaultVal){
 		String[] columns = new String[]{VALUE};
 		Cursor cursor = database.query(TABLE_KEY_VALUE, columns, KEY+"=?", new String[]{key}, null, null, null);
 
 		int i0 = cursor.getColumnIndex(Database2.VALUE);
-		String value = "";
+		String value = defaultVal;
 		if(cursor.moveToFirst()){
 			value = cursor.getString(i0);
 		}
 		cursor.close();
 		return value;
+	}
+
+
+
+	public ArrayList<String> getAllKeys(){
+		String[] columns = new String[]{KEY};
+		Cursor cursor = database.query(TABLE_KEY_VALUE, columns, null, null, null, null, null);
+
+		int i0 = cursor.getColumnIndex(Database2.KEY);
+		ArrayList<String> keys = new ArrayList<>();
+		if(cursor.getCount() > 0) {
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				keys.add(cursor.getString(i0));
+			}
+		}
+
+		cursor.close();
+		return keys;
+	}
+
+
+	public void removeKey(String key) {
+		database.delete(TABLE_KEY_VALUE, KEY + "= ?", new String[]{key});
+	}
+
+	public void removeKeyLike(String key) {
+		database.delete(TABLE_KEY_VALUE, KEY + " LIKE ?", new String[]{key+"%"});
 	}
 
 

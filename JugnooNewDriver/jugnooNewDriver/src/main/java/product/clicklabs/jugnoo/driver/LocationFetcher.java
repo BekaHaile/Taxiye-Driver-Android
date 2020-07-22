@@ -7,7 +7,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
+import android.os.Looper;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
@@ -98,10 +99,10 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	 */
 	private  boolean isLocationEnabled(Context context) {
 		try{
-			ContentResolver contentResolver = context.getContentResolver();
-			boolean gpsStatus = Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.GPS_PROVIDER);
-			boolean netStatus = Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.NETWORK_PROVIDER);
-			return gpsStatus || netStatus;
+			LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+			return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+					|| locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+			 		|| locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
 		} catch(Exception e){
 			e.printStackTrace();
 			return false;

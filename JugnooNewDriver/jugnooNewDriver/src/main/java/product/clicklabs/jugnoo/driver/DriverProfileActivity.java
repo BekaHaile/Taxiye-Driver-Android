@@ -748,7 +748,6 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     public void setVehicleModelData(){
         boolean showVehicleSettings = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_EDIT_SETTING,0)==1;
-        VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
 
 
         if(!showVehicleSettings){
@@ -763,6 +762,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 
         if(Data.userData.getVehicleDetailsLogin()!=null){
+            VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
             List<VehicleDetail> details = new ArrayList<>(7);
             details.add(new VehicleDetail(getString(R.string.make),vehicleMakeInfo.getVehicleMake()));
             details.add(new VehicleDetail(getString(R.string.model),vehicleMakeInfo.getVehicleModel()));

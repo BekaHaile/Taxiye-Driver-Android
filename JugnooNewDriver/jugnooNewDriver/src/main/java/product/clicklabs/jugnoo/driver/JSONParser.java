@@ -224,6 +224,7 @@ public class JSONParser implements Constants {
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
 		Double minDriverBalance = null;
 		Double mActualCreditBalance=null;
+		DriverVehicleDetails activeVehicle=null;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
@@ -264,7 +265,16 @@ public class JSONParser implements Constants {
 		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
 		}
-		parseGpsData(userData,context);
+		if (userData.has("multiple_vehicles_enabled")) {
+			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
+        }
+		if(userData.has(Constants.ACTIVE_VEHICLE)){
+			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
+			if(vehObj.length()>0) {
+				activeVehicle=DriverVehicleDetails.parseDocumentVehicleDetails(vehObj);
+			}
+		}
+
 		if (1 != autosEnabled) {
 			autosAvailable = 0;
 		}
@@ -485,7 +495,7 @@ public class JSONParser implements Constants {
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
 				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
-                gender, dateOfBirth,minDriverBalance,mActualCreditBalance);
+                gender, dateOfBirth,activeVehicle,minDriverBalance,mActualCreditBalance);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {

@@ -134,7 +134,6 @@ public class GeanieView extends Service {
 						szWindow.set(w, h);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 
 
@@ -429,7 +428,6 @@ public class GeanieView extends Service {
 				windowManager.removeViewImmediate(removeView);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

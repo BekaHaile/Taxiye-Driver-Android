@@ -11,20 +11,21 @@ import android.content.pm.PermissionInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import product.clicklabs.jugnoo.driver.R;
 
 /**
@@ -344,8 +345,19 @@ public final class PermissionCommon {
 
 
         }
+        if(permissionsToAsk.contains(Manifest.permission.READ_CONTACTS)){
+        	DialogPopup.alertPopupTwoButtonsWithListeners(activity,
+					activity.getString(R.string.app_requires_read_contacts_permission_title),
+					activity.getString(R.string.app_requires_read_contacts_permission_message),
+					activity.getString(R.string.ok),
+					activity.getString(R.string.cancel),
+					v->{requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);},
+					v->{}, false, true);
+        }
+
         //At activity point if shouldAsk is true there is no rational Permission that exists and  No explanation needed, we can request for the permissions.
-        requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
+        else
+            requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
 
 
     }

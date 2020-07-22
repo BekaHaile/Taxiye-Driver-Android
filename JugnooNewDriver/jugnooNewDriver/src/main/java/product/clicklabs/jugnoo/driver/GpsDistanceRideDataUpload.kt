@@ -9,8 +9,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import product.clicklabs.jugnoo.driver.datastructure.*
-import product.clicklabs.jugnoo.driver.home.models.EngagementSPData
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.mime.TypedByteArray
@@ -99,13 +101,12 @@ object GpsDistanceRideDataUpload {
                     val nameValuePairs = HashMap<String, String>()
                     nameValuePairs[Constants.KEY_ACCESS_TOKEN] = accessToken
 
-                    val engagementSPDatas = MyApplication
-                            .getInstance().engagementSP.engagementSPDatasArray as ArrayList<EngagementSPData>
+                    val customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus()
                     val engagementsJsonArray = JSONArray()
-                    for (engagementSPData in engagementSPDatas) {
+                    for (customerInfo in customerInfos) {
                         try {
-                            if (engagementSPData.status == EngagementStatus.STARTED.getOrdinal()) {
-                                engagementsJsonArray.put(engagementSPData.engagementId)
+                            if (customerInfo.status == EngagementStatus.STARTED.getOrdinal()) {
+                                engagementsJsonArray.put(customerInfo.engagementId)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -116,6 +117,7 @@ object GpsDistanceRideDataUpload {
                         if (locationDataArr.length() > 0) {
                             nameValuePairs["engagement_ids"] = engagementsJsonArray.toString()
                             nameValuePairs["locations"] = locationDataArr.toString()
+                            Log.i("GpsDistanceRideDataUpload", "logOngoingRidePath params=$nameValuePairs")
                             HomeUtil.putDefaultParams(nameValuePairs)
 
                             val response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs)
@@ -172,10 +174,9 @@ object GpsDistanceRideDataUpload {
     private fun updateInRideDataInternal(context: Context, location: Location?) {
         try {
             val responseTime = System.currentTimeMillis()
-            val driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
-                    DriverScreenMode.D_INITIAL.getOrdinal())
+            val customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus()
             val accessToken = JSONParser.getAccessTokenPair(context).first
-            if (DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
+            if (customerInfos.size > 0
                     && location != null
                     && !"".equals(accessToken, ignoreCase = true)) {
                 val totalDistanceInKm = Math.abs(GpsDistanceCalculator.getTotalDistanceFromSP(context) / 1000.0)
@@ -188,9 +189,10 @@ object GpsDistanceRideDataUpload {
                 val decimalFormat = DecimalFormat("#.##", DecimalFormatSymbols(Locale.ENGLISH))
                 val decimalFormatNoDecimal = DecimalFormat("#", DecimalFormatSymbols(Locale.ENGLISH))
 
+
                 val params = HashMap<String, String>()
                 params[Constants.KEY_ACCESS_TOKEN] = accessToken
-                params[Constants.KEY_ENGAGEMENT_ID] = MyApplication.getInstance().engagementSP.engagementSPDatasArray[0].engagementId.toString()
+                params[Constants.KEY_ENGAGEMENT_ID] = customerInfos[0].engagementId.toString()
                 params["current_latitude"] = location.latitude.toString()
                 params["current_longitude"] = location.longitude.toString()
                 params["distance_travelled"] = decimalFormat.format(totalDistanceInKm)
@@ -244,9 +246,7 @@ object GpsDistanceRideDataUpload {
                     }
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        } catch (e: Exception) {}
 
     }
 

@@ -40,6 +40,8 @@ public class UserData {
 	private String driverTag;
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
+    private ArrayList<DriverVehicleDetails> driverVehicleDetailsList = new ArrayList<>();
+    private DriverVehicleDetails activeVehicle=null;
 	private Double walletBalance;
 	private Double minDriverBalance;
 
@@ -56,7 +58,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, Double minDriverBalance,Double mActualWalletBalance) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth,DriverVehicleDetails activeVehicle, Double minDriverBalance,Double mActualWalletBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -321,6 +323,17 @@ public class UserData {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public ArrayList<DriverVehicleDetails> getDriverVehicleDetailsList() {
+		return driverVehicleDetailsList;
+	}
+
+	public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
+		this.activeVehicle = activeVehicle;
+	}
+
+	public DriverVehicleDetails getActiveVehicle() {
+		return activeVehicle;
+	}
 	/**
 	 * driver's current balance
 	 * @return double

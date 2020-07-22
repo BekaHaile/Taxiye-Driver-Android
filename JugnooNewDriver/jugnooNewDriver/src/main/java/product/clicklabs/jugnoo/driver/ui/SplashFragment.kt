@@ -115,18 +115,13 @@ class SplashFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({},
                 { showBlockerDialog(getString(R.string.device_token_not_found_message))},
                 {
-                    proceedAccessTokenLogin()
+                    if(!isMockLocationEnabled()){
+                        subscribeSubjectForAccessTokenLogin()
+                        startExecutionForPendingAPis()
+                    } else {
+                        showBlockerDialog(getString(R.string.disable_mock_location))
+                    }
                 }))
-        fetchTokenAndSendToObserver()
-    }
-
-    private fun proceedAccessTokenLogin() {
-        if (!isMockLocationEnabled()) {
-            subscribeSubjectForAccessTokenLogin()
-            startExecutionForPendingAPis()
-        } else {
-            showBlockerDialog(getString(R.string.disable_mock_location))
-        }
     }
 
     private fun isMockLocationEnabled():Boolean{
@@ -387,41 +382,29 @@ class SplashFragment : Fragment() {
         // check if device token has been generated in paused state,
         // complete subject if generated else register broadcast
 
-        if(resumeCalled){
-            fetchTokenAndSendToObserver()
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
+            if(!it.isSuccessful) {
+                Log.w(TAG,"device_token_unsuccessful - onReceive",it.exception)
+                try {
+                    deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
+                }
+                catch (e: Exception){
+                    e.printStackTrace()
+                }
+                return@addOnCompleteListener
+            }
+            if(it.result?.token != null) {
+                Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG  onResume", it.result?.token)
+                deviceTokenObservable.onComplete()
+            } else {
+                deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
+            }
         }
-        resumeCalled = true
-
 
         // if the pending api execution has already been subscribed once, resubscribe
         if (isPendingExecutionOngoing && apiDisposable?.isDisposed == true) {
-            Log.i(TAG,"onResume resubscribing to subscribeSubjectForAccessTokenLogin")
+            Log.i(TAG, "onResume resubscribing to subscribeSubjectForAccessTokenLogin")
             subscribeSubjectForAccessTokenLogin()
-        }
-    }
-
-    private fun fetchTokenAndSendToObserver() {
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-            if (handler == null) {
-                handler = Handler()
-            }
-            handler!!.postDelayed({
-                if (deviceTokenObservable.hasObservers() && !deviceTokenObservable.hasComplete()) {
-                    if (!it.isSuccessful) {
-                        Log.w(TAG, "device_token_unsuccessful - onReceive", it.exception)
-                        deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
-                        return@postDelayed
-                    }
-                    if (it.result?.token != null) {
-                        Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG  onResume", it.result?.token)
-                        deviceTokenObservable.onComplete()
-                    } else {
-                        deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
-                    }
-                } else {
-                    proceedAccessTokenLogin()
-                }
-            }, 2000)
         }
     }
 

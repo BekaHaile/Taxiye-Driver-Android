@@ -22,14 +22,14 @@ import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
 import androidx.multidex.MultiDexApplication;
 import io.paperdb.Paper;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.home.EngagementSP;
-import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.room.database.CommonRoomDatabase;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -45,8 +45,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
     private static MyApplication mInstance;
 
-    private EngagementSP engagementSP;
-
     private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -58,12 +56,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         FirebaseApp.initializeApp(this);
         Paper.init(this);
         registerActivityLifecycleCallbacks(this);
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            // This process is dedicated to LeakCanary for heap analysis.
-//            // You should not init your app in this process.
-//            return;
-//        }
-//        LeakCanary.install(this);
 
         AnalyticsTrackers.initialize(this);
         AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
@@ -180,13 +172,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         t.send(eventBuilder.build());
     }
 
-    public EngagementSP getEngagementSP() {
-        if (engagementSP == null) {
-            engagementSP = new EngagementSP(this);
-        }
-        return engagementSP;
-    }
-
 
     public MapLatLngBoundsCreator getMapLatLngBoundsCreator() {
         if (mapLatLngBoundsCreator == null) {
@@ -201,8 +186,9 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             @Override
             public void run() {
                 try {
-                    for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
-                        Log.writePathLogToFile(MyApplication.this, engagementSPData.getEngagementId() + suffix, text);
+					ArrayList<CustomerInfo> list = Data.getAssignedCustomerInfosListForEngagedStatus();
+                    for (CustomerInfo customerInfo : list) {
+                        Log.writePathLogToFile(MyApplication.this, customerInfo.getEngagementId() + suffix, text);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -211,10 +197,11 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         }).start();
     }
 
-    public void insertRideDataToEngagements(String lat, String lng, String t, boolean isInRideState) {
+    public void insertRideDataToEngagements(String lat, String lng, String t) {
         try {
-            for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
-                Database2.getInstance(this).insertRideData(this, lat, lng, t, engagementSPData.getEngagementId(), isInRideState);
+			ArrayList<CustomerInfo> list = Data.getAssignedCustomerInfosListForEngagedStatus();
+            for (CustomerInfo customerInfo : list) {
+                Database2.getInstance(this).insertRideData(this, lat, lng, t, customerInfo.getEngagementId());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -333,5 +320,17 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     		commonRoomDatabase = CommonRoomDatabase.Companion.getInstance(this);
 		}
     	return commonRoomDatabase;
+	}
+
+	@Override
+	public void onLowMemory() {
+    	Data.saveAssignedCustomers();
+		super.onLowMemory();
+	}
+
+	@Override
+	public void onTrimMemory(int level) {
+		Data.saveAssignedCustomers();
+		super.onTrimMemory(level);
 	}
 }

@@ -17,8 +17,6 @@ public class SPLabels {
             LOCATION_TIME = "location_time",
             START_TIME = "start_time",
     		WAIT_TIME = "wait_time",
-            TRACKING = "tracking",
-    		DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
 
     public static final String
@@ -26,8 +24,6 @@ public class SPLabels {
             ACCURACY_SAVED_TIME = "accuracySavedTiem",
             TIME_WINDOW_FLAG = "timeWindowFlag";
 
-    public static final String
-            METERING_STATE = "meteringstate";
     public static final String
             NOTIFICATION_ID = "notificationId";
     public static final String

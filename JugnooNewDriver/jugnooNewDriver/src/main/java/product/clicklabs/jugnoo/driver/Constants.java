@@ -590,6 +590,9 @@ public interface Constants {
 	String KEY_TOGGLE_LONG_RIDES = "toggle_long_rides";
 	String KEY_PAYLOAD = "payload";
 	String KEY_OPEN_CHAT = "open_chat";
+	String KEY_PATH_UPLOAD_INTERVAL = "path_upload_interval";
+	String KEY_UPLOAD_IN_RIDE_DATA_INTERVAL = "upload_in_ride_data_interval";
+
 	String DOB_DATE_FORMAT = "yyyy-MM-dd";
 	String KEY_GENDER = "gender";
 	String KEY_DATE_OF_BIRTH = "date_of_birth";
