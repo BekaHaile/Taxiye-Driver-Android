@@ -24,7 +24,7 @@ class BidIncrementAdapter(var rv: RecyclerView, val callback:Callback) : Recycle
         this.currency = currency
         bidVals!!.clear()
         for(i in 1..stepSize){
-            val incValue = initialBidVal + (i*increment*initialBidVal/100.toDouble())
+            val incValue = initialBidVal + (i*increment*initialBidVal/100.toDouble())- 3*(increment*initialBidVal/100.toDouble())
             bidVals!!.add(BidIncrementVal(incValue, selectedVal == incValue))
         }
         notifyDataSetChanged()
