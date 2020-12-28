@@ -1,0 +1,204 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.25.4'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven {
+        url 'https://maven.fabric.io/public'
+    }
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+}
+
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'jugnoo_driver'
+            keyPassword 'jugnoo_driver'
+            storeFile file('/Users/aneeshbansal/Desktop/jugnoo_backup/keystore_jugnoo_driver_password/jugnoo_driver_keystore.keystore')
+            storePassword 'android'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
+    compileSdkVersion 29
+    buildToolsVersion '28.0.3'
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        multiDexEnabled true
+        minSdkVersion 17
+        targetSdkVersion 29
+        versionCode 6010
+        versionName "60.1.0"
+        buildConfigField "String", "CITIES_PASSWORD", "\"\""
+        buildConfigField "String", "STRIPE_CLIENT_ID_DEV", "\"\""
+        buildConfigField "String", "STRIPE_CLIENT_ID_LIVE", "\"\""
+        buildConfigField "String", "STRIPE_KEY_DEV", "\"\""
+        buildConfigField "String", "STRIPE_KEY_LIVE", "\"\""
+        buildConfigField "String", "MAPS_CLIENT", "\"\""
+        buildConfigField "String", "MAPS_PRIVATE_KEY", "\"\""
+        buildConfigField "boolean", "MAPS_APIS_SIGN", "false"
+        buildConfigField "String", "MAPS_BROWSER_KEY", "\"\""
+        buildConfigField "String", "LIVE_URL", "\"https://prod-autos-api.jugnoo.in\""
+        dimension "full"
+        buildConfigField "String", "MAPS_CACHING_SERVER_URL", "\"https://maps-api.tookanapp.com\""
+
+        def addConstant = {constantName, constantValue ->
+            manifestPlaceholders += [ (constantName):constantValue]
+            buildConfigField "String", "${constantName}", "\"${constantValue}\""
+        }
+        addConstant("authorities", applicationId+".PhotoProvider") // copy these four lines in your flavour and change the authorities's value
+
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            buildConfigField "boolean", "DEBUG_MODE", "true"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.txt'
+        }
+        release {
+            minifyEnabled false
+            zipAlignEnabled false
+            buildConfigField "boolean", "DEBUG_MODE", "false"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.txt'
+            signingConfig signingConfigs.config
+        }
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                output.outputFileName = new File(output.outputFile.name.replace(output.outputFile.name, variant.productFlavors[0].name + "_driver_" + variant.buildType.name + defaultConfig.versionCode + ".apk"))
+            }
+        }
+    }
+    flavorDimensions "full"
+    productFlavors {
+        taxiye {
+            applicationId "com.taxiye.driver"
+            buildConfigField "String", "APP_DB_ID", "\"taxiye\""
+            buildConfigField "String", "MAPS_CLIENT", "\"\""
+            buildConfigField "String", "MAPS_PRIVATE_KEY", "\"\""
+            buildConfigField "String", "MAPS_BROWSER_KEY", "\"\""
+            buildConfigField "String", "STRIPE_CLIENT_ID_LIVE", "\"\""
+            buildConfigField "boolean", "MAPS_APIS_SIGN", "false"
+            buildConfigField "String", "STRIPE_KEY_LIVE", "\"\""
+            buildConfigField "String", "MAPS_BROWSER_KEY", "\"AIzaSyCc7cCs0yv9EK7lNobBxtHUxM2Q5iq5G_0\""
+
+            def addConstant = {constantName, constantValue ->
+                manifestPlaceholders += [ (constantName):constantValue]
+                buildConfigField "String", "${constantName}", "\"${constantValue}\""
+            }
+            addConstant("authorities", applicationId+".PhotoProvider") // copy these four lines in your flavour and change the authorities's value
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+    }
+}
+
+ext {
+    playServices = "17.0.0"
+    multidex = "1.0.3"
+    supportLibrary = "28.0.0"
+    roomVersion = '1.1.1'
+    coroutineVersion = '1.2.2'
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.multidex:multidex:2.0.0'
+    compile "com.google.android.gms:play-services-analytics:$project.playServices"
+    compile "com.google.android.gms:play-services-maps:$project.playServices"
+    compile "com.google.android.gms:play-services-location:$project.playServices"
+    implementation 'com.google.android.libraries.places:places:1.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    compile "com.google.firebase:firebase-core:$project.playServices"
+    compile "com.google.android.gms:play-services-auth:$project.playServices"
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.2'
+    implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.0.2'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    compile 'androidx.recyclerview:recyclerview:1.0.0'
+    compile 'androidx.cardview:cardview:1.0.0'
+    compile 'com.google.android.material:material:1.0.0'
+    compile 'androidx.appcompat:appcompat:1.0.0'
+    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.kbeanie:multipicker:1.6@aar'
+    //    compile 'com.sothree.slidinguppanel:library:3.2.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    implementation 'com.github.gcacace:signature-pad:1.2.1'
+    implementation 'com.github.lzyzsd:circleprogress:1.2.1'
+    //    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+    //        exclude group: 'com.google.android', module: 'support-v4'
+    //    }
+    //    compile 'com.androidadvance:topsnackbar:1.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+//    compile project(':hippo')
+    implementation 'com.fugu:fugu:1.76.1'
+    implementation 'org.jsoup:jsoup:1.10.3'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.stripe:stripe-android:6.1.2'
+    implementation 'com.splitwise:tokenautocomplete:2.0.3@aar'
+
+    // Room components
+    implementation 'androidx.room:room-runtime:2.0.0'
+    kapt 'androidx.room:room-compiler:2.0.0'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$project.coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$project.coroutineVersion"
+    implementation 'com.params.progressview:step-progress:1.0.2'
+    implementation 'androidx.fragment:fragment-ktx:1.1.0'
+    //implementation 'com.github.nkzawa:socket.io-client:0.5.2'
+    implementation 'io.socket:socket.io-client:1.0.0'
+}
+
+apply plugin: 'com.google.gms.google-services'

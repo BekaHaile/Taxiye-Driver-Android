@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!--Don't Touch -->
+    <integer name="view_visible">0</integer>
+    <integer name="view_invisible">1</integer>
+    <integer name="view_gone">2</integer>
+    <!--Don't Touch -->
+    <integer name="center">0</integer>
+    <integer name="center_crop">1</integer>
+    <integer name="center_inside">2</integer>
+    <integer name="fit_center">3</integer>
+    <integer name="fit_end">4</integer>
+    <integer name="fit_start">5</integer>
+    <integer name="fit_xy">6</integer>
+    <integer name="matrix">7</integer>
+
+
+    <!--DEFAULT VALUES, Don't change these-->
+    <string name="police_number">100</string>
+    <string name="facebook_page_id">252184564966458</string>
+    <string name="facebook_page_url">https://www.facebook.com/jugnoose</string>
+    <string name="support_email">support@jugnoo.in</string>
+    <string name="support_email_subject">Driver Support</string>
+    <string name="support_phone_number">+919023121121</string>
+    <string name="customer_app_download_link">https://www.jugnoo.in/</string>
+    <integer name="show_t_and_c">@integer/view_gone</integer>
+    <integer name="show_invoices">@integer/view_visible</integer>
+    <integer name="show_driver_resources">@integer/view_visible</integer>
+    <integer name="show_refer_earn">@integer/view_visible</integer>
+    <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
+    <integer name="show_language_control">@integer/view_visible</integer>
+    <integer name="driver_logout_enabled">0</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_gone</integer>
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
+    <bool name="vehicle_model_enabled">false</bool>
+    <integer name="visibility_faq">@integer/view_gone</integer>
+    <integer name="visibility_driver_agreement">@integer/view_gone</integer>
+    <integer name="visibility_earning_bank_deposit">@integer/view_visible</integer>
+    <integer name="show_total_fare_at_ride_end">0</integer>
+    <integer name="visibility_take_cash_at_ride_end">@integer/view_visible</integer>
+    <bool name="show_vehicle_set_settings">false</bool>
+    <bool name="show_edit_vehicle_settings">false</bool>
+
+    <!--Other things to change
+        1. google-services.json
+        2. Doc entity in strings.xml
+        3. application_id in build.gradle
+    -->
+
+
+    <string name="appname">Jugnoo Taxi </string>
+    <string name="app_name">Jugnoo Taxi Driver</string>
+
+    <!--White Label Key-->
+    <string name="white_label_key"></string>
+
+    <string name="fugu_app_key"></string>
+    <string name="fugu_app_key_test"></string>
+    <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
+    <string name="file_provider">product.clicklabs.jugnoo.white.driver.provider</string>
+    <string name="hippo_support_faq_name_default">Driver</string>
+
+
+
+    <!--App Level Constants-->
+    <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
+    <string name="white_label_name">World Taxi</string><!--* IMP-->
+    <string name="google_maps_api_key"></string> <!--IMP-->
+
+    <string name="bank_deposit_text">@string/bank_deposite</string>
+
+    <!--Notifications-->
+
+    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
+    <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
+    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
+
+
+    <!--Login sign-up -->
+    <!--new changes-->
+    <drawable name="generate_otp">@drawable/orange_generate_otp_selector</drawable>
+    <drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>
+    <bool name="last_name_mandatory">false</bool>
+    <!---->
+
+    <drawable name="bg_splash">@color/white</drawable>
+    <drawable name="bg_login">@color/white</drawable>
+    <drawable name="bg_on_boarding_drawable">@drawable/splash_new_background</drawable>
+    <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <dimen name="ic_splash_logo_width">147dp</dimen>
+    <dimen name="ic_splash_logo_height">157dp</dimen>
+    <bool name="animate_splash_logo">true</bool>
+
+
+    <!--Side Menu Properties-->
+    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
+
+
+
+
+    <!--General Features Enable/Disable-->
+    <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <bool name="disable_register">false</bool>
+
+
+
+    <drawable name="windowBackgroundColor">@color/white</drawable>
+    <bool name="specified_country_search_result_enabled">false</bool>
+
+    <integer name="splash_scene_top_bg_visibility">@integer/view_gone</integer>
+    <integer name="splash_scene_bottom_bg_visibility">@integer/view_gone</integer>
+    <integer name="login_scene_top_bg_visibility">@integer/view_gone</integer>
+    <integer name="login_scene_bottom_bg_visibility">@integer/view_gone</integer>
+    <color name="colorDark">@color/textColor</color>
+    <color name="colorLight">@color/textColor</color>
+
+
+
+    <!--theme colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#292a3c</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#333333</color>
+    <color name="textColorMedium">#555555</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColor">#e58251</color>
+    <color name="themeColorLight">#bbe58251</color>
+    <color name="themeColorAlternate">#3c3638</color>
+    <color name="themeColorAlternateLight">#bb3c3638</color>
+
+    <!--Color for graph-->
+    <color name="driverEarningHighLisghtColor">@color/themeColorLight</color>
+
+    <string name="default_lang">en</string>
+
+    <integer name="scale_type">@integer/fit_xy</integer>
+    <integer name="path_filter_distance">35</integer>
+    <integer name="visibility_payment_type_in_wallet_trans">@integer/view_visible</integer>
+    <string name="currency_fallback">INR</string>
+    <integer name="apply_default_country_code">0</integer>
+    <string name="default_country_code">+91</string>
+    <integer name="default_show_details_in_take_cash">0</integer>
+
+    <!--for nickel ride-->
+    <string name="profile_monthly_earnings_text">@string/earnings</string>
+    <bool name="show_end_ride_custom_text">true</bool>
+    <integer name="show_edit_rate_card">0</integer>
+    <integer name="edit_profile_in_home_screen">0</integer>
+    <integer name="upload_documents_custom_text">0</integer>
+    <string name="btn_generate_otp_text">@string/btn_text_OTP</string>
+    <bool name="show_earnings_on_profile">true</bool>
+
+    <integer name="driver_get_directions_interval">30000</integer>
+    <color name="menu_top_background">@color/transparent</color>
+    <integer name="email_input_at_signup">0</integer>
+    <integer name="email_editable_in_profile">0</integer>
+    <integer name="username_editable_in_profile">0</integer>
+    <integer name="max_speed_threshold">20</integer>
+    <integer name="battery_check_accept">20</integer>
+    <integer name="battery_check_start">10</integer>
+
+    <integer name="use_directions_api_for_metering">1</integer>
+    <integer name="enable_waypoints_distance_calculation">0</integer>
+    <integer name="waypoints_collection_interval">120000</integer>
+    <integer name="waypoints_retry_count_at_endride">3</integer>
+    <integer name="use_waypoint_distance_for_fare">0</integer>
+    <integer name="total_distance_max">200000</integer>
+    <integer name="delta_distance_max">20000</integer>
+
+    <integer name="earnings_as_home">0</integer>
+    <integer name="show_drop_address_before_inride">1</integer>
+    <integer name="google_apis_logging">0</integer>
+    <integer name="driver_auto_zoom_enabled">1</integer>
+    <integer name="check_locale_for_address">0</integer>
+    <integer name="driver_email_optional">1</integer>
+    <string name="driver_max_bid_multiplier">4</string>
+    <integer name="driver_google_traffic_enabled">0</integer>
+    <integer name="driver_show_pool_request_dest">0</integer>
+    <integer name="driver_here_maps_feedback">0</integer>
+
+    <integer name="driver_emergency_mode_enabled">1</integer>
+
+    <string name="driver_here_auth_service_id">here_app</string>
+    <string name="driver_here_auth_identifier"></string>
+    <string name="driver_here_auth_secret"></string>
+    <string name="driver_here_app_id">jugnoo</string>
+    <bool name="is_check_toll_amount">false</bool>
+    <item name="max_toll_amount" type="dimen" format="float">0</item>
+
+    <integer name="fallback_visibility_slider_on_off">0</integer>
+
+    <integer name="driver_alt_distance_logic">1</integer>
+    <string name="driver_alt_deviation_distance">100.0</string>
+    <string name="driver_alt_deviation_time">60000</string>
+    <integer name="driver_alt_logging_enabled">1</integer>
+    <string name="driver_alt_drop_deviation_distance">200.0</string>
+
+    <integer name="driver_google_caching_enabled">0</integer>
+
+    <!--Delivery new keys-->
+    <bool name="show_customer_info_in_inride">true</bool>
+    <bool name="show_neft_pending">true</bool>
+    <bool name="show_feedback_total_fare_text">true</bool>
+    <integer name="driver_dob_input">0</integer>
+    <integer name="driver_gender_filter">0</integer>
+
+    <bool name="show_cash_collect_order_history">true</bool>
+
+    <string name="geocode_address_format">establishment,point_of_interest,premise,street_number,neighborhood,sublocality,locality,administrative_area</string>
+
+    <integer name="show_drop_location_below_pickup">0</integer>
+    <integer name="show_fare_before_ride_start">0</integer>
+
+    <string name="driver_plans_url">https://jugnootaxi.com/operator/#/page/plans</string>
+
+    <string name="d2c_share_content">Dear User, As requested use my code {{{referral_code}}} to download the app from</string>
+    <string name="d2d_share_content">Dear Driver, As requested use my code {{{referral_code}}} to download the app from</string>
+    <string name="youtube_api_key"></string>
+
+    <string name="default_reverse_bid_commission_text"></string>
+    <integer name="show_upi_information">0</integer>
+    <string name="app_scheme">jugnoodriver</string>
+
+
+    <integer name="hippo_call_enabled">0</integer>
+
+<!--    Branch Key-->
+    <string name="branch_key"></string>
+    <string name="jungle_map_fm_token"></string>
+</resources>
