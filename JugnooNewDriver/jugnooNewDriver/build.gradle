@@ -73,7 +73,7 @@ android {
         buildConfigField "String", "MAPS_PRIVATE_KEY", "\"\""
         buildConfigField "boolean", "MAPS_APIS_SIGN", "false"
         buildConfigField "String", "MAPS_BROWSER_KEY", "\"\""
-        buildConfigField "String", "LIVE_URL", "\"https://prod-autos-api.jugnoo.in\""
+        buildConfigField "String", "LIVE_URL", "\"https://prod.taxiye.com:4012\""
         dimension "full"
         buildConfigField "String", "MAPS_CACHING_SERVER_URL", "\"https://maps-api.tookanapp.com\""
 

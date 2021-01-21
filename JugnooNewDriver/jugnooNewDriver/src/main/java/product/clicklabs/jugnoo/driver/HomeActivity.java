@@ -8823,7 +8823,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
         if (hasFocus) {
-            LocationInit.showLocationAlertDialog(this);
+//            LocationInit.showLocationAlertDialog(this);
 //			buildAlertMessageNoGps();
         }
     }
