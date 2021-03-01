@@ -46,9 +46,7 @@ public class DeviceUniqueID {
     }
 
     public static String getCachedUniqueId(final Context context) {
-
-        SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return preferences.getString(SP_DEVICE_UNIQUE_ID, "");
+        return Prefs.with(context).getString(SP_DEVICE_UNIQUE_ID, "");
     }
 
     private static void saveUniqueId(final Context context, @NotNull final String id) {

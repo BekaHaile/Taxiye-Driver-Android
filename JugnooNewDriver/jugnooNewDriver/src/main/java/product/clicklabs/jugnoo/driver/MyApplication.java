@@ -210,8 +210,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
 
     public void initializeServerURLAndRestClient(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+        String link = Prefs.with(context).getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
         String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, Data.DEFAULT_SERVER_URL);
 

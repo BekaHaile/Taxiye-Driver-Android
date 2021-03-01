@@ -3,6 +3,11 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,11 +29,23 @@ public class Prefs {
 
 	static SharedPreferences.Editor editor;
 
-
-
 	Prefs(Context context) {
-		preferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-		editor = preferences.edit();
+		try {
+			MasterKey masterKey = new MasterKey.Builder(context)
+					.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+					.build();
+
+			preferences = EncryptedSharedPreferences.create(
+					context,
+					TAG,
+					masterKey,
+					EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+					EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+
+			editor = preferences.edit();
+		} catch (IOException | GeneralSecurityException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public static Prefs with(Context context) {

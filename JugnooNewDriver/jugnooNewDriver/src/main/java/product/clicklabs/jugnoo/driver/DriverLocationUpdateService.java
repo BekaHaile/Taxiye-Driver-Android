@@ -43,7 +43,7 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
     	super.onStartCommand(intent, flags, startId);
 
 		try {
-			int isOffline = getSharedPreferences(SPLabels.SETTINGS_SP,Context.MODE_PRIVATE).getInt(Constants.IS_OFFLINE, 1);
+			int isOffline = Prefs.with(this).getInt(Constants.IS_OFFLINE, 1);
 			Log.i(TAG, "onStartCommand: is Offline" +	isOffline );
 
 			if(locationFetcherDriver != null){

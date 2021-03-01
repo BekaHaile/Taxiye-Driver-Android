@@ -10,11 +10,13 @@ import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.scottyab.rootbeer.RootBeer
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
@@ -23,6 +25,7 @@ import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.fragments.TractionListFragment
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
+import kotlin.system.exitProcess
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -98,6 +101,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         super.onCreate(savedInstanceState)
         MyApplication.getInstance().setmActivity(this)
 
+        if (!BuildConfig.DEBUG) {
+            checkSecurityMeasures()
+        }
+
         setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
         try {
@@ -152,6 +159,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
+    private fun checkSecurityMeasures() {
+        if (isEmulator()) {
+            Toast.makeText(this, "Taxiye won't run on emulator.", Toast.LENGTH_SHORT).show();
+            finish()
+            exitProcess(0)
+        } else if (isRooted()) {
+            Toast.makeText(this, "Rooted device is detected!", Toast.LENGTH_SHORT).show();
+            finish()
+            exitProcess(0)
+        }
+    }
+
     private fun setLoginData() {
         try {
             Data.filldetails(this@DriverSplashActivity)
@@ -160,6 +179,31 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             android.util.Log.e(TAG, e.localizedMessage)
         }
     }
+
+    private fun isEmulator(): Boolean {
+        return (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.HARDWARE.contains("goldfish")
+                || Build.HARDWARE.contains("ranchu")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.PRODUCT.contains("sdk_google")
+                || Build.PRODUCT.contains("google_sdk")
+                || Build.PRODUCT.contains("sdk")
+                || Build.PRODUCT.contains("sdk_x86")
+                || Build.PRODUCT.contains("vbox86p")
+                || Build.PRODUCT.contains("emulator")
+                || Build.PRODUCT.contains("simulator");
+    }
+
+    private fun isRooted(): Boolean {
+        val rootBeer = RootBeer(this);
+        return Utils.isDeviceRooted() && rootBeer.isRooted;
+    }
+
 
 
     override fun onResume() {

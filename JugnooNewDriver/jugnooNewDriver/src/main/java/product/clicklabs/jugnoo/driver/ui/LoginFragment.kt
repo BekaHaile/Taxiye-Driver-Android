@@ -348,18 +348,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun setServerLink(link: String) {
-        val preferences = parentActivity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString(Data.SP_SERVER_LINK, link)
-        editor.commit()
-
+        Prefs.with(parentActivity).save(Data.SP_SERVER_LINK, link)
         MyApplication.getInstance().initializeServerURLAndRestClient(parentActivity)
     }
 
     private fun changeServerLinkPopup() {
-
-        val preferences = requireActivity().getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        val link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL)
+        val link = Prefs.with(requireActivity()).getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL)
 
         val textMessage = when {
             link.equals(Data.TRIAL_SERVER_URL, ignoreCase = true) -> "Current server is SALES.\nChange to:"

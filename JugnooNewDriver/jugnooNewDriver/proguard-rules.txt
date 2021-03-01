@@ -146,3 +146,13 @@
 
 # for Utils
 -keep class product.clicklabs.jugnoo.driver.utils.Utils.** { *; }
+
+-dontwarn java.util.concurrent.**
+
+# disable all logs before release
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** w(...);
+    public static *** v(...);
+    public static *** i(...);
+}
