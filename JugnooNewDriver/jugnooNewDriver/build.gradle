@@ -98,7 +98,7 @@ android {
                     'proguard-rules.txt'
         }
         release {
-            debuggable false
+            debuggable true
             minifyEnabled true
             zipAlignEnabled false
             buildConfigField "boolean", "DEBUG_MODE", "false"

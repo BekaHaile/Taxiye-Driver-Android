@@ -156,3 +156,6 @@
     public static *** v(...);
     public static *** i(...);
 }
+
+-keep class org.json.**
+-keepclassmembers,includedescriptorclasses class org.json.** { *; }
