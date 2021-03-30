@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -53,6 +54,8 @@ public class CustomerInfo {
 	private double fareFactor, cashOnDelivery;
 	private int isPooled;
 
+	private int stopId;
+	private int multiDestCount;
 	private int isDelivery;
 	private int isDeliveryPool, falseDeliveries, loadingStatus;
 	private ArrayList<DeliveryInfo> deliveryInfos;
@@ -204,7 +207,8 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime, String bidCreatedAt){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress,
+						String requestTime, String bidCreatedAt, int multiDestCount){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -239,6 +243,7 @@ public class CustomerInfo {
 		this.pickupAddress = pickUpAddress;
 		this.requestTime = requestTime;
 		this.bidCreatedAt = bidCreatedAt;
+        this.multiDestCount = multiDestCount;
 	}
 
 
@@ -568,7 +573,8 @@ public class CustomerInfo {
 		totalDistanceRecovered = distance;
 	}
 
-	public double getTotalDistance(double distance, Context context, boolean onEndRide){
+	public double getTotalDistance(Context context, boolean onEndRide){
+		double distance = CustomerRideDataGlobal.getDistance(context);
 		if(distanceRecover){return totalDistanceRecovered;}
 
 		double meteringDistance = getSPSavedDistance(distance);
@@ -641,7 +647,7 @@ public class CustomerInfo {
 
 	public long getElapsedRideTime(){
 		try {
-			return System.currentTimeMillis() - Long.parseLong(getMapValue(engagementId, Constants.KEY_RIDE_START_TIME, String.valueOf(System.currentTimeMillis())));
+			return SystemClock.elapsedRealtime() - Long.parseLong(getMapValue(engagementId, Constants.KEY_RIDE_START_TIME, String.valueOf(SystemClock.elapsedRealtime())));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -945,4 +951,21 @@ public class CustomerInfo {
 		double total = Prefs.with(context).getLong(Constants.KEY_BID_TIMEOUT, 30000L);
 		return (int) (100D - (currentDiff/total*100D));
 	}
+
+	public int getMultiDestCount() {
+		return multiDestCount;
+	}
+
+	public void setMultiDestCount(int multiDestCount) {
+		this.multiDestCount = multiDestCount;
+	}
+
+	public int getStopId(){
+		return stopId;
+	}
+
+	public void setStopId(int stopId){
+		this.stopId = stopId;
+	}
+
 }

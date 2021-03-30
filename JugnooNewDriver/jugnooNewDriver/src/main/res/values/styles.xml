@@ -61,7 +61,7 @@
         <item name="android:minHeight">42dp</item>
         <item name="android:background">@drawable/orange_btn_selector</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:paddingStart">10dp</item>
@@ -77,7 +77,7 @@
         <item name="android:minHeight">42dp</item>
         <item name="android:background">@drawable/menu_black_btn_selector</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
@@ -146,7 +146,7 @@
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorHint">@color/textColorLight</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/maven_pro_regular</item>
         <item name="colorControlHighlight">@color/grey_light_more</item>
     </style>
@@ -242,4 +242,20 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+
+    <style name="MyProgressDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="colorAccent">@color/themeColor</item>
+    </style>
+
 </resources>

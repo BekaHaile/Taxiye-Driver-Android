@@ -59,7 +59,7 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
         if(Data.userData != null && Data.getCreditOptions() != null) {
             for(SupportOption supportOption : Data.getCreditOptions()) {
                 if(!supportOption.getTag().equalsIgnoreCase(Constants.KEY_GET_CREDITS)
-                        || !TextUtils.isEmpty(Data.userData.getGetCreditsInfo())){
+                        && !TextUtils.isEmpty(Data.userData.getGetCreditsInfo())){
                     addTextView(supportOption);
                 }
             }

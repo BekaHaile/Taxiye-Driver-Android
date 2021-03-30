@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.stripe.wallet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.stripe.StripeCardsStateListener;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
@@ -55,7 +57,7 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
     private CardNumberEditText edtCardNumber;
     private ExpiryDateEditText edtDate;
     private StripeEditText edtCvv;
-
+    private int mSelectedposition=-1;
     private StripeCardsStateListener stripeCardsStateListener;
 
 
@@ -69,7 +71,7 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
 
 
     }
-
+    boolean isFromSubscriptionFragment=false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,7 +109,20 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
             }
         });
 
-
+        Bundle bundle= getArguments();
+        if(bundle!=null && bundle.containsKey("keyFromSubscription"))
+        {
+        isFromSubscriptionFragment=bundle.getBoolean("keyFromSubscription",false);
+        mSelectedposition=bundle.getInt("positionFromSub",-1);
+        if(isFromSubscriptionFragment)
+        {
+            rootView.findViewById(R.id.top_bar).setVisibility(View.GONE);
+        }
+        else
+        {
+            rootView.findViewById(R.id.top_bar).setVisibility(View.VISIBLE);
+        }
+        }
 
         return rootView;
     }
@@ -220,6 +235,16 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
             @Override
             public void onSuccess(StripeCardResponse stripeCardResponse, String message, int flag) {
 
+                if(isFromSubscriptionFragment)
+                {
+                    SubscriptionFragment pSubscriptionFragment=(SubscriptionFragment)getActivity().getSupportFragmentManager().findFragmentByTag(SubscriptionFragment.class.getName());
+                    if(pSubscriptionFragment!=null && !getActivity().isFinishing() && pSubscriptionFragment.isAdded())
+                    {
+                        pSubscriptionFragment.setDisable(mSelectedposition);
+                    }
+                    getActivity().onBackPressed();
+                    return;
+                }
                 if(stripeCardsStateListener!=null){
                     stripeCardsStateListener.onCardsUpdated(stripeCardResponse.getStripeCardData());
                 }

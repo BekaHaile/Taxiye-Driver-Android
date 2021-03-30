@@ -592,7 +592,6 @@
     <string name="added">Dabalameera</string>
     <string name="deducted">Hir\'ifameera</string>
     <string name="view_wallet_transactions">Bittaaf gurgurtaa borsaa maallaqaa ilaali</string>
-    <string name="dont_touch_me">NattiHinBu\'in</string>
     <string name="schedule_call_message">%s irraa deeggarsa argachuuf biinkoo kana gadii tuqi. Hoji raawwachiistuun keenya amma siif bilbilu.</string>
     <string name="get_call">Bilbila argadhu</string>
     <string name="get_support_call">Deeggarsa bilbilaa argadhu</string>
@@ -678,18 +677,13 @@
     <string name="current_details">Ibsa yeroo ammaa</string>
     <string name="credit_history">Seenaa Galateeffanaa</string>
     <string name="title_credits_activity">Galateeffannaa fi Badhaasa</string>
-    <string name="earn_more_credits">और Credits कमाऐं</string>
-    <string name="title_earn_more_credits">और Credits कमाऐं</string>
-    <string name="share_your_credits">Credits शेयर करें</string>
-    <string name="total_credits_earned">कुल Credits कमाए</string>
-    <string name="commission_saved">Commission बचाया</string>
     <string name="refer_a_driver">Konkolaachisaa eeri</string>
     <string name="refer_a_customer">Maamila eeri</string>
     <string name="advertise_for_us">Nuuf beeksisi</string>
     <string name="menu_label_credits">Galateeffannaa Konkolaachisaa</string>
     <string name="send_to_a_friend">Driver को credits भेजें</string>
     <string name="credits">Galateeffannaa</string>
-    <string name="enter_credits">Credits दर्ज करें</string>
+    <string name="enter_credits">Qaddarka Amaahda</string>
     <string name="please_enter_valid_phone">Lakkoofsa bilbilaa sirrii ta\'e galchi</string>
     <string name="get_credits">Hiriyaa irraa galata argadhu</string>
     <string name="get_credits_from_drivers">साथी Driver से credits लें</string>
@@ -697,7 +691,7 @@
     <string name="hash_format">#%s</string>
     <string name="credits_left_format">खाते में कुल credits %s</string>
     <string name="please_enter_less_value">Gatii muraasa galchi</string>
-    <string name="enter_phone_number_hinglish">Phone no दर्ज करें</string>
+    <string name="enter_phone_number_hinglish">Gali Lambarka Mobilada</string>
     <string name="languages">Qooqa</string>
     <string name="stripe_connect_title">Mallattoo(Stripe)</string>
     <string name="stripe_success_message">Mallattoon(Stripe) eenyummeessa keetii milkaa\'inaan qindaa\'eera.</string>
@@ -989,4 +983,35 @@
     <string name="we_are_unable_to_process_your_request">Ammaaf gaaffii kee adeemsisuu hin dandeenye. Maaloo booda irra deebiin yaali.</string>
     <string name="please_install_whatsapp">Maaloo Whatsapp fe\'i</string>
 
+    <string name="subscriptions">Subscriptions</string>
+    <string name="total_rides">Wadarta Wadarta</string>
+    <string name="rides_pending">Raacitaanka Sugitaanka</string>
+    <string name="rides_valid_upto">Ansax ah Upto</string>
+    <string name="unlimited">Aan xadidnayn</string>
+
+    <string name="earn_more_credits">Dhibco u dir Darawalka</string>
+    <string name="title_earn_more_credits">Codso Dhibco</string>
+    <string name="share_your_credits">La wadaag dhibcaha</string>
+    <string name="total_credits_earned">Wadarta Dhibcaha la kasbaday</string>
+    <string name="commission_saved">Komishanka ayaa badbaadiyey</string>
+
+    <string name="driver">Darawal</string>
+    <string name="customer">Macaamiil</string>
+    <string name="transfer_to">Ku wareeji</string>
+    <string name="select_transfer_to">Xulo Ku wareeji</string>
+    <string name="instructions_colon"><b>Tilmaamaha :</b></string>
+
+    <string name="gender">Jinsiga</string>
+    <string name="gender_male">Lab</string>
+    <string name="gender_female">Dheddig</string>
+    <string name="gender_others">Qaar kale</string>
+    <string name="label_select_gender">Xullo jinsigaaga</string>
+    <string name="please_select_gender">Fadlan dooro jinsi</string>
+
+    <string name="resend_OTP_call">Isoo wac</string>
+
+    <string name="subscription_title">Diiwaangelinta</string>
+    <string name="subscription_desc">Hada isdiiwaan gali si aad uhesho faa iidooyin gaar ah</string>
+
+    <string name="alert_low_wallet_balance">Balance Balance waa hooseeyaa. Ku ammaano boorsadaada si aad u hesho codsiyada.</string>
 </resources>

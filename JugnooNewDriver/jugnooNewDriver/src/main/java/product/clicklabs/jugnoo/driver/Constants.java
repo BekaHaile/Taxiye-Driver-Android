@@ -106,12 +106,14 @@ public interface Constants {
     String KEY_OP_DROP_LATITUDE = "op_drop_latitude";
     String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
     String KEY_DROP_ADDRESS = "drop_address";
+    String KEY_MULTIPLE_STOPS_COUNT = "multiple_stops_count";
     String KEY_DRYRUN_DISTANCE = "dryrun_distance";
     String KEY_ERROR = "error";
     String KEY_WALLET_BALANCE = "wallet_balance";
     String KEY_DISTANCE = "distance";
     String KEY_RIDE_PATH_DATA = "ride_path_data";
     String KEY_POOL_FARE ="pool_fare";
+    String STOP_ID = "stop_id";
 
 	String KEY_SP_METER_DISP_MIN_THRESHOLD = "meter_disp_min_threshold";
 	String KEY_SP_METER_DISP_MAX_THRESHOLD = "meter_disp_max_threshold";
@@ -476,8 +478,6 @@ public interface Constants {
 	String LIST_IMAGES_REVIEW = "list_images";
 	String KEY_SLIDER_ONLINE_VISIBILITY = "slider_online_visibility";
 
-	String KEY_CSV_PATH = "csv_path";
-	String KEY_CSV_WAYPOINTS = "csv_waypoints";
 	String KEY_NUM_WAYPOINTS = "num_waypoints";
 	String KEY_WAYPOINT_PATH = "waypoint_path";
 	String KEY_DRIVER_ALT_DISTANCE_LOGIC = "driver_alt_distance_logic";
@@ -523,7 +523,9 @@ public interface Constants {
 	String KEY_JUNGLE_DIRECTIONS_OBJ = "jungle_directions_obj";
 	String KEY_JUNGLE_DISTANCE_MATRIX_OBJ = "jungle_distance_matrix_obj";
 	String KEY_JUNGLE_GEOCODE_OBJ = "jungle_geocode_obj";
+	String KEY_JUNGLE_AUTOCOMPLETE_OBJ = "jungle_autocomplete_obj";
 	String KEY_JUNGLE_POINTS = "points";
+	String KEY_JUNGLE_WAYPOINTS = "waypoints";
 	String KEY_JUNGLE_OPTIONS = "options";
 	String KEY_JUNGLE_APP_ID = "app_id";
 	String KEY_JUNGLE_APP_CODE = "app_code";
@@ -536,6 +538,10 @@ public interface Constants {
 	String KEY_JUNGLE_DEST_LNG = "destinationlongitude";
 	String KEY_JUNGLE_LAT = "lat";
 	String KEY_JUNGLE_LNG = "lng";
+	String KEY_JUNGLE_CURRENT_LAT = "currentlatitude";
+	String KEY_JUNGLE_CURRENT_LNG = "currentlongitude";
+	String KEY_JUNGLE_TEXT = "text";
+	String KEY_JUNGLE_PLACEID = "placeId";
 
 	String JUNGLE_JSON_OBJECT = "{\""+KEY_JUNGLE_OPTIONS+"\":0}";
 	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
@@ -584,6 +590,7 @@ public interface Constants {
 	String KEY_HOME_BANNER_TEXT = "home_banner_text";
 	String KEY_HOME_BANNER_INDEX = "home_banner_index";
 	String KEY_DRIVER_SUBSCRIPTION = "driver_subscription";
+	String KEY_DRIVER_SUBSCRIPTION_ENABLED = "driver_subscription_enabled";
 	String KEY_ONLY_CASH_RIDES = "only_cash_rides";
 	String KEY_ONLY_LONG_RIDES = "only_long_rides";
 	String KEY_TOGGLE_CASH_RIDES = "toggle_cash_rides";
@@ -598,7 +605,33 @@ public interface Constants {
 	String KEY_DATE_OF_BIRTH = "date_of_birth";
 	String KEY_DRIVER_GENDER_FILTER = "driver_gender_filter";
 	String KEY_DRIVER_DOB_INPUT = "driver_dob_input";
+	String KEY_RECIEVER_TYPE = "receiver_type";
 	String KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER = "jungle_fm_api_key_android_driver";
 	String KEY_JUNGLE_FM_TOKEN = "fm_token";
+	String KEY_JUNGLE_TYPE = "type";
+	String KEY_JUNGLE_OFFERING = "offering";
+	String KEY_HOME = "home";
+	String KEY_LOGIN_TYPE = "login_type";
+
+	String KEY_END_STOP_ALERT_RADIUS = "end_stop_alert_radius";
+	String KEY_ENABLE_OTP_VIA_CALL = "driver_otp_via_call_enabled";
+
+	String KEY_DRIVER_SAFETY_CHECKLIST = "driver_safety_checklist";
+	String KEY_IMAGE_URL = "image_url";
+	String KEY_LIST = "list";
+	String KEY_TEXT = "text";
+	String KEY_IS_MANDATORY = "is_mandatory";
+
+	String KEY_DRIVER_SPEED_LOWER_LIMIT = "driver_speed_lower_limit";
+	String KEY_DRIVER_SPEED_DEFAULT = "driver_speed_default";
+	String KEY_RIDE_TIME_ORIG = "ride_time_orig";
+
+
+	String KEY_ORDER_IMAGES = "order_images";
+	String KEY_RECIPIENT_NAME = "recipient_name";
+
+	String KEY_CUSTOMER_SIGNATURE_ON_MARK_DELIVER = "customer_signature_on_mark_deliver";
+
+	String KEY_USER_UNIQUE_KEY = "user_unique_key";
 }
 

@@ -102,7 +102,7 @@ public class CreditsHistoryFragment extends Fragment {
     }
 
 
-    private void getCreditsApi() {
+    public void getCreditsApi() {
         try {
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);

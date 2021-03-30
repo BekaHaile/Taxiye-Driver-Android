@@ -2,27 +2,49 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Typeface
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
+import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.PicassoTools
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
+import kotlinx.android.synthetic.main.layout_driver_menu.*
+import org.json.JSONObject
 import kotlinx.android.synthetic.main.layout_switch_slide.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode
+import product.clicklabs.jugnoo.driver.datastructure.UserMode
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment
 import product.clicklabs.jugnoo.driver.fragments.TractionListFragment
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
+import retrofit.Callback
+import retrofit.RetrofitError
+import retrofit.client.Response
+import retrofit.mime.TypedByteArray
+import java.util.HashMap
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -96,20 +118,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private var firstTime: Boolean = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MyApplication.getInstance().setmActivity(this)
 
         setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
-        try {
-            setSupportActionBar(toolbar)
-            supportActionBar?.apply {
-                setDisplayShowTitleEnabled(false)
-                setDisplayHomeAsUpEnabled(true)
-                setHomeAsUpIndicator(R.drawable.ic_back_selector)
-            }
-        }
-        catch (e: Exception){
-            e.printStackTrace()
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back_selector)
         }
 
         // TODO: 08/12/18 remove this
@@ -179,6 +195,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
         firstTime = false
         grantPermissionText()
+
+        MyApplication.getInstance().setmActivity(this)
 
 
     }
@@ -312,6 +330,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (HomeActivity.activity != null) {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+            finish()
         } else {
             startActivity(intent)
             ActivityCompat.finishAffinity(this)
@@ -374,8 +393,118 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
+//	Retrofit
 
+    fun logoutAsync(activity: Activity) {
+        if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+            DialogPopup.showLoadingDialog(activity, resources.getString(R.string.please_wait))
+            val params = HashMap<String, String>()
+            params["access_token"] = Data.userData.accessToken
+            params["is_access_token_new"] = "1"
+            HomeUtil.putDefaultParams(params)
+
+            RestClient.getApiServices().logoutRetro(params, object : Callback<RegisterScreenResponse> {
+                override fun success(registerScreenResponse: RegisterScreenResponse, response: Response) {
+                    try {
+                        val jsonString = String((response.body as TypedByteArray).bytes)
+                        val jObj: JSONObject
+                        jObj = JSONObject(jsonString)
+                        val flag = jObj.getInt("flag")
+                        if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
+                            HomeActivity.logoutUser(activity, null)
+                        } else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
+                            val errorMessage = jObj.getString("error")
+                            DialogPopup.alertPopup(activity, "", errorMessage)
+                        } else if (ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag) {
+                            val message = jObj.getString("message")
+                            DialogPopup.alertPopup(activity, "", message)
+                        } else if (ApiResponseFlags.LOGOUT_FAILURE.getOrdinal() == flag) {
+                            val errorMessage = jObj.getString("error")
+                            DialogPopup.alertPopup(activity, "", errorMessage)
+                        } else if (ApiResponseFlags.LOGOUT_SUCCESSFUL.getOrdinal() == flag) {
+                            PicassoTools.clearCache(Picasso.with(activity))
+
+                            GCMIntentService.clearNotifications(activity)
+
+                            Data.clearDataOnLogout(activity)
+                            Database2.getInstance(this@DriverSplashActivity).updateDriverServiceRun(Database2.NO)
+                            activity.stopService(Intent(activity, DriverLocationUpdateService::class.java))
+
+                            startActivity(Intent(this@DriverSplashActivity,DriverSplashActivity::class.java))
+                            finishAffinity()
+                        } else {
+                            DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG)
+                        }
+                    } catch (exception: Exception) {
+                        exception.printStackTrace()
+                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG)
+                    }
+
+                    DialogPopup.dismissLoadingDialog()
+                }
+
+                override fun failure(error: RetrofitError) {
+                    DialogPopup.dismissLoadingDialog()
+                    DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG)
+                }
+            })
+        } else {
+            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
+        }
+
+    }
+    internal fun logoutPopup(activity: Activity) {
+        try {
+            val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
+            dialog.window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
+            dialog.setContentView(R.layout.dialog_custom_two_buttons)
+
+            val frameLayout = dialog.findViewById<View>(R.id.rv) as RelativeLayout
+            ASSL(activity, frameLayout, 1134, 720, true)
+
+            val layoutParams = dialog.window!!.attributes
+            layoutParams.dimAmount = 0.6f
+            dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
+
+
+            val textHead = dialog.findViewById<View>(R.id.textHead) as TextView
+            textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD)
+            val textMessage = dialog.findViewById<View>(R.id.textMessage) as TextView
+            textMessage.typeface = Fonts.mavenRegular(activity)
+
+            textHead.text = resources.getString(R.string.alert)
+            textMessage.text = resources.getString(R.string.logout_text)
+
+            val btnOk = dialog.findViewById<View>(R.id.btnOk) as Button
+            btnOk.typeface = Fonts.mavenRegular(activity)
+            val btnCancel = dialog.findViewById<View>(R.id.btnCancel) as Button
+            btnCancel.typeface = Fonts.mavenRegular(activity)
+
+            btnOk.setOnClickListener {
+                dialog.dismiss()
+                logoutAsync(activity)
+                FlurryEventLogger.event(FlurryEventNames.LOGOUT_FROM_APP)
+            }
+
+            btnCancel.setOnClickListener { dialog.dismiss() }
+
+            dialog.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+    override fun onBackPressed() {
+       when(supportFragmentManager.fragments[supportFragmentManager.fragments.size-1])
+       {
+           is SubscriptionFragment->{
+               logoutPopup(this@DriverSplashActivity)
+               return
+           }
+       }
         // if back pressed from driver setup fragment from the normal flow
         if (supportFragmentManager.backStackEntryCount == 2
                 && supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName) != null

@@ -4,7 +4,8 @@
     android:id="@+id/relativeLayoutRoot"
     android:layout_width="match_parent"
     android:clickable="true"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:id="@+id/topRl"
@@ -13,14 +14,34 @@
         android:background="@color/colorPrimary"
         android:splitMotionEvents="false">
 
-        <Button
-            android:id="@+id/helpBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/new_help_button"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:tag="mwar"/>
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/helpBtn"
+                android:layout_width="82px"
+                android:layout_height="82px"
+                android:background="@drawable/new_help_button"
+                android:tag="mwar" />
+
+            <Button
+                android:id="@+id/changeButton"
+                android:layout_width="120px"
+                android:layout_height="52px"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="28px"
+                android:layout_marginStart="28px"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:text="@string/pool_only"
+                android:textSize="28px"
+                android:visibility="visible" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/title"
@@ -44,7 +65,7 @@
         android:id="@+id/relativeLayoutMerchantDetails"
         android:layout_below="@+id/topRl"
         android:layout_width="match_parent"
-        android:layout_height="164px">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textViewPickup"
@@ -81,12 +102,40 @@
                 android:layout_below="@+id/textViewMerchantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvCustomerNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:visibility="visible"
+                android:layout_below="@id/textViewCashReq"
+                android:tag="@string/dont_touch_me"
+                android:scrollbars="vertical"
+                android:textSize="30px"
+                android:background="?attr/selectableItemBackground"
+                android:theme="@style/GreyHighlight"
+                android:drawableStart="@drawable/ic_notes_grey"
+                android:drawablePadding="5dp"
+                android:textColor="@color/black_text_v2"
+                android:text="wwwwwwwwwwwwwwwwwwww"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPickupFeedImages"
+                android:layout_below="@id/tvCustomerNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentBottom="false"
+                android:overScrollMode="never"
+                android:layout_centerVertical="true"
+                tools:listitem="@layout/item_image_with_text" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewCashReq"
+                android:layout_below="@+id/rvPickupFeedImages"
                 android:layout_marginTop="4px">
 
                 <ImageView
@@ -151,7 +200,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDeliveryInfoInRide"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/customerInfoLine2"
         android:fadeScrollbars="true"
         android:layout_above="@+id/customerInfoLine4"

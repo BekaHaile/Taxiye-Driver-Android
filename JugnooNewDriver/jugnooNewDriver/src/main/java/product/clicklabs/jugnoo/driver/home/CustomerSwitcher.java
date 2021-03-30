@@ -28,7 +28,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
-import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
+import product.clicklabs.jugnoo.driver.google.GoogleJungleCaching;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -308,13 +308,13 @@ public class CustomerSwitcher {
 
 					updateDistanceOnLocationChanged(customerInfo);
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
-						if (customerInfo.getDeliveryInfos().size() > 0) {
+						if (customerInfo.getDeliveryInfos() != null && customerInfo.getDeliveryInfos().size() > 0) {
 							textViewDeliveryCount.setVisibility(View.VISIBLE);
 							textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 									+ " " + customerInfo.getTotalDeliveries());
 							textViewCustomerCashRequired.setVisibility(View.VISIBLE);
 							textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
-									+ ": " + activity.getResources().getString(R.string.rupee)
+									+ ": " + customerInfo.getCurrencyUnit()
 									+ "" + customerInfo.getCashOnDelivery());
 						} else {
 							textViewDeliveryCount.setVisibility(View.GONE);
@@ -428,7 +428,7 @@ public class CustomerSwitcher {
 
 
 	void getAddress(LatLng currentLatLng, String source, int engagementId, TextView textView, TextView textView1, boolean isDrop){
-		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, (googleGeocodeResponse, singleAddress)  -> {
+		GoogleJungleCaching.INSTANCE.hitGeocode(currentLatLng, source, (googleGeocodeResponse, singleAddress)  -> {
 			try {
 				String address = null;
 				if(googleGeocodeResponse != null){

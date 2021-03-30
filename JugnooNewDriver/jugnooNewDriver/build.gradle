@@ -1,24 +1,16 @@
 buildscript {
     repositories {
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'io.fabric'
 
 repositories {
-    maven {
-        url 'https://maven.fabric.io/public'
-    }
     flatDir {
         dirs 'libs'
     }
@@ -53,6 +45,7 @@ android {
     dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
+        preDexLibraries true
     }
 
     compileSdkVersion 29
@@ -64,6 +57,7 @@ android {
         targetSdkVersion 29
         versionCode 6010
         versionName "60.1.0"
+        vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "CITIES_PASSWORD", "\"\""
         buildConfigField "String", "STRIPE_CLIENT_ID_DEV", "\"\""
         buildConfigField "String", "STRIPE_CLIENT_ID_LIVE", "\"\""
@@ -96,6 +90,7 @@ android {
             buildConfigField "boolean", "DEBUG_MODE", "true"
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.txt'
+            ext.alwaysUpdateBuildId = false
         }
         release {
             minifyEnabled false
@@ -129,6 +124,8 @@ android {
                 buildConfigField "String", "${constantName}", "\"${constantValue}\""
             }
             addConstant("authorities", applicationId+".PhotoProvider") // copy these four lines in your flavour and change the authorities's value
+
+            // copy these four lines in your flavour and change the authorities's value
         }
     }
     packagingOptions {
@@ -147,23 +144,22 @@ ext {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.multidex:multidex:2.0.0'
+    compile 'androidx.multidex:multidex:2.0.0'
     compile "com.google.android.gms:play-services-analytics:$project.playServices"
     compile "com.google.android.gms:play-services-maps:$project.playServices"
     compile "com.google.android.gms:play-services-location:$project.playServices"
     implementation 'com.google.android.libraries.places:places:1.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    compile "com.google.firebase:firebase-core:$project.playServices"
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
+    compile "com.google.firebase:firebase-core:17.4.3"
     compile "com.google.android.gms:play-services-auth:$project.playServices"
     implementation 'com.squareup.retrofit:retrofit:1.9.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.2'
     implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
     compile 'androidx.recyclerview:recyclerview:1.0.0'
     compile 'androidx.cardview:cardview:1.0.0'
     compile 'com.google.android.material:material:1.0.0'
@@ -173,7 +169,7 @@ dependencies {
     implementation 'com.kbeanie:multipicker:1.6@aar'
     //    compile 'com.sothree.slidinguppanel:library:3.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-    implementation 'com.github.gcacace:signature-pad:1.2.1'
+    implementation 'com.github.gcacace:signature-pad:1.3.1'
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
     //    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
     //        exclude group: 'com.google.android', module: 'support-v4'
@@ -181,24 +177,28 @@ dependencies {
     //    compile 'com.androidadvance:topsnackbar:1.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 //    compile project(':hippo')
     implementation 'com.fugu:fugu:1.76.1'
     implementation 'org.jsoup:jsoup:1.10.3'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.stripe:stripe-android:6.1.2'
     implementation 'com.splitwise:tokenautocomplete:2.0.3@aar'
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.0.0'
-    kapt 'androidx.room:room-compiler:2.0.0'
+    implementation 'androidx.room:room-runtime:2.2.2'
+    kapt 'androidx.room:room-compiler:2.2.2'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$project.coroutineVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$project.coroutineVersion"
     implementation 'com.params.progressview:step-progress:1.0.2'
     implementation 'androidx.fragment:fragment-ktx:1.1.0'
-    //implementation 'com.github.nkzawa:socket.io-client:0.5.2'
     implementation 'io.socket:socket.io-client:1.0.0'
+    implementation 'com.google.guava:guava:27.0.1-android'
+
+    implementation 'io.michaelrocks:libphonenumber-android:8.10.16'
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+

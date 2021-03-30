@@ -354,11 +354,19 @@ public final class PermissionCommon {
 					v->{requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);},
 					v->{}, false, true);
         }
+       else if(permissionsToAsk.contains(Manifest.permission.ACCESS_BACKGROUND_LOCATION)||permissionsToAsk.contains(Manifest.permission.ACCESS_COARSE_LOCATION)||permissionsToAsk.contains(Manifest.permission.ACCESS_FINE_LOCATION)){
+            DialogPopup.alertPopupWithListener(activity, activity.getString(R.string.perm_location,activity.getString(R.string.app_name)), activity.getString(R.string.perm_location_rational), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
+                }
+            });
+        }
 
         //At activity point if shouldAsk is true there is no rational Permission that exists and  No explanation needed, we can request for the permissions.
-        else
+        else {
             requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
-
+        }
 
     }
 

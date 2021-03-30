@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver
 import android.content.Context
 import android.content.Intent
 import android.location.Location
+import android.os.SystemClock
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -180,7 +181,7 @@ object GpsDistanceRideDataUpload {
                     && location != null
                     && !"".equals(accessToken, ignoreCase = true)) {
                 val totalDistanceInKm = Math.abs(GpsDistanceCalculator.getTotalDistanceFromSP(context) / 1000.0)
-                val rideTimeSeconds = (System.currentTimeMillis() - GpsDistanceCalculator.getStartTimeFromSP(context)) / 1000
+                val rideTimeSeconds = (SystemClock.elapsedRealtime() - GpsDistanceCalculator.getStartTimeFromSP(context)) / 1000
                 val rideTimeMinutes = Math.ceil((rideTimeSeconds / 60).toDouble())
                 val waitTimeSeconds = GpsDistanceCalculator.getWaitTimeFromSP(context) / 1000
                 val waitTimeMinutes = Math.ceil((waitTimeSeconds / 60).toDouble())

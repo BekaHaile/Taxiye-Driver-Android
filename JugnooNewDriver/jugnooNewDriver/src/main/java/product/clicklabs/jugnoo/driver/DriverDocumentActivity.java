@@ -28,11 +28,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscription;
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscriptionEnabled;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -53,7 +56,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 	View backBtn;
 	TextView title;
-	Button submitButton;
+	public Button submitButton;
 
 	public RelativeLayout relativeLayoutRides;
 	String accessToken;
@@ -210,7 +213,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 		title.setText(docInfo.docType);
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
+				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos,driverVehicleMappingId), DocumentDetailsFragment.class.getName())
 				.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
 				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
@@ -230,9 +233,15 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	public void performbackPressed() {
 		Utils.hideSoftKeyboard(this, getWindow().getDecorView().getRootView());
 		if(getSupportFragmentManager().getBackStackEntryCount()>0){
-			title.setText(R.string.documents);
-			super.onBackPressed();
-			return;
+			if(getSupportFragmentManager()
+					.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount()-1).getName().equals(SubscriptionFragment.class.getName())) {
+				goToHomeScreen();
+			}
+			else {
+				title.setText(R.string.documents);
+				super.onBackPressed();
+				return;
+			}
 		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
@@ -487,7 +496,29 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 											DialogPopup.alertPopup(activity, "", message);
 										}
 										else{
-											goToHomeScreen();
+											if ((Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.MANDATORY.getOrdinal()||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&&0 == Data.userData.getDeliveryEnabled()) {
+												if (Data.userData.getDriverSubscription() == DriverSubscription.UNSUBSCRIBED.getOrdinal()) {
+													SubscriptionFragment subsFrag;
+													subsFrag =new  SubscriptionFragment();
+													Bundle args =new Bundle();
+													args.putString("AccessToken", Data.userData.accessToken);
+													args.putInt("stripe_key", 0 );
+													subsFrag.setArguments(args);
+													title.setText(getResources().getText(R.string.subscription_title));
+													submitButton.setVisibility(View.GONE);
+													getSupportFragmentManager().beginTransaction()
+															.add(R.id.fragment, subsFrag, SubscriptionFragment.class.getName())
+															.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
+															.addToBackStack(SubscriptionFragment.class.getName())
+															.commit();
+												}
+												else {
+													goToHomeScreen();
+												}
+											}
+											else {
+												goToHomeScreen();
+											}
 										}
 
 								Utils.deleteMFile(activity);
@@ -535,7 +566,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		});
 	}
 
-	private void goToHomeScreen() {
+	public void goToHomeScreen() {
 		if(!hasWindowFocus()){
 			goToHomeScreenCalled = true;
 			return;
@@ -547,6 +578,42 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		ActivityCompat.finishAffinity(DriverDocumentActivity.this);
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
+	private SubscriptionFragment subsFrag;
+//
+//	private boolean checkForSubscribedDriver(String jsonString) {
+//		try {
+//			JSONObject jObj = new JSONObject(jsonString);
+//			JSONObject jLoginObject = jObj.getJSONObject("login");
+//			if(jLoginObject.has("driver_subscription")){
+//				if(jLoginObject.getInt("driver_subscription")==1){
+//					int key =0;
+//					if(jLoginObject.has("stripe_cards_enabled")){
+//						key = jLoginObject.getInt("stripe_cards_enabled");
+//					}
+//					String token = jLoginObject.get("access_token").toString();
+//					subsFrag =new  SubscriptionFragment();
+//					Bundle args =new Bundle();
+//					args.putString("AccessToken", token);
+//					args.putInt("stripe_key", key );
+//					subsFrag.setArguments(args);
+//					title.setText(getResources().getText(R.string.subscription_title));
+//					getSupportFragmentManager().beginTransaction()
+//							.add(R.id.fragment, subsFrag, SubscriptionFragment.class.getName())
+//							.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
+//							.addToBackStack(SubscriptionFragment.class.getName())
+//							.commit();
+//					submitButton.setVisibility(View.GONE);
+//					return false;
+//				}else{
+//					return true;
+//				}
+//			}
+//
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//				return true;
+//	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {

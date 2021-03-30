@@ -1761,5 +1761,6 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="edit">Modifier</string>
     <string name="configure_your_emergency_contacts">Configurez vos contacts d\'urgence</string>
     <string name="inform_your_friends">Informez vos amis et votre, famille de votre position actuelle chaque fois que vous utilisez %s</string>
+    <string name="unlimited">Unlimited</string>
 
 </resources>																									

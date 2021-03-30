@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,28 +8,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener {
+public class LocationFetcher extends LocationCallback {
 
 	private final String TAG = this.getClass().getSimpleName();
 
-	private GoogleApiClient googleApiClient;
+	private FusedLocationProviderClient fusedLocationClient;
 	private LocationRequest locationrequest;
 	private Location location, locationUnchecked;
 
-	private long requestInterval;
 	private LocationUpdate locationUpdate;
 	private Context context;
 
@@ -38,43 +36,34 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	public int priority;
 
 	public LocationFetcher(LocationUpdate locationUpdate, long requestInterval, int priority){
-			this.locationUpdate = locationUpdate;
-			this.context = (Context) locationUpdate;
-			this.requestInterval = requestInterval;
-			this.priority = priority;
+		this((Context) locationUpdate, locationUpdate, requestInterval, priority);
 	}
 
 	public LocationFetcher(Context context, LocationUpdate locationUpdate, long requestInterval, int priority){
-			this.locationUpdate = locationUpdate;
-			this.context = context;
-			this.requestInterval = requestInterval;
-			this.priority = priority;
+		fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+		this.locationUpdate = locationUpdate;
+		this.context = context;
+		this.priority = priority;
+
+		createLocationRequest(requestInterval, priority);
 	}
 
-	public  void connect(){
-		destroy();
-		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
-		if(resp == ConnectionResult.SUCCESS){														// google play services working
-			if(isLocationEnabled(context)){															// location fetching enabled
-				buildGoogleApiClient(context);
-			}
-			else{																					// location disabled
-			}
+	public void connect(){
+		GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+		int resp = googleApiAvailability.isGooglePlayServicesAvailable(fusedLocationClient.getApplicationContext());
+		if (resp != ConnectionResult.SUCCESS) {
+			Log.e("Google Play error", "=" + resp);
+			return;
 		}
-		else{																						// google play services not working
-			Log.e("Google Play Service Error ","="+resp);
+
+		fusedLocationClient.removeLocationUpdates(this);
+		if (ActivityCompat.checkSelfPermission(fusedLocationClient.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+				&& ActivityCompat.checkSelfPermission(fusedLocationClient.getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			return;
 		}
+		fusedLocationClient.requestLocationUpdates(locationrequest, this, Looper.myLooper());
 	}
 
-	public  void destroyWaitAndConnect(){
-		destroy();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				connect();
-			}
-		}, 2000);
-	}
 
 	public static void saveLatLngToSP(Context context, Location location){
 		Database2.getInstance(context).updateDriverCurrentLocation(context, location);
@@ -128,28 +117,6 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	}
 
 
-	protected  void buildGoogleApiClient(Context context) {
-		try {
-			googleApiClient = new GoogleApiClient.Builder(context)
-					.addConnectionCallbacks(this)
-					.addOnConnectionFailedListener(this)
-					.addApi(LocationServices.API).build();
-			googleApiClient.connect();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	protected void startLocationUpdates(long interval, int priority) {
-		createLocationRequest(interval, priority);
-		if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
-				!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
-			return;
-		}
-		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, this);
-	}
-
 
 
 
@@ -186,19 +153,6 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
 					return location;
 				}
-			} else {
-				if (googleApiClient != null && googleApiClient.isConnected()) {
-					if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-							&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-						Log.e(TAG, "getLocation : ACCESS_FINE_LOCATION NOT GRANTED");
-						return null;
-					}
-					location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-					Log.e("last fused location", "=" + location);
-					if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
-						return location;
-					}
-				}
 			}
 		} catch(Exception e){e.printStackTrace();}
 		return null;
@@ -215,76 +169,30 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 
 
 
-	public  void destroy(){
+	public void destroy(){
 		try{
-			this.location = null;
 			Log.e("location", "destroy");
-			if(googleApiClient!=null){
-				if(googleApiClient.isConnected()){
-					LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-					googleApiClient.disconnect();
-				}
-				else if(googleApiClient.isConnecting()){
-					googleApiClient.disconnect();
-				}
-			}
-		} catch (StackOverflowError e){
-			Log.e("e", "=" + e.toString());
+			fusedLocationClient.removeLocationUpdates(this);
 		} catch(Exception e){
 			Log.e("e", "=" + e.toString());
 		}
 	}
 
 
-	private  void startRequest(){
-		try {
-			startLocationUpdates(requestInterval, priority);
-		} catch (Exception e) {
-//			e.printStackTrace();
-		}
-	}
-
 
 
 	@Override
-	public void onConnected(Bundle connectionHint) {
-		Log.e(TAG, "onConnected");
-		Location loc = getLocation();
-		if(loc != null){
-			Bundle bundle = new Bundle();
-			bundle.putBoolean("cached", true);
-			loc.setExtras(bundle);
-			locationUpdate.onLocationChanged(loc, priority);
-		}
-		startRequest();
-	}
-
-	@Override
-	public void onConnectionSuspended(int i) {
-		this.location = null;
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult result) {
-		Log.e(TAG, "onConnectionFailed");
-		this.location = null;
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		try{
-            if(!Utils.mockLocationEnabled(location)) {
-				Log.i("loc chanfged ----******", "=" + location);
-				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
-					this.location = location;
-					locationUpdate.onLocationChanged(location, priority);
-					saveLatLngToSP(context, location);
-				}
-            }
+	public void onLocationResult(LocationResult locationResult) {
+		super.onLocationResult(locationResult);
+		if (locationResult != null) {
+			Location location = locationResult.getLastLocation();
+			if(location != null && !Utils.mockLocationEnabled(location)) {
+				this.location = location;
+				locationUpdate.onLocationChanged(location, priority);
+				saveLatLngToSP(context, location);
+				Log.w("Location_fetcher_onLocationResult", "onReceive location="+location);
+			}
 			locationUnchecked = location;
-		}catch(Exception e){
-			e.printStackTrace();
 		}
 	}
-
 }

@@ -34,9 +34,9 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 				setFragment();
 				break;
 
-			case 1:
-				myFragment = new FragmentDeliveryRateCard();
-				break;
+//			case 1:
+//				myFragment = new FragmentDeliveryRateCard();
+//				break;
 		}
 		return myFragment;
 	}
@@ -45,9 +45,9 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 	public int getCount() {
 		if(Data.userData != null) {
 			setFragment();
-			if (count) {
-				return 2;
-			}
+//			if (count) {
+//				return 2;
+//			}
 			return 1;
 		} else {
 			return 0;
