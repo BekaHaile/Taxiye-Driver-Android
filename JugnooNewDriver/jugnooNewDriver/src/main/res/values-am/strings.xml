@@ -386,7 +386,7 @@
     <string name="driver_to_customer">አሽከርካሪ ለ ደንበኛ</string>
     <string name="driver_to_driver">አሽከርካሪ ለ አሽከርካሪ</string>
     <string name="rate_card">ደረጃ ካርድ</string>
-    <string name="applicable_after">ከ% 1 $ s በኋላ የሚተገበር</string>
+    <string name="applicable_after">ከ %1$s በኋላ የሚተገበር</string>
     <string name="per_format">(በ%s)</string>
     <string name="delivery_off">ማቅረቢያ ጠፍቷል</string>
     <string name="Yesterday">ትናንት</string>
@@ -398,7 +398,7 @@
     <string name="register_via_agent">በወኪል በኩል ይመዝገቡ</string>
     <string name="upload_Documents">ሰነዶችን ያስገቡ</string>
     <string name="last_trip_earning">የመጨረሻው ጉዞ የአሽከርካሪ ገቢዎች</string>
-    <string name="diffrential_pricing_rate">ከ% 1 $ s በኋላ የርቀት ክፍያ % 2 $ s ይሆናል</string>
+    <string name="diffrential_pricing_rate">ከ %1$s በኋላ የርቀት ክፍያ %2$s ይሆናል</string>
     <string name="payment_sent">ክፍያ ተልኳል</string>
     <string name="this_week_cap">በዚህ ሳምንት</string>
     <string name="ride_history_cap">የጉዞ ታሪክ </string>
@@ -589,7 +589,6 @@
     <string name="added">ገብቷል</string>
     <string name="deducted">ተቀይሯል</string>
     <string name="view_wallet_transactions">የ Wallet ግብይቶችን ይመልከቱ</string>
-    <string name="dont_touch_me">አትንካኝ</string>
     <string name="schedule_call_message">ከ%s ድጋፍ ለማግኘት ከዚህ በታች ያለውን ቁልፍ ይጫኑ ፡፡ ሥራ አስፈፃሚዎ በቅርቡ ይደውልልዎታል ፡፡</string>
     <string name="get_call">ጥሪ ያግኙ</string>
     <string name="get_support_call">የድጋፍ ጥሪ ያግኙ</string>
@@ -985,4 +984,32 @@
     <string name="only_long_rides">ረዥም ጉዞዎች ብቻ</string>
     <string name="we_are_unable_to_process_your_request">በዚህ ጊዜ ጥያቄዎን ማስተናገድ አልቻልንም ፡፡ እባክዎ ቆየት ብለው ይሞክሩ.</string>
     <string name="please_install_whatsapp">እባክዎ Whatsapp ይጫኑ</string>
+
+    <string name="subscriptions">ምዝገባዎች</string>
+    <string name="total_rides">ጠቅላላ ጉዞዎች</string>
+    <string name="rides_pending">ጉዞዎች በመጠባበቅ ላይ</string>
+    <string name="rides_valid_upto">የሚሰራ እስከ</string>
+    <string name="unlimited">ያልተገደበ</string>
+
+    <string name="driver">አሽከርካሪ</string>
+    <string name="customer">ደንበኛ</string>
+    <string name="transfer_to">ያስተላልፉ ወደ</string>
+    <string name="select_transfer_to">ማስተላለፍን ይምረጡ</string>
+
+    <string name="instructions_colon"><b>መመሪያዎች :</b></string>
+    <string name="subscription_title">ምዝገባዎች</string>
+    <string name="subscription_desc">ብቸኛ ጥቅሞችን ለማግኘት አሁኑኑ ይመዝገቡ</string>
+
+
+
+    <string name="gender">ፆታ</string>
+    <string name="gender_male">ወንድ</string>
+    <string name="gender_female">ሴት</string>
+    <string name="gender_others">ሌሎች</string>
+    <string name="label_select_gender">ጾታዎን ይምረጡ</string>
+    <string name="please_select_gender">እባክዎ ጾታን ይምረጡ</string>
+
+    <string name="resend_OTP_call">ጥራኝ</string>
+
+    <string name="alert_low_wallet_balance">የኪስ ቦርሳ ሚዛን ዝቅተኛ ነው። ጥያቄዎችን ለመቀበል የኪስ ቦርሳዎን በብድር ይያዙ ፡፡</string>
 </resources>

@@ -33,7 +33,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
-import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
+import product.clicklabs.jugnoo.driver.google.GoogleJungleCaching;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -164,7 +164,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 				lastLatFetched=PlaceSearchListFragment.this.googleMap.getCameraPosition().target.latitude;
 				lastLngFetched=PlaceSearchListFragment.this.googleMap.getCameraPosition().target.longitude;
 
-				GoogleAPICoroutine.INSTANCE.hitGeocode(PlaceSearchListFragment.this.googleMap.getCameraPosition().target, "driver_d",(googleGeocodeResponse, singleAddress)->{
+				GoogleJungleCaching.INSTANCE.hitGeocode(PlaceSearchListFragment.this.googleMap.getCameraPosition().target, "driver_d",(googleGeocodeResponse, singleAddress)->{
 					try {
 						String address = null;
 						if(googleGeocodeResponse != null){

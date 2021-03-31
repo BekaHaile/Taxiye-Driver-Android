@@ -12,7 +12,13 @@ interface JungleMapsApi {
     @GET("/distancematrix")
     fun distancematrix(@QueryMap params: Map<String, String>): Response
 
-    @GET("/search_reverse?zoom=10")
+    @GET("/search_reverse?zoom=18")
     fun searchReverse(@QueryMap params: Map<String, String>): Response
+
+    @GET("/search")
+    fun search(@QueryMap params: Map<String, String>): Response
+
+    @GET("/geocode")
+    fun geocodePlaceById(@QueryMap params: Map<String, String>): Response
 
 }

@@ -262,8 +262,7 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="present_near_customer_location"> Debe estar presente cerca del lugar de recogida del cliente para marcar el viaje que llegó.</string>
     <string name="present_near_customer_location_to_start">Debe estar presente cerca del lugar de recogida del cliente para comenzar a viajar.</string>
     <string name="You_have_already_created"> Ya ha creado% 1 $ d cuentas desde este dispositivo. Por favor explique la razón para crear una nueva cuenta..</string>
-    <string name="your_referral_code">`$_`$*`$_`$> `$0`% `$+`$`$0`$2 `$_`%
-`$! `$9`%_</string>
+    <string name="your_referral_code">Su código de referencia</string>
 
     <string name="tap_to_retry">Toque para volver a intentarlo</string>
     <string name="error_occured_tap_to_retry">Ocurrió algún error. Toque para volver a intentarlo</string>
@@ -1158,5 +1157,6 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
 
     <string name="income_details">Detalles de ingresos</string>
     <string name="you_can_add_only_three_contacts">Puede agregar solo tres contactos.</string>
+    <string name="unlimited">Unlimited</string>
 
 </resources>

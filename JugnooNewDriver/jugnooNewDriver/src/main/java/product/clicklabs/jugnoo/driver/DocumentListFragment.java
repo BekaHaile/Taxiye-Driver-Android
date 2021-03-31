@@ -74,7 +74,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 
-import static com.crashlytics.android.beta.Beta.TAG;
+import static product.clicklabs.jugnoo.driver.MyApplication.TAG;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CAMERA;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_WRITE_EXTERNAL_STORAGE;
 
@@ -615,6 +615,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			} else {
 				imgPixel = docRequirementResponse.getImgPixel();
 				docs.clear();
+				showSubmitButton = false;
 				for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 					DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 					DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
@@ -636,13 +637,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					} else if(brandingImagesOnly == 0 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 						docs.add(docInfo);
 					}
-					if (data.getDocStatus().equals("0")||data.getIsDocInfoEditable()){
-						showSubmitButton=true;
-						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.VISIBLE);
+					if(data.getIsDocInfoEditable() || data.getIsEditable() == 1){
+						showSubmitButton = true;
 					}
-					else
-						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.GONE);
 				}
+
+				((DriverDocumentActivity)activity).setSubmitButtonVisibility(showSubmitButton ? View.VISIBLE : View.GONE);
 
 				updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 				userPhoneNo = docRequirementResponse.getuserPhoneNo();
@@ -778,9 +778,9 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
-            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
+            if (requestCode == Picker.PICK_IMAGE_DEVICE && resultCode == Activity.RESULT_OK) {
 				getMImagePicker().submit(data);
-            } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
+            } else if (requestCode == Picker.PICK_IMAGE_CAMERA && resultCode == Activity.RESULT_OK) {
 				getMCameraImagePicker().submit(data);
             } else if(requestCode == ACTION_HERE_MAP_IMAGE_RESULT
 					&& resultCode == Activity.RESULT_OK) {
@@ -1092,7 +1092,9 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					|| docInfo.docRequirement == DocRequirement.MANDATORY3.getI()
 					|| docInfo.docRequirement == DocRequirement.REQUIRED.getI())
 					&&
-					(!docInfo.status.equalsIgnoreCase(DocStatus.UPLOADED.getI()))){
+					(!docInfo.status.equalsIgnoreCase(DocStatus.UPLOADED.getI())
+							&& !docInfo.status.equalsIgnoreCase(DocStatus.VERIFIED.getI())
+							&& !docInfo.status.equalsIgnoreCase(DocStatus.APPROVAL_PENDING.getI()))){
 				mandatoryDocsSubmitted = false;
 				break;
 			}

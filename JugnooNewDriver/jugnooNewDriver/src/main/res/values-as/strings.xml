@@ -640,6 +640,7 @@
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
     <string name="pickup_time_format">Pickup time: %s</string>
     <string name="incentive">Incentives</string>
+    <string name="unlimited">Unlimited</string>
 
 
 </resources>

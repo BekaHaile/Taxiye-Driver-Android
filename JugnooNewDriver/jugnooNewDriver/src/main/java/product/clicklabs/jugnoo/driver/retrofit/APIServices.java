@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.datastructure.EndStopResponse;
 import product.clicklabs.jugnoo.driver.datastructure.FetchDriverPlansResponse;
 import product.clicklabs.jugnoo.driver.datastructure.InitiatePaymentResponse;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
@@ -16,6 +17,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverSubscriptionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -62,6 +64,7 @@ import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
 import retrofit.http.QueryMap;
+import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
 
 /**
@@ -245,6 +248,16 @@ public interface APIServices {
 	void driverProfileInfo(@FieldMap Map<String, String> params,
 						   Callback<BookingHistoryResponse> callback);
 
+
+	@GET("/get_all_subscriptions")
+	void driverSubscriptionInfo(@QueryMap Map<String, String> params,
+						   Callback<DriverSubscriptionResponse> callback);
+
+    @FormUrlEncoded
+    @POST("/driver_purchase_subscriptions")
+    void purchaseSubscriptions(@FieldMap Map<String, String> params,
+                          Callback<RegisterScreenResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/daily_online_hours")
 	void dailyOnlineHours(@Field("access_token") String accessToken,
@@ -343,10 +356,6 @@ public interface APIServices {
 							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/driver/upload_contacts")
-	Response sendAllContactsSync(@FieldMap Map<String, String> params);
-
-	@FormUrlEncoded
 	@POST("/driver/upload_sms")
 	void uploadAnalyticsMessages(@FieldMap Map<String, String> params,
 								 Callback<RegisterScreenResponse> callback);
@@ -422,7 +431,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/driver/self_assign")
 	void requestManualRide(@FieldMap Map<String, String> params,
-					 Callback<FeedCommonResponse> callback);
+					 Callback<ManualRideResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/set_locale_preference")
@@ -476,7 +485,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/upload_document")
 	void uploadFields(@FieldMap Map<String, String> params,
-					Callback<FeedCommonResponse> callback);
+					Callback<FeedCommonResponseKotlin> callback);
 
 
 	@Multipart
@@ -718,6 +727,9 @@ public interface APIServices {
 	@GET("/get_toll_data")
 	void getTollData(@QueryMap Map<String, String> params, Callback<TollDataResponse> callback);
 
+	@GET("/get_driver_subscriptions")
+	void getDriverSubscriptionData(@QueryMap Map<String, String> params, Callback<DriverSubscriptionResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/update_toll_data")
 	void updateTollData(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
@@ -821,10 +833,10 @@ public interface APIServices {
 	@POST("/paytm/login_with_otp")
 	void paytmLoginWithOtp(@FieldMap Map<String, String> params,
 						   Callback<FeedCommonResponseKotlin> callback);
-	@FormUrlEncoded
-	@POST("/driver_purchase_subscriptions")
-	void purchaseSubscriptions(@FieldMap Map<String, String> params,
-						   Callback<FeedCommonResponseKotlin> callback);
+//	@FormUrlEncoded
+//	@POST("/driver_purchase_subscriptions")
+//	void purchaseSubscriptions(@FieldMap Map<String, String> params,
+//						   Callback<FeedCommonResponseKotlin> callback);
 
 	@FormUrlEncoded
 	@POST("/paytm/delete_paytm")
@@ -846,4 +858,16 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/driver/set_gps_preference")
 	void updateGpsPreference(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
+	@POST("/end_stop")
+	void endStop(@FieldMap Map<String,String> params, Callback<EndStopResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/send_otp_via_call")
+	void sendOtpViaCall(@FieldMap Map<String, String> params,
+						Callback<FeedCommonResponseKotlin> callback);
+
+	    @POST("/delivery/upload_images")
+    void uploadImagesRide(@Body MultipartTypedOutput params,
+						  Callback<FeedCommonResponseKotlin> callback);
+
 }

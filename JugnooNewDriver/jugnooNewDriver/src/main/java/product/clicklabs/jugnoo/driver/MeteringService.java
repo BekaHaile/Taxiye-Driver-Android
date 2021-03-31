@@ -140,9 +140,7 @@ public class MeteringService extends Service {
 							generateNotification(context, message,METER_NOTIF_ID);
 						}
 						if (HomeActivity.appInterruptHandler != null) {
-							HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,
-									lastGPSLocation,
-									lastFusedLocation, totalHaversineDistance);
+							HomeActivity.appInterruptHandler.updateMeteringUI(lastGPSLocation, lastFusedLocation);
 						}
 				}
 				

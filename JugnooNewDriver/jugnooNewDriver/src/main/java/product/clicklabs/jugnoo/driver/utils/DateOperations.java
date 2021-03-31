@@ -488,4 +488,10 @@ public class DateOperations {
 		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		return "Today, " + df.format(c);
 	}
+
+	public static String getMillisInHHMMSS(long millis){
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date(millis);
+		return formatter.format(date);
+	}
 }

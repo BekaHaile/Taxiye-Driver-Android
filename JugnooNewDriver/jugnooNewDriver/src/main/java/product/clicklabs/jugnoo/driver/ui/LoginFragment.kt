@@ -4,18 +4,20 @@ package product.clicklabs.jugnoo.driver.ui
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.*
+import android.text.method.LinkMovementMethod
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.transition.TransitionManager
 import androidx.fragment.app.Fragment
-import android.text.Editable
-import android.text.InputType
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.transition.Transition
 import android.transition.TransitionSet
 import android.util.TypedValue
@@ -24,6 +26,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.Country
 import com.picker.CountryPicker
@@ -36,7 +39,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
@@ -95,6 +100,7 @@ class LoginFragment : Fragment() {
             tvCountryCode.typeface = Fonts.mavenRegular(parentActivity)
             edtPhoneNo.typeface = Fonts.mavenRegular(parentActivity)
             btnGenerateOtp.typeface = Fonts.mavenRegular(parentActivity)
+            tvTnC.typeface = Fonts.mavenRegular(parentActivity)
 
 
             imageView.setOnLongClickListener {
@@ -124,6 +130,17 @@ class LoginFragment : Fragment() {
                 }
             })
 
+            cbTnC.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked) {
+                    btnGenerateOtp.isEnabled = true
+                    btnGenerateOtp.background = resources.getDrawable(R.drawable.generate_otp)
+                }
+                else {
+                    btnGenerateOtp.isEnabled = false
+                    btnGenerateOtp.background = resources.getDrawable(R.drawable.button_grey_br)
+                }
+            }
+
             btnGenerateOtp.setOnClickListener{
                 generateOtpApi()
             }
@@ -145,6 +162,43 @@ class LoginFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupTermsAndConditionsTextView()
+    }
+
+    private fun setupTermsAndConditionsTextView() {
+        val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
+                == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1){
+            val termsText = getString(R.string.terms_and_conditions);
+            val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(textView: View) {
+                    startActivity(Intent(parentActivity, HelpActivity::class.java))
+                }
+
+                /* override fun updateDrawState(ds: TextPaint) {
+                     super.updateDrawState(ds)
+                     ds.isUnderlineText = false
+                 }*/
+            }
+            val start = ss.length-termsText.length
+            val end = ss.length
+            ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireActivity(), R.color.themeColor)), start, end, 0);
+            tvTnC.text = ss
+            tvTnC.movementMethod = LinkMovementMethod.getInstance()
+            tvTnC.highlightColor = Color.TRANSPARENT
+            tvTnC.typeface = Fonts.mavenRegular(requireActivity())
+
+            llTnC.visible()
+        }else{
+            llTnC.gone()
+        }
+
     }
 
     private fun View.generateOtpApi() {
@@ -200,7 +254,7 @@ class LoginFragment : Fragment() {
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
         Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-        ApiCommon<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }
@@ -248,12 +302,14 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommon<DriverLanguageResponse>(parentActivity).showLoader(false).checkForActionComplete(true)
-                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallback<DriverLanguageResponse>() {
+        ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
+                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
                         val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
                                 == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
 
+                        val otpViaCallEnabled = requireContext().resources.getInteger(R.integer.enable_otp_via_call)
+                        Prefs.with(requireContext()).save(Constants.KEY_ENABLE_OTP_VIA_CALL, t?.otpEnabledViaCall?:otpViaCallEnabled)
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_CODE, t?.defaultCountryCode ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, t?.defaultSubCountryCode ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_ISO, t?.defaultCountryIso ?: "")
@@ -459,6 +515,7 @@ class LoginFragment : Fragment() {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
                 btnGenerateOtp.text = getString(R.string.btn_generate_otp_text)
+                setupTermsAndConditionsTextView()
                 TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }
@@ -531,6 +588,9 @@ class LoginFragment : Fragment() {
                 if(!tvCountryCode.isGone())tvCountryCode.visible()
                 if(!edtPhoneNo.isGone())edtPhoneNo.visible()
                 if(!btnGenerateOtp.isGone())btnGenerateOtp.visible()
+                if(!llTnC.isGone())llTnC.visible()
+                if(!cbTnC.isGone())llTnC.visible()
+                if(!tvTnC.isGone())llTnC.visible()
             }
         } catch (e: Exception) {
         }

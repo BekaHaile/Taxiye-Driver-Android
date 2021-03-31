@@ -1,11 +1,11 @@
 package product.clicklabs.jugnoo.driver.ui.api;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
 import android.view.View;
 
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -288,6 +288,8 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case MANUAL_RIDE:
                 RestClient.getApiServices().requestManualRide(params, callback );
+			case END_STOP:
+                RestClient.getApiServices().endStop(params, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

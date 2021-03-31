@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
@@ -48,6 +49,8 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SafetyInfoData;
+import product.clicklabs.jugnoo.driver.datastructure.SafetyPoint;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -61,9 +64,10 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+
+import static product.clicklabs.jugnoo.driver.GCMIntentService.checkSubscriptionExpiry;
 
 public class JSONParser implements Constants {
 
@@ -214,18 +218,31 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseSavedAddresses(JSONArray jsonArray) {
+        Data.userData.getSavedAddressList().clear();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject add = null;
+            try {
+                add = jsonArray.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (add != null)
+                Data.userData.getSavedAddressList().add(new SearchResultNew(add.optString("type"), add.optString("address"), "" + add.optInt("id"), add.optDouble("latitude"), add.optDouble("longitude")));
+        }
+    }
 
-	public UserData parseUserData(Context context, JSONObject userData,Activity activity) throws Exception {
+	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
 
 
 		int freeRideIconDisable = 1;
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
-		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
-		Double minDriverBalance = null;
-		Double mActualCreditBalance=null;
-		DriverVehicleDetails activeVehicle=null;
+		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
+		DriverVehicleDetails activeVehicle=null;
+        Double minDriverBalance = null;
+        Double mActualCreditBalance=null;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
@@ -233,7 +250,7 @@ public class JSONParser implements Constants {
 		if (userData.has("autos_enabled")) {
 			autosEnabled = userData.getInt("autos_enabled");
 		}
-		if (userData.has("resend_email_invoice_enabled")) {
+		if (userData.has("resend_email_invoice_enabled") && userData.get("resend_email_invoice_enabled")!=null) {
 			resendEmailInvoiceEnabled = userData.getInt("resend_email_invoice_enabled");
 		}
 		if (userData.has("min_driver_balance")) {
@@ -318,6 +335,7 @@ public class JSONParser implements Constants {
 		String referralCode = userData.getString("referral_code");
 		int cityId = userData.optInt(Constants.KEY_CITY, 0);
 
+        double endStopAlertRadius = userData.optDouble(KEY_END_STOP_ALERT_RADIUS, 0);
 
 		String referralMessage = userData.optString(Constants.KEY_REFERRAL_MESSAGE);
 		String referralMessageDriver = userData.optString(Constants.KEY_REFERRAL_MESSAGE_DRIVER);
@@ -476,7 +494,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
 		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
-		int subscriptionEnabled = userData.optInt(KEY_DRIVER_SUBSCRIPTION, 0);
+		int driverSubscription = userData.optInt(KEY_DRIVER_SUBSCRIPTION, 0);
+		int driverSubscriptionEnabled = userData.optInt(KEY_DRIVER_SUBSCRIPTION_ENABLED, 0);
 		int onlyCashRides = userData.optInt(KEY_ONLY_CASH_RIDES, 0);
 		int onlyLongRides = userData.optInt(KEY_ONLY_LONG_RIDES, 0);
 
@@ -494,8 +513,35 @@ public class JSONParser implements Constants {
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
-                gender, dateOfBirth,activeVehicle,minDriverBalance,mActualCreditBalance);
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag, driverSubscription,driverSubscriptionEnabled, onlyCashRides, onlyLongRides,
+                gender, dateOfBirth, activeVehicle, minDriverBalance, mActualCreditBalance, endStopAlertRadius);
+	}
+
+	private SafetyInfoData parseSafetyInfoData(JSONObject userData){
+		try {
+			if(userData.has(KEY_DRIVER_SAFETY_CHECKLIST)){
+				JSONObject jObj = userData.optJSONObject(KEY_DRIVER_SAFETY_CHECKLIST);
+				JSONArray jList = jObj.optJSONArray(KEY_LIST);
+				ArrayList<SafetyPoint> safetyPoints = new ArrayList<>();
+				for(int i=0; i<jList.length(); i++){
+					safetyPoints.add(new SafetyPoint(jList.optJSONObject(i).optInt(KEY_IS_MANDATORY, 1),
+							jList.optJSONObject(i).optString(KEY_TEXT, "")));
+				}
+				return new SafetyInfoData(safetyPoints, jObj.optString(KEY_TITLE, ""), jObj.optString(KEY_IMAGE_URL, ""));
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+//		ArrayList<SafetyPoint> safetyPoints = new ArrayList<>();
+//		safetyPoints.add(new SafetyPoint(1, "Our drivers are being checked regularly"));
+//		safetyPoints.add(new SafetyPoint(0, "Hand sanitization facilities have been provided in the cabs"));
+//		safetyPoints.add(new SafetyPoint(0, "Cabs are being sanitized throughly regularly"));
+//		safetyPoints.add(new SafetyPoint(1, "Cabs are being sanitized throughly regularly"));
+//		safetyPoints.add(new SafetyPoint(1, "Cabs are being sanitized throughly regularly"));
+//		return new SafetyInfoData(safetyPoints, "Please ensure these safety measures before going online",
+//				"https://fchat.s3.ap-south-1.amazonaws.com/default/TjI1WUF4U0.1587365616963.png");
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
@@ -600,12 +646,12 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
 		Prefs.with(context).save(KEY_BID_TIMEOUT, userData.optLong(KEY_BID_TIMEOUT, 30000L));
 		Prefs.with(context).save(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, userData.optInt(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 1));
-		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 0));
+		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 1));
 
 		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
 				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
 		Prefs.with(context).save(KEY_DRIVER_DIRECTIONS_CACHING, userData.optInt(KEY_DRIVER_DIRECTIONS_CACHING,
-				1));
+				context.getResources().getInteger(R.integer.driver_directions_caching)));
 
 		parseJungleApiObjects(context, userData);
 
@@ -629,6 +675,18 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(KEY_HOME_BANNER_TEXT, userData.optString(KEY_HOME_BANNER_TEXT, ""));
 		Prefs.with(context).save(KEY_HOME_BANNER_INDEX, userData.optInt(KEY_HOME_BANNER_INDEX, 0));
+
+		Prefs.with(context).save(KEY_DRIVER_SPEED_LOWER_LIMIT, userData.optString(KEY_DRIVER_SPEED_LOWER_LIMIT, context.getString(R.string.driver_speed_lower_limit)));
+		Prefs.with(context).save(KEY_DRIVER_SPEED_DEFAULT, userData.optString(KEY_DRIVER_SPEED_DEFAULT, context.getString(R.string.driver_speed_default)));
+
+		Prefs.with(context).save(KEY_CUSTOMER_SIGNATURE_ON_MARK_DELIVER, userData.optInt(KEY_CUSTOMER_SIGNATURE_ON_MARK_DELIVER,
+				context.getResources().getInteger(R.integer.customer_signature_on_mark_deliver)));
+
+
+		Prefs.with(context).save(KEY_PATH_UPLOAD_INTERVAL, userData.optLong(KEY_PATH_UPLOAD_INTERVAL,
+				GpsDistanceCalculator.PATH_UPLOAD_INTERVAL));
+		Prefs.with(context).save(KEY_UPLOAD_IN_RIDE_DATA_INTERVAL, userData.optLong(KEY_UPLOAD_IN_RIDE_DATA_INTERVAL,
+				GpsDistanceCalculator.UPLOAD_IN_RIDE_DATA_INTERVAL));
 
 
 		parseCityConfigVariables(context, userData, cityId);
@@ -686,7 +744,7 @@ public class JSONParser implements Constants {
 			if(jungleObj != null){
 				jungleObjStr = jungleObj.toString();
 			}
-			Prefs.with(context).save(KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, context.getString(R.string.jungle_map_fm_token));
+			Prefs.with(context).save(KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, userData.optString(KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, ""));
 
 			Prefs.with(context).save(KEY_JUNGLE_DIRECTIONS_OBJ, jungleObjStr);
 
@@ -695,6 +753,9 @@ public class JSONParser implements Constants {
 
 			JSONObject jungleGObj = userData.optJSONObject(KEY_JUNGLE_GEOCODE_OBJ);
 			Prefs.with(context).save(KEY_JUNGLE_GEOCODE_OBJ, jungleGObj!=null ? jungleGObj.toString(): jungleObjStr);
+
+			JSONObject jungleACbj = userData.optJSONObject(KEY_JUNGLE_AUTOCOMPLETE_OBJ);
+			Prefs.with(context).save(KEY_JUNGLE_AUTOCOMPLETE_OBJ, jungleACbj!=null ? jungleACbj.toString(): jungleObjStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -705,7 +766,7 @@ public class JSONParser implements Constants {
 
 	}
 
-	public String parseAccessTokenLoginData(Activity context, String response) throws Exception {
+	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
 
 
 		Log.e("response ==", "=" + response);
@@ -715,7 +776,10 @@ public class JSONParser implements Constants {
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
-		Data.userData = parseUserData(context, jLoginObject,context);
+		Data.userData = parseUserData(context, jLoginObject);
+        if (jLoginObject.has("user_saved_addresses") && Data.userData != null) {
+            parseSavedAddresses(jLoginObject.getJSONArray("user_saved_addresses"));
+        }
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
@@ -726,6 +790,8 @@ public class JSONParser implements Constants {
 
 		parseCancellationReasons(jObj,context);
 		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
+
+		Data.userData.setSafetyInfoData(parseSafetyInfoData(jLoginObject));
 
 		try {
 
@@ -764,7 +830,7 @@ public class JSONParser implements Constants {
 		return resp;
 	}
 
-	public String getUserStatus(Activity context, String accessToken) {
+	public String getUserStatus(Context context, String accessToken) {
 		String returnResponse = "";
 		try {
 			HashMap<String, String> params = new HashMap<>();
@@ -779,18 +845,6 @@ public class JSONParser implements Constants {
 				return returnResponse;
 			} else {
 				JSONObject jObject1 = new JSONObject(result);
-				((Activity)context).runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if(jObject1.has("external_gps_data")){
-							try {
-								configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				});
 				returnResponse = parseCurrentUserStatus(context, jObject1);
 				return returnResponse;
 			}
@@ -803,16 +857,17 @@ public class JSONParser implements Constants {
 
 
 
-	public String parseCurrentUserStatus(Activity context, JSONObject jObject1) {
+	public String parseCurrentUserStatus(Context context, JSONObject jObject1) {
 		HomeActivity.userMode = UserMode.DRIVER;
 		try {
 			if (jObject1.has(KEY_ERROR)) {
 				return Constants.SERVER_TIMEOUT;
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
-				parseGpsData(jObject1,context);
+				if (checkSubscriptionExpiry(jObject1,context)) {
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
+                parseDestRide(jObject1, context);
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
@@ -822,107 +877,107 @@ public class JSONParser implements Constants {
 					for(int i=0; i<lastEngInfoArr.length(); i++) {
 						JSONObject jObjCustomer = lastEngInfoArr.getJSONObject(i);
 
-						parseFareStructureForCustomer(jObjCustomer);
-						if(i == 0) {
-							parsePerfectRideData(context, jObjCustomer);
-						}
-
-						int engagementStatus = jObjCustomer.getInt(KEY_STATUS);
-						if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
-								(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
-								(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
-							int referenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
-							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
-							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
-							int isDeliveryPool = 0;
-							if(jObjCustomer.optInt(KEY_RIDE_TYPE,0)==4){
-								isDeliveryPool =1;
+							parseFareStructureForCustomer(jObjCustomer);
+							if (i == 0) {
+								parsePerfectRideData(context, jObjCustomer);
 							}
 
-							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-									vendorMessage = "", estimatedDriverFare = "", strRentalInfo = "";
-							int forceEndDelivery =0, loadingStatus =0;
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
-									currrentLatitude =0, currrentLongitude =0;
-							int totalDeliveries = 0, falseDeliveries = 0, orderId =0;
-							JSONArray customerOrderImages;
-							List<String> customerOrderImagesList = new ArrayList<>();
-							if(isDelivery == 1){
-								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
-								userId = userData.optString(KEY_USER_ID, "0");
-								userName = userData.optString(KEY_NAME, "");
-								userImage = userData.optString(KEY_USER_IMAGE, "");
-								phoneNo = userData.optString(KEY_PHONE, "");
-								rating = userData.optString(KEY_USER_RATING, "4");
-								jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
-								pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
-								pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
-								address = userData.optString(KEY_ADDRESS, "");
-								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
-								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
-								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
-								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
-								estimatedDriverFare= userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
-								falseDeliveries = userData.optInt("false_deliveries",0);
-								orderId = userData.optInt("order_id",0);
-								loadingStatus = userData.optInt(KEY_IS_LOADING, 0);
-
-								try {
-									customerOrderImages = userData.optJSONArray(KEY_CUSTOMER_ORDER_IMAGES);
-									if (customerOrderImages != null && customerOrderImages.length() > 0) {
-										for(int k = 0; k < customerOrderImages.length(); k++) {
-											customerOrderImagesList.add((String)customerOrderImages.get(k));
-										}
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
+							int engagementStatus = jObjCustomer.getInt(KEY_STATUS);
+							if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
+								int referenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
+								String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
+								int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
+								int isDeliveryPool = 0;
+								if (jObjCustomer.optInt(KEY_RIDE_TYPE, 0) == 4) {
+									isDeliveryPool = 1;
 								}
 
-							} else {
-								userId = jObjCustomer.optString(KEY_USER_ID, "0");
-								userName = jObjCustomer.optString(KEY_USER_NAME, "");
-								userImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
-								phoneNo = jObjCustomer.optString(KEY_PHONE_NO, "");
-								rating = jObjCustomer.optString(KEY_USER_RATING, "4");
-								jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
-								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
-								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
-								address = jObjCustomer.optString(KEY_ADDRESS, "");
-								currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
-								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
-								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
-								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
-								JSONObject joRentalInfo = jObjCustomer.optJSONObject(Constants.KEY_RENTAL_INFO);
-								if(joRentalInfo != null) {
-									if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
-										double timeInMins = joRentalInfo.getDouble(Constants. KEY_RENTAL_TIME);
-										String time;
-										if (timeInMins >= 60) {
-											int hours =  (int)(timeInMins / 60);
-											int  minutes = (int) timeInMins % 60;
-											String strMins = minutes > 1 ? context.getString(R.string.rental_mins).concat(" ") : context.getString(R.string.rental_min).concat(" ");
-											String strHours = hours > 1 ? context.getString(R.string.rental_hours).concat(" ") : context.getString(R.string.rental_hour).concat(" ");
-											time = strRentalInfo + (Utils.getDecimalFormat().format(hours) + " " +strHours + Utils.getDecimalFormat().format(minutes)+" "+strMins + " | ");
-										} else {
-											time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
-													timeInMins <= 1 ? context.getString(R.string.rental_min).concat(" ") : context.getString(R.string.rental_mins).concat(" | ")));
+								String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
+										vendorMessage = "", estimatedDriverFare = "", strRentalInfo = "";
+								int forceEndDelivery = 0, loadingStatus = 0;
+								double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
+										currrentLatitude = 0, currrentLongitude = 0;
+								int totalDeliveries = 0, falseDeliveries = 0, orderId = 0;
+								JSONArray customerOrderImages;
+								List<String> customerOrderImagesList = new ArrayList<>();
+								if (isDelivery == 1) {
+									JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
+									userId = userData.optString(KEY_USER_ID, "0");
+									userName = userData.optString(KEY_NAME, "");
+									userImage = userData.optString(KEY_USER_IMAGE, "");
+									phoneNo = userData.optString(KEY_PHONE, "");
+									rating = userData.optString(KEY_USER_RATING, "4");
+									jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
+									pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
+									pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
+									address = userData.optString(KEY_ADDRESS, "");
+									totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+									estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+									vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+									forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
+									cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
+									estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+									falseDeliveries = userData.optInt("false_deliveries", 0);
+									orderId = userData.optInt("order_id", 0);
+									loadingStatus = userData.optInt(KEY_IS_LOADING, 0);
+
+									try {
+										customerOrderImages = userData.optJSONArray(KEY_CUSTOMER_ORDER_IMAGES);
+										if (customerOrderImages != null && customerOrderImages.length() > 0) {
+											for (int k = 0; k < customerOrderImages.length(); k++) {
+												customerOrderImagesList.add((String) customerOrderImages.get(k));
+											}
 										}
-										strRentalInfo = strRentalInfo.concat(time);
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
-									if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.optDouble(Constants.KEY_RENTAL_DISTANCE, 0) != 0) {
-										strRentalInfo = strRentalInfo.concat(context.getString(R.string.rental_max)).concat(" ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE))
-												.concat(" ").concat(UserData.getDistanceUnit(context)).concat(" | ");
-									}
-									if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.optDouble(Constants.KEY_RENTAL_AMOUNT, 0) != 0) {
-										strRentalInfo = strRentalInfo.concat(Utils.formatCurrencyValue(Data.userData.getCurrency(), joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT)));
+
+								} else {
+									userId = jObjCustomer.optString(KEY_USER_ID, "0");
+									userName = jObjCustomer.optString(KEY_USER_NAME, "");
+									userImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
+									phoneNo = jObjCustomer.optString(KEY_PHONE_NO, "");
+									rating = jObjCustomer.optString(KEY_USER_RATING, "4");
+									jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
+									pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
+									pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
+									address = jObjCustomer.optString(KEY_ADDRESS, "");
+									currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
+									currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+									Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+									Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
+									JSONObject joRentalInfo = jObjCustomer.optJSONObject(Constants.KEY_RENTAL_INFO);
+									if (joRentalInfo != null) {
+										if (joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
+											double timeInMins = joRentalInfo.getDouble(Constants.KEY_RENTAL_TIME);
+											String time;
+											if (timeInMins >= 60) {
+												int hours = (int) (timeInMins / 60);
+												int minutes = (int) timeInMins % 60;
+												String strMins = minutes > 1 ? context.getString(R.string.rental_mins).concat(" ") : context.getString(R.string.rental_min).concat(" ");
+												String strHours = hours > 1 ? context.getString(R.string.rental_hours).concat(" ") : context.getString(R.string.rental_hour).concat(" ");
+												time = strRentalInfo + (Utils.getDecimalFormat().format(hours) + " " + strHours + Utils.getDecimalFormat().format(minutes) + " " + strMins + " | ");
+											} else {
+												time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
+														timeInMins <= 1 ? context.getString(R.string.rental_min).concat(" ") : context.getString(R.string.rental_mins).concat(" | ")));
+											}
+											strRentalInfo = strRentalInfo.concat(time);
+										}
+										if (joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.optDouble(Constants.KEY_RENTAL_DISTANCE, 0) != 0) {
+											strRentalInfo = strRentalInfo.concat(context.getString(R.string.rental_max)).concat(" ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE))
+													.concat(" ").concat(UserData.getDistanceUnit(context)).concat(" | ");
+										}
+										if (joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.optDouble(Constants.KEY_RENTAL_AMOUNT, 0) != 0) {
+											strRentalInfo = strRentalInfo.concat(Utils.formatCurrencyValue(Data.userData.getCurrency(), joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT)));
+										}
 									}
 								}
-							}
 
 
-							CouponInfo couponInfo = JSONParser.parseCouponInfo(jObjCustomer);
-							PromoInfo promoInfo = JSONParser.parsePromoInfo(jObjCustomer);
+								CouponInfo couponInfo = JSONParser.parseCouponInfo(jObjCustomer);
+								PromoInfo promoInfo = JSONParser.parsePromoInfo(jObjCustomer);
 
 							if (Prefs.with(context).getLong(SPLabels.CURRENT_ETA, 0) == 0) {
 								Prefs.with(context).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObjCustomer.optLong("eta", 0));
@@ -934,20 +989,21 @@ public class JSONParser implements Constants {
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);
 							int waitingChargesApplicable = jObjCustomer.optInt("waiting_charges_applicable", 0);
 
-							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
-							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
-							String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
-							double tipAmount = jObjCustomer.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
-							int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
-							String pickupTime = jObjCustomer.optString(Constants.KEY_PICKUP_TIME);
-							int isCorporateRide = jObjCustomer.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
-							String customerNotes = jObjCustomer.optString(Constants.KEY_CUSTOMER_NOTE, "");
-							int tollApplicable = jObjCustomer.optInt(Constants.KEY_TOLL_APPLICABLE, 0);
+								int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
+								int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
+								String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
+								double tipAmount = jObjCustomer.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
+								int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
+								String pickupTime = jObjCustomer.optString(Constants.KEY_PICKUP_TIME);
+								int isCorporateRide = jObjCustomer.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
+								String customerNotes = jObjCustomer.optString(Constants.KEY_CUSTOMER_NOTE, "");
+								int tollApplicable = jObjCustomer.optInt(Constants.KEY_TOLL_APPLICABLE, 0);
 
 
 							if(i == 0){
 								Data.setCurrentEngagementId(engagementId);
 							}
+                            int stopId = jObjCustomer.optInt(STOP_ID, 0);
 
 							CustomerInfo customerInfo = new CustomerInfo(context, Integer.parseInt(engagementId), Integer.parseInt(userId),
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
@@ -956,34 +1012,35 @@ public class JSONParser implements Constants {
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
 									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo,customerOrderImagesList);
-
+							customerInfo.setStopId(stopId);
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
 								parseReturnDeliveryInfos(jObjCustomer, customerInfo);
 							}
 
-							updateDropAddressLatlng(context, jObjCustomer, customerInfo);
+								updateDropAddressLatlng(context, jObjCustomer, customerInfo);
 
-							parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
+								parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
 
-							Data.addCustomerInfo(customerInfo);
+								Data.addCustomerInfo(customerInfo);
 
 
+							}
 						}
+
+						try {
+							MyApplication.getInstance().writePathLogToFile("accept", "JSONPARSER  = " + jObject1);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
 					}
 
-					try {
-						MyApplication.getInstance().writePathLogToFile("accept", "JSONPARSER  = " + jObject1);
-					} catch (Exception e) {
-						e.printStackTrace();
+					if (Data.nextPickupLatLng == null) {
+						Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+						Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+						new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
 					}
-
-				}
-
-				if (Data.nextPickupLatLng == null) {
-					Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-					Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-					new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
 				}
 			}
 		} catch (Exception e) {
@@ -994,48 +1051,13 @@ public class JSONParser implements Constants {
 
 		if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
 			HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-			Prefs.with(context).save(SP_CUSTOMER_RIDE_DATAS_OBJECT, EMPTY_OBJECT);
+			CustomerInfo.clearAllMapValues();
 		} else {
 			HomeActivity.driverScreenMode = Data.getDriverScreenModeFromEngagementStatus(
 					Data.getCurrentCustomerInfo().getStatus());
 		}
 
 		return "";
-	}
-
-	private void parseGpsData(JSONObject jObject1,Context context) {
-		if(jObject1.has("external_gps_enabled")){
-			try {
-				Data.setExternalGpsEnabled(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED));
-				if(jObject1.getInt(Constants.EXTERNAL_GPS_ENABLED)==1){
-					if(jObject1.has("external_gps_data")){
-						configureExternalGps(jObject1.getJSONObject("external_gps_data"),context);
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void configureExternalGps(JSONObject external_gps_data,Context context) {
-		try {
-			Data.setGpsPreference(external_gps_data.getInt("gps_preference"));
-			Data.setGpsDeviceImeiNo(external_gps_data.getString("device_imei_number"));
-			TrackerLocationUpdater tracker = new TrackerLocationUpdater();
-			Prefs.with(context).save(Constants.KEY_GPS_LONGITUDE,"");
-			Prefs.with(context).save(Constants.KEY_GPS_LATITUDE,"");
-			if(external_gps_data.getInt("gps_preference")==1){
-				//startSocketLocationUpdateServiceq
-				// 0866551037048951 demo imei
-				tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),context);
-				//tracker.connectGpsDevice("0866551037048951",context);
-			}else if (external_gps_data.getInt("gps_preference")==0){
-				tracker.stopTracker();
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void updateDropAddressLatlng(Context context, JSONObject jObjCustomer, CustomerInfo customerInfo) {
@@ -1084,6 +1106,14 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseDestRide(JSONObject jsonObject, Context context) {
+        //todo Ankur
+		JSONObject destObj=jsonObject.optJSONObject(Constants.KEY_DRIVER_DESTINATION);
+		if(destObj!=null) {
+			Data.userData.currDestRideObj = Data.userData.new CurrDestRide(destObj.optString("address", ""), destObj.optDouble("destination_latitude"),destObj.optDouble("destination_longitude"), destObj.optInt("destination_ride_time_remaining"),System.currentTimeMillis(), destObj.optString("type"));
+		}
+
+    }
 
 	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {
 
@@ -1100,6 +1130,8 @@ public class JSONParser implements Constants {
 				String requestUserId = jActiveRequest.getString("user_id");
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
+
+				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 
 				double currrentLatitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LATITUDE);
 				double currrentLongitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LONGITUDE);
@@ -1150,17 +1182,19 @@ public class JSONParser implements Constants {
 				long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 				if ("".equalsIgnoreCase(endTime)) {
 					long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
-					long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
+					long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + (reverseBid == 1 ? GCMIntentService.BID_REQUEST_TIMEOUT : GCMIntentService.REQUEST_TIMEOUT);
 					requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
+					Log.i("JSONParser_requestTimeOutMillis = ", "=" + requestTimeOutMillis);
 				} else {
 					long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
 							startTimeLocal);
-					Log.i("startEndDiffMillis = ", "=" + startEndDiffMillis);
-					if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
+					Log.i("JSONParser_startEndDiffMillis = ", "=" + startEndDiffMillis);
+					if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT || reverseBid == 1) {
 						requestTimeOutMillis = startEndDiffMillis;
 					} else {
 						requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 					}
+					Log.i("JSONParser_requestTimeOutMillis = ", "=" + requestTimeOutMillis);
 				}
 
 				startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
@@ -1179,9 +1213,10 @@ public class JSONParser implements Constants {
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 				double estimatedDist = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
-				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 				int bidPlaced = jActiveRequest.optInt(Constants.KEY_BID_PLACED, 0);
 				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
+				int multiDestStop = jActiveRequest.optInt(KEY_MULTIPLE_STOPS_COUNT, 0);
+
 				double initialBidValue = jActiveRequest.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10);
 				double estimatedTripDistance = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
 				String pickupTime = jActiveRequest.optString(Constants.KEY_PICKUP_TIME);
@@ -1208,7 +1243,8 @@ public class JSONParser implements Constants {
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
 						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-						pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAddress,dropAddress,startTimeLocal, bidCreatedAt);
+						pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAddress,dropAddress,startTimeLocal, bidCreatedAt,multiDestStop);
+                customerInfo.setStopId(jObject1.optInt(STOP_ID, 0));
 
 				Data.addCustomerInfo(customerInfo);
 

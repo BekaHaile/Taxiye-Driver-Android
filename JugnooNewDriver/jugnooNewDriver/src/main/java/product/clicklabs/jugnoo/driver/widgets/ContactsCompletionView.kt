@@ -29,7 +29,7 @@ class ContactsCompletionView(context: Context, attrs: AttributeSet) : TokenCompl
     }
 
     override fun defaultObject(completionText: String): ContactBean {
-        return ContactBean("", "", "", "")
+        return ContactBean("", "", "", "", ContactBean.ContactBeanViewType.CONTACT, null, null)
     }
 
 }

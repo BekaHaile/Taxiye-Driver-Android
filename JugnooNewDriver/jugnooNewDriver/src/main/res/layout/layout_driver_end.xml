@@ -7,7 +7,8 @@
     android:animateLayoutChanges="true"
     android:splitMotionEvents="false"
     android:visibility="visible"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/end_ride_custom_text"
@@ -573,18 +574,21 @@
 
                 </RelativeLayout>
 
-                <RatingBar
+                <product.clicklabs.jugnoo.driver.widgets.SimpleRatingBar
                     android:id="@+id/ratingBarFeedback"
-                    style="@style/RatingBarBlue"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32px"
-                    android:numStars="5"
-                    android:rating="1"
-                    android:stepSize="1.0"
-                    android:visibility="visible"
+                    app:srb_starSize="40dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:srb_numberOfStars="5"
+                    app:srb_rating="3"
+                    app:srb_stepSize="1"
+                    app:srb_borderColor="@color/themeColor"
+                    app:srb_fillColor="@color/themeColor"
+                    app:srb_starsSeparation="6dp"
+                    app:srb_starBackgroundColor="@color/white"
+                    android:tag="@string/dont_touch_me"
                     />
 
                 <Button

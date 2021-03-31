@@ -20,39 +20,43 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent arg1) {
-        Log.w(TAG, "starting service...");
-        String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
-        if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-			if (GpsState.GREATER_SIX.getOrdinal() == Database2.getInstance(context).getGpsState()) {
+		try {
+			Log.w(TAG, "starting service...");
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
+			if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+				if (GpsState.GREATER_SIX.getOrdinal() == Database2.getInstance(context).getGpsState()) {
 
-				if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-					GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis() - 270000;
-					GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
-
-					Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					context.startActivity(i);
-					Database2.getInstance(context).updateGpsState(GpsState.ZERO_TWO.getOrdinal());
-				}
-			} else {
-				try {
 					if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-						Database2.getInstance(context).updateDriverLastLocationTime();
-						context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
+						GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis() - 270000;
+						GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
+
+						Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+						i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						context.startActivity(i);
+						Database2.getInstance(context).updateGpsState(GpsState.ZERO_TWO.getOrdinal());
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					Database2.getInstance(context).close();
+				} else {
+					try {
+						if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+							Database2.getInstance(context).updateDriverLastLocationTime();
+							context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						Database2.getInstance(context).close();
+					}
+				}
+
+				if (!isForeground(context)) {
+					context.startService(new Intent(context, GeanieView.class));
 				}
 			}
-
-			if(!isForeground(context)) {
-				context.startService(new Intent(context, GeanieView.class));
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-    }
+	}
 
 	public static boolean isForeground(Context context) {
 		try {

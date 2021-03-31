@@ -23,7 +23,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.JungleApisImpl;
 import product.clicklabs.jugnoo.driver.directions.room.model.Path;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -114,12 +114,15 @@ public class GpsDistanceCalculator {
 		if (!Database2.ON.equalsIgnoreCase(Database2.getInstance(context).getMetringState())) {
 			Database2.getInstance(context).updateMetringState(Database2.ON);
 
-			saveStartTimeToSP(context, System.currentTimeMillis());
+			long ctm = System.currentTimeMillis();
+			saveStartTimeToSP(context, SystemClock.elapsedRealtime());
 			saveWaitTimeToSP(context, 0);
 			saveTotalDistanceToSP(context, -1);
 			saveTotalHaversineDistanceToSP(context, -1);
-			saveLastLocationTimeToSP(context, System.currentTimeMillis());
-			Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, System.currentTimeMillis());
+			saveLastLocationTimeToSP(context, ctm);
+			Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, ctm);
+
+			MyApplication.getInstance().insertRideLogToEngagements("GDC Start ctm="+ctm);
 		}
 		connectGPSListener(context);
 		setupMeteringAlarm(context);
@@ -144,23 +147,25 @@ public class GpsDistanceCalculator {
 
 		saveLatLngToSP(context, 0, 0);
 
-		saveStartTimeToSP(context, System.currentTimeMillis());
+		long ctm = System.currentTimeMillis();
+		saveStartTimeToSP(context, SystemClock.elapsedRealtime());
 		saveWaitTimeToSP(context, 0);
 		saveTotalDistanceToSP(context, -1);
 		saveTotalHaversineDistanceToSP(context, -1);
-		saveLastLocationTimeToSP(context, System.currentTimeMillis());
+		saveLastLocationTimeToSP(context, ctm);
 
 		instance.totalDistance = -1;
 		instance.totalHaversineDistance = -1;
-		instance.lastLocationTime = System.currentTimeMillis();
+		instance.lastLocationTime = ctm;
 		instance.lastGPSLocation = null;
 		instance.lastFusedLocation = null;
 
 		instance.accumulativeSpeed = 0;
 		instance.speedCounter = 0;
-		instance.lastWaitWindowTime = System.currentTimeMillis();
+		instance.lastWaitWindowTime = ctm;
 
 		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at stop =" + totalDistance);
+		MyApplication.getInstance().insertRideLogToEngagements("GDC Stop ctm="+ctm);
 	}
 
 
@@ -487,7 +492,7 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	private class DirectionsAsyncTask extends AsyncTask<Void, Void, GAPIDirections.DirectionsResult> {
+	private class DirectionsAsyncTask extends AsyncTask<Void, Void, JungleApisImpl.DirectionsResult> {
 		double displacementToCompare;
 		LatLng source, destination;
 		Location currentLocation;
@@ -508,12 +513,12 @@ public class GpsDistanceCalculator {
 		}
 
 		@Override
-		protected GAPIDirections.DirectionsResult doInBackground(Void... params) {
+		protected JungleApisImpl.DirectionsResult doInBackground(Void... params) {
 			try {
 				ArrayList<CustomerInfo> list = Data.getAssignedCustomerInfosListForEngagedStatus();
 				long engagementId = list.size() > 0 ? list.get(0).getEngagementId() : System.currentTimeMillis();
 
-				return GAPIDirections.INSTANCE.getDirectionsPathSync(engagementId, source, destination, "metering");
+				return JungleApisImpl.INSTANCE.getDirectionsPathSync(engagementId, source, destination, "metering", true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -521,7 +526,7 @@ public class GpsDistanceCalculator {
 		}
 
 		@Override
-		protected void onPostExecute(GAPIDirections.DirectionsResult result) {
+		protected void onPostExecute(JungleApisImpl.DirectionsResult result) {
 			super.onPostExecute(result);
 			if (result != null) {
 				updateGAPIDistance(result.getLatLngs(), result.getPath(), displacementToCompare, source, destination, currentLocation, rowId);
@@ -577,6 +582,7 @@ public class GpsDistanceCalculator {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(polylineOptions);
 				}
 				MyApplication.getInstance().writePathLogToFile("m", "gapi case successful");
+				MyApplication.getInstance().insertRideLogToEngagements("GAPI s dop="+distanceOfPath+", p="+path.getPlat()+","+path.getPLng()+", d="+path.getDLat()+","+path.getDLng());
 			} else {
 				throw new Exception();
 			}
@@ -595,13 +601,14 @@ public class GpsDistanceCalculator {
 
 			}
 			MyApplication.getInstance().writePathLogToFile("m", "gapi case unsuccessful");
+			MyApplication.getInstance().insertRideLogToEngagements("GAPI f dtc="+displacementToCompare+", s="+source.latitude+","+source.longitude+", d="+destination.latitude+","+destination.longitude);
 		}
 	}
 
 
 	private long getElapsedMillis() {
 		long rideStartTime = getStartTimeFromSP(context);
-		long timeDiff = System.currentTimeMillis() - rideStartTime;
+		long timeDiff = SystemClock.elapsedRealtime() - rideStartTime;
 		return Math.max(timeDiff, 0);
 	}
 
@@ -662,7 +669,7 @@ public class GpsDistanceCalculator {
 	}
 
 	public static synchronized long getStartTimeFromSP(Context context) {
-		return Long.parseLong(Database2.getInstance(context).getKeyValue(SPLabels.START_TIME+METERING, String.valueOf(System.currentTimeMillis())));
+		return Long.parseLong(Database2.getInstance(context).getKeyValue(SPLabels.START_TIME+METERING, String.valueOf(SystemClock.elapsedRealtime())));
 	}
 
 	private static synchronized void saveWaitTimeToSP(Context context, long waitTime) {
@@ -684,19 +691,20 @@ public class GpsDistanceCalculator {
 		MyApplication.getInstance().writePathLogToFile("m",
 				"updateDistanceInCaseOfReset func distance from server:" + distance
 						+ " & totalDistance:" + totalDistance + " & waitTime:"+waitTime+" & rideTime:"+rideTime);
+		long spElapsedTime = getElapsedMillis();
+		long spWaitTime = getWaitTimeFromSP(context);
+		MyApplication.getInstance().insertRideLogToEngagements("D R d="+distance+", td="+totalDistance+", rt="+rideTime+", set="+spElapsedTime+", wt="+waitTime+", swt="+spWaitTime);
 		if(distance > totalDistance + DISTANCE_RESET_TOLERANCE){
 			totalDistance = totalDistance + distance;
 			saveTotalDistanceToSP(context, totalDistance);
 			MyApplication.getInstance().writePathLogToFile("m",
 					"updateDistanceInCaseOfReset func totalDistance updated:"+ totalDistance);
 		}
-		long spElapsedTime = getElapsedMillis();
 		if(rideTime > spElapsedTime + WAIT_TIME_RESET_TOLERANCE){
-			saveStartTimeToSP(context, System.currentTimeMillis() - rideTime - spElapsedTime);
+			saveStartTimeToSP(context, SystemClock.elapsedRealtime() - rideTime - spElapsedTime);
 			MyApplication.getInstance().writePathLogToFile("m",
-					"updateDistanceInCaseOfReset func rideTime updated:"+ (System.currentTimeMillis() - rideTime - spElapsedTime));
+					"updateDistanceInCaseOfReset func rideTime updated:"+ (SystemClock.elapsedRealtime() - rideTime - spElapsedTime));
 		}
-		long spWaitTime = getWaitTimeFromSP(context);
 		if(waitTime > spWaitTime + WAIT_TIME_RESET_TOLERANCE){
 			saveWaitTimeToSP(context, waitTime+spWaitTime);
 			MyApplication.getInstance().writePathLogToFile("m",
@@ -738,7 +746,7 @@ public class GpsDistanceCalculator {
 		@Override
 		public void run() {
 			if(uploadRunnablesRunning) {
-				GpsDistanceRideDataUpload.INSTANCE.uploadInRidePath(context, () -> handler.postDelayed(pathUploadRunnable, PATH_UPLOAD_INTERVAL));
+				GpsDistanceRideDataUpload.INSTANCE.uploadInRidePath(context, () -> handler.postDelayed(pathUploadRunnable, getPathUploadInterval()));
 			}
 		}
 	};
@@ -746,7 +754,7 @@ public class GpsDistanceCalculator {
 		@Override
 		public void run() {
 			if(uploadRunnablesRunning){
-				GpsDistanceRideDataUpload.INSTANCE.updateInRideData(context, lastGPSLocation, () -> handler.postDelayed(inRideDataUploadRunnable, UPLOAD_IN_RIDE_DATA_INTERVAL));
+				GpsDistanceRideDataUpload.INSTANCE.updateInRideData(context, lastGPSLocation, () -> handler.postDelayed(inRideDataUploadRunnable, getUploadInRideDataInterval()));
 			}
 		}
 	};

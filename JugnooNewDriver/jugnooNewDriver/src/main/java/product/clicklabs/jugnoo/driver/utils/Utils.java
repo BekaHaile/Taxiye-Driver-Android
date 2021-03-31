@@ -45,6 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 
@@ -1251,5 +1254,26 @@ public class Utils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	static String prettyJson(Object object) {
+		String json = "";
+		if (BuildConfig.DEBUG && object != null) {
+			Gson parser = new GsonBuilder().setPrettyPrinting().create();
+			try {
+				json = parser.toJson(new JsonParser().parse(objecttoJson(object)));
+			} catch (Exception e) {
+				try {
+					json = parser.toJson(new JsonParser().parse(object.toString()));
+				} catch (Exception ignore) {}
+			}
+			if (json.isEmpty() || json.equalsIgnoreCase(""))
+				json = objecttoJson(object);
+		}
+		return json;
+	}
+
+	private static String objecttoJson(Object object) {
+		return new Gson().toJson(object).replace("\\", "");
 	}
 }

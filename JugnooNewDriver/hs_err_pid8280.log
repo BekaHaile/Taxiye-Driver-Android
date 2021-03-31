@@ -1,0 +1,861 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 100663296 bytes for committing reserved memory.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_linux.cpp:2640), pid=8280, tid=0x00007f0feefbd700
+#
+# JRE version: OpenJDK Runtime Environment (8.0_152) (build 1.8.0_152-release-1343-b16-5323222)
+# Java VM: OpenJDK 64-Bit Server VM (25.152-b16-5323222 mixed mode linux-amd64 compressed oops)
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f100c07a000):  VMThread [stack: 0x00007f0feeebe000,0x00007f0feefbe000] [id=8288]
+
+Stack: [0x00007f0feeebe000,0x00007f0feefbe000],  sp=0x00007f0feefbc4e0,  free space=1017k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0x9ffc88]  VMError::report_and_die()+0x148
+V  [libjvm.so+0x4ce9aa]  report_vm_out_of_memory(char const*, int, unsigned long, VMErrorType, char const*)+0x8a
+V  [libjvm.so+0x8673d8]  os::pd_commit_memory(char*, unsigned long, unsigned long, bool)+0xd8
+V  [libjvm.so+0x86201f]  os::commit_memory(char*, unsigned long, unsigned long, bool)+0x1f
+V  [libjvm.so+0x8d839b]  PSVirtualSpace::expand_by(unsigned long)+0x5b
+V  [libjvm.so+0x8d8ff0]  PSYoungGen::resize_generation(unsigned long, unsigned long)+0xb0
+V  [libjvm.so+0x8d930b]  PSYoungGen::resize(unsigned long, unsigned long)+0x1b
+V  [libjvm.so+0x8d5a3e]  PSScavenge::invoke_no_policy()+0xdce
+V  [libjvm.so+0x8d61f8]  PSScavenge::invoke()+0x38
+V  [libjvm.so+0x88a7e3]  ParallelScavengeHeap::failed_mem_allocate(unsigned long)+0x63
+V  [libjvm.so+0xa01754]  VM_ParallelGCFailedAllocation::doit()+0x84
+V  [libjvm.so+0xa05bf7]  VM_Operation::evaluate()+0x47
+V  [libjvm.so+0xa04658]  VMThread::evaluate_operation(VM_Operation*)+0x2c8
+V  [libjvm.so+0xa04ab1]  VMThread::loop()+0x1f1
+V  [libjvm.so+0xa04ee2]  VMThread::run()+0x72
+V  [libjvm.so+0x864822]  java_start(Thread*)+0xf2
+
+VM_Operation (0x00007f0fec194ff0): ParallelGCFailedAllocation, mode: safepoint, requested by thread 0x00007f0fb8007000
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007f0f98003800 JavaThread "RMI RenewClean-[127.0.0.1:43535,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@245aa21a]" daemon [_thread_blocked, id=8328, stack(0x00007f0f9dadf000,0x00007f0f9dbe0000)]
+  0x00007f0fb8007000 JavaThread "RMI TCP Connection(3)-127.0.0.1" daemon [_thread_blocked, id=8327, stack(0x00007f0fec099000,0x00007f0fec19a000)]
+  0x00007f0fa4015800 JavaThread "RMI RenewClean-[127.0.0.1:43535,org.jetbrains.kotlin.daemon.common.LoopbackNetworkInterface$ClientLoopbackSocketFactory@46bb9697]" daemon [_thread_blocked, id=8310, stack(0x00007f0fed6dc000,0x00007f0fed7dd000)]
+  0x00007f0fb8005000 JavaThread "RMI TCP Connection(2)-127.0.0.1" daemon [_thread_in_native, id=8307, stack(0x00007f0fecfd7000,0x00007f0fed0d8000)]
+  0x00007f0fac011800 JavaThread "RMI Scheduler(0)" daemon [_thread_blocked, id=8303, stack(0x00007f0fed0d8000,0x00007f0fed1d9000)]
+  0x00007f0fb8003800 JavaThread "RMI TCP Connection(1)-127.0.0.1" daemon [_thread_in_native, id=8302, stack(0x00007f0fed3d9000,0x00007f0fed4da000)]
+  0x00007f100c00c800 JavaThread "DestroyJavaVM" [_thread_blocked, id=8283, stack(0x00007f1013698000,0x00007f1013798000)]
+  0x00007f100c374000 JavaThread "GC Daemon" daemon [_thread_blocked, id=8301, stack(0x00007f0fed4da000,0x00007f0fed5db000)]
+  0x00007f100c36f000 JavaThread "RMI Reaper" [_thread_blocked, id=8300, stack(0x00007f0fed5db000,0x00007f0fed6dc000)]
+  0x00007f100c362800 JavaThread "Timer-0" daemon [_thread_blocked, id=8298, stack(0x00007f0fed7dd000,0x00007f0fed8de000)]
+  0x00007f100c35e800 JavaThread "RMI TCP Accept-17302" daemon [_thread_in_native, id=8297, stack(0x00007f0fed8de000,0x00007f0fed9df000)]
+  0x00007f100c0ca000 JavaThread "Service Thread" daemon [_thread_blocked, id=8295, stack(0x00007f0fedde7000,0x00007f0fedee8000)]
+  0x00007f100c0bf000 JavaThread "C1 CompilerThread2" daemon [_thread_blocked, id=8294, stack(0x00007f0fedee9000,0x00007f0fedfe9000)]
+  0x00007f100c0bd800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=8293, stack(0x00007f0fedfea000,0x00007f0fee0ea000)]
+  0x00007f100c0ba800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=8292, stack(0x00007f0fee0eb000,0x00007f0fee1eb000)]
+  0x00007f100c0b6800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=8291, stack(0x00007f0fee1eb000,0x00007f0fee2ec000)]
+  0x00007f100c086000 JavaThread "Finalizer" daemon [_thread_blocked, id=8290, stack(0x00007f0feecbb000,0x00007f0feedbc000)]
+  0x00007f100c081800 JavaThread "Reference Handler" daemon [_thread_blocked, id=8289, stack(0x00007f0feedbc000,0x00007f0feeebd000)]
+
+Other Threads:
+=>0x00007f100c07a000 VMThread [stack: 0x00007f0feeebe000,0x00007f0feefbe000] [id=8288]
+  0x00007f100c0cc800 WatcherThread [stack: 0x00007f0fedce7000,0x00007f0fedde7000] [id=8296]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007f100c008bf0] Threads_lock - owner thread: 0x00007f100c07a000
+[0x00007f100c0090f0] Heap_lock - owner thread: 0x00007f0fb8007000
+
+Heap:
+ PSYoungGen      total 348672K, used 86502K [0x00000000d5580000, 0x00000000f4b80000, 0x0000000100000000)
+  eden space 262144K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000e5580000)
+  from space 86528K, 99% used [0x00000000ef700000,0x00000000f4b79a18,0x00000000f4b80000)
+  to   space 59392K, 0% used [0x00000000e5580000,0x00000000e5580000,0x00000000e8f80000)
+ ParOldGen       total 229888K, used 229808K [0x0000000080000000, 0x000000008e080000, 0x00000000d5580000)
+  object space 229888K, 99% used [0x0000000080000000,0x000000008e06c1e0,0x000000008e080000)
+ Metaspace       used 79458K, capacity 81218K, committed 81664K, reserved 1122304K
+  class space    used 9218K, capacity 9608K, committed 9728K, reserved 1048576K
+
+Card table byte_map: [0x00007f1010519000,0x00007f101091a000] byte_map_base: 0x00007f1010119000
+
+Marking Bits: (ParMarkBitMap*) 0x00007f1012420f00
+ Begin Bits: [0x00007f0ff4000000, 0x00007f0ff6000000)
+ End Bits:   [0x00007f0ff6000000, 0x00007f0ff8000000)
+
+Polling page: 0x00007f10137b8000
+
+CodeCache: size=245760Kb used=47029Kb max_used=48234Kb free=198730Kb
+ bounds [0x00007f0ffd000000, 0x00007f0ffff60000, 0x00007f100c000000]
+ total_blobs=15179 nmethods=14607 adapters=483
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 34.723 Thread 0x00007f100c0bf000 17880       3       com.sun.org.apache.xerces.internal.dom.DeferredDocumentImpl::ensureCapacity (358 bytes)
+Event: 34.724 Thread 0x00007f100c0bf000 nmethod 17880 0x00007f0fff4ce450 code [0x00007f0fff4ce840, 0x00007f0fff4d17e8]
+Event: 34.724 Thread 0x00007f100c0bf000 17879       3       com.sun.org.apache.xerces.internal.dom.DeferredDocumentImpl::createNode (46 bytes)
+Event: 34.724 Thread 0x00007f100c0bf000 nmethod 17879 0x00007f0ffd7d1d90 code [0x00007f0ffd7d1f00, 0x00007f0ffd7d2118]
+Event: 34.724 Thread 0x00007f100c0bf000 17882       3       com.sun.org.apache.xerces.internal.util.XMLAttributesImpl::addAttribute (681 bytes)
+Event: 34.733 Thread 0x00007f100c0bf000 nmethod 17882 0x00007f0fff4c8050 code [0x00007f0fff4c8520, 0x00007f0fff4cbbb8]
+Event: 34.733 Thread 0x00007f100c0bf000 17883       3       com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$ElementStack::popElement (59 bytes)
+Event: 34.734 Thread 0x00007f100c0bf000 nmethod 17883 0x00007f0ffd182990 code [0x00007f0ffd182b00, 0x00007f0ffd182d70]
+Event: 34.750 Thread 0x00007f100c0bd800 nmethod 17885 0x00007f0fff97e650 code [0x00007f0fff97ea80, 0x00007f0fff97f748]
+Event: 34.750 Thread 0x00007f100c0bd800 17891       4       com.sun.org.apache.xerces.internal.impl.XMLScanner::scanAttributeValue (991 bytes)
+
+GC Heap History (10 events):
+Event: 19.320 GC heap after
+Heap after GC invocations=15 (full 4):
+ PSYoungGen      total 214016K, used 4190K [0x00000000d5580000, 0x00000000e8f00000, 0x0000000100000000)
+  eden space 168960K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000dfa80000)
+  from space 45056K, 9% used [0x00000000dfa80000,0x00000000dfe979c0,0x00000000e2680000)
+  to   space 48640K, 0% used [0x00000000e5f80000,0x00000000e5f80000,0x00000000e8f00000)
+ ParOldGen       total 210432K, used 100796K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 47% used [0x0000000080000000,0x000000008626f168,0x000000008cd80000)
+ Metaspace       used 55978K, capacity 57076K, committed 57216K, reserved 1099776K
+  class space    used 6769K, capacity 7031K, committed 7040K, reserved 1048576K
+}
+Event: 22.257 GC heap before
+{Heap before GC invocations=16 (full 4):
+ PSYoungGen      total 214016K, used 173150K [0x00000000d5580000, 0x00000000e8f00000, 0x0000000100000000)
+  eden space 168960K, 100% used [0x00000000d5580000,0x00000000dfa80000,0x00000000dfa80000)
+  from space 45056K, 9% used [0x00000000dfa80000,0x00000000dfe979c0,0x00000000e2680000)
+  to   space 48640K, 0% used [0x00000000e5f80000,0x00000000e5f80000,0x00000000e8f00000)
+ ParOldGen       total 210432K, used 100796K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 47% used [0x0000000080000000,0x000000008626f168,0x000000008cd80000)
+ Metaspace       used 60805K, capacity 62394K, committed 62592K, reserved 1103872K
+  class space    used 7181K, capacity 7536K, committed 7552K, reserved 1048576K
+Event: 22.366 GC heap after
+Heap after GC invocations=16 (full 4):
+ PSYoungGen      total 257024K, used 15864K [0x00000000d5580000, 0x00000000e8500000, 0x0000000100000000)
+  eden space 218624K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000e2b00000)
+  from space 38400K, 41% used [0x00000000e5f80000,0x00000000e6efe0c8,0x00000000e8500000)
+  to   space 46080K, 0% used [0x00000000e2b00000,0x00000000e2b00000,0x00000000e5800000)
+ ParOldGen       total 210432K, used 101923K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 48% used [0x0000000080000000,0x0000000086388d98,0x000000008cd80000)
+ Metaspace       used 60805K, capacity 62394K, committed 62592K, reserved 1103872K
+  class space    used 7181K, capacity 7536K, committed 7552K, reserved 1048576K
+}
+Event: 26.199 GC heap before
+{Heap before GC invocations=17 (full 4):
+ PSYoungGen      total 257024K, used 234488K [0x00000000d5580000, 0x00000000e8500000, 0x0000000100000000)
+  eden space 218624K, 100% used [0x00000000d5580000,0x00000000e2b00000,0x00000000e2b00000)
+  from space 38400K, 41% used [0x00000000e5f80000,0x00000000e6efe0c8,0x00000000e8500000)
+  to   space 46080K, 0% used [0x00000000e2b00000,0x00000000e2b00000,0x00000000e5800000)
+ ParOldGen       total 210432K, used 101923K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 48% used [0x0000000080000000,0x0000000086388d98,0x000000008cd80000)
+ Metaspace       used 66113K, capacity 67680K, committed 67840K, reserved 1110016K
+  class space    used 7743K, capacity 8093K, committed 8192K, reserved 1048576K
+Event: 26.223 GC heap after
+Heap after GC invocations=17 (full 4):
+ PSYoungGen      total 264704K, used 5411K [0x00000000d5580000, 0x00000000ebc80000, 0x0000000100000000)
+  eden space 218624K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000e2b00000)
+  from space 46080K, 11% used [0x00000000e2b00000,0x00000000e3048fe0,0x00000000e5800000)
+  to   space 46080K, 0% used [0x00000000e8f80000,0x00000000e8f80000,0x00000000ebc80000)
+ ParOldGen       total 210432K, used 110611K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 52% used [0x0000000080000000,0x0000000086c04e80,0x000000008cd80000)
+ Metaspace       used 66113K, capacity 67680K, committed 67840K, reserved 1110016K
+  class space    used 7743K, capacity 8093K, committed 8192K, reserved 1048576K
+}
+Event: 28.585 GC heap before
+{Heap before GC invocations=18 (full 4):
+ PSYoungGen      total 264704K, used 224035K [0x00000000d5580000, 0x00000000ebc80000, 0x0000000100000000)
+  eden space 218624K, 100% used [0x00000000d5580000,0x00000000e2b00000,0x00000000e2b00000)
+  from space 46080K, 11% used [0x00000000e2b00000,0x00000000e3048fe0,0x00000000e5800000)
+  to   space 46080K, 0% used [0x00000000e8f80000,0x00000000e8f80000,0x00000000ebc80000)
+ ParOldGen       total 210432K, used 110611K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 52% used [0x0000000080000000,0x0000000086c04e80,0x000000008cd80000)
+ Metaspace       used 67806K, capacity 69542K, committed 69760K, reserved 1110016K
+  class space    used 7876K, capacity 8270K, committed 8320K, reserved 1048576K
+Event: 28.712 GC heap after
+Heap after GC invocations=18 (full 4):
+ PSYoungGen      total 308224K, used 46078K [0x00000000d5580000, 0x00000000edc80000, 0x0000000100000000)
+  eden space 262144K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000e5580000)
+  from space 46080K, 99% used [0x00000000e8f80000,0x00000000ebc7f998,0x00000000ebc80000)
+  to   space 59392K, 0% used [0x00000000e5580000,0x00000000e5580000,0x00000000e8f80000)
+ ParOldGen       total 210432K, used 126865K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 60% used [0x0000000080000000,0x0000000087be4440,0x000000008cd80000)
+ Metaspace       used 67806K, capacity 69542K, committed 69760K, reserved 1110016K
+  class space    used 7876K, capacity 8270K, committed 8320K, reserved 1048576K
+}
+Event: 32.106 GC heap before
+{Heap before GC invocations=19 (full 4):
+ PSYoungGen      total 308224K, used 308222K [0x00000000d5580000, 0x00000000edc80000, 0x0000000100000000)
+  eden space 262144K, 100% used [0x00000000d5580000,0x00000000e5580000,0x00000000e5580000)
+  from space 46080K, 99% used [0x00000000e8f80000,0x00000000ebc7f998,0x00000000ebc80000)
+  to   space 59392K, 0% used [0x00000000e5580000,0x00000000e5580000,0x00000000e8f80000)
+ ParOldGen       total 210432K, used 126865K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 60% used [0x0000000080000000,0x0000000087be4440,0x000000008cd80000)
+ Metaspace       used 76061K, capacity 77756K, committed 78080K, reserved 1118208K
+  class space    used 8771K, capacity 9171K, committed 9216K, reserved 1048576K
+Event: 32.276 GC heap after
+Heap after GC invocations=19 (full 4):
+ PSYoungGen      total 321536K, used 59390K [0x00000000d5580000, 0x00000000f4b80000, 0x0000000100000000)
+  eden space 262144K, 0% used [0x00000000d5580000,0x00000000d5580000,0x00000000e5580000)
+  from space 59392K, 99% used [0x00000000e5580000,0x00000000e8f7fba0,0x00000000e8f80000)
+  to   space 86528K, 0% used [0x00000000ef700000,0x00000000ef700000,0x00000000f4b80000)
+ ParOldGen       total 210432K, used 172559K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 82% used [0x0000000080000000,0x000000008a883cb0,0x000000008cd80000)
+ Metaspace       used 76061K, capacity 77756K, committed 78080K, reserved 1118208K
+  class space    used 8771K, capacity 9171K, committed 9216K, reserved 1048576K
+}
+Event: 34.760 GC heap before
+{Heap before GC invocations=20 (full 4):
+ PSYoungGen      total 321536K, used 321534K [0x00000000d5580000, 0x00000000f4b80000, 0x0000000100000000)
+  eden space 262144K, 100% used [0x00000000d5580000,0x00000000e5580000,0x00000000e5580000)
+  from space 59392K, 99% used [0x00000000e5580000,0x00000000e8f7fba0,0x00000000e8f80000)
+  to   space 86528K, 0% used [0x00000000ef700000,0x00000000ef700000,0x00000000f4b80000)
+ ParOldGen       total 210432K, used 172559K [0x0000000080000000, 0x000000008cd80000, 0x00000000d5580000)
+  object space 210432K, 82% used [0x0000000080000000,0x000000008a883cb0,0x000000008cd80000)
+ Metaspace       used 79458K, capacity 81218K, committed 81664K, reserved 1122304K
+  class space    used 9218K, capacity 9608K, committed 9728K, reserved 1048576K
+
+Deoptimization events (10 events):
+Event: 33.412 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0fff7a83b8 method=com.sun.tools.javac.code.Symbol$MethodSymbol.params()Lcom/sun/tools/javac/util/List; @ 66
+Event: 33.419 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0fff7a83b8 method=com.sun.tools.javac.code.Symbol$MethodSymbol.params()Lcom/sun/tools/javac/util/List; @ 66
+Event: 33.432 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0fff7a83b8 method=com.sun.tools.javac.code.Symbol$MethodSymbol.params()Lcom/sun/tools/javac/util/List; @ 66
+Event: 33.432 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0fff7a83b8 method=com.sun.tools.javac.code.Symbol$MethodSymbol.params()Lcom/sun/tools/javac/util/List; @ 66
+Event: 33.443 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0ffff01ea0 method=com.sun.tools.javac.tree.JCTree$JCMethodInvocation.accept(Lcom/sun/tools/javac/tree/JCTree$Visitor;)V @ 2
+Event: 33.475 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0ffff01ea0 method=com.sun.tools.javac.tree.JCTree$JCMethodInvocation.accept(Lcom/sun/tools/javac/tree/JCTree$Visitor;)V @ 2
+Event: 33.559 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0ffff01ea0 method=com.sun.tools.javac.tree.JCTree$JCMethodInvocation.accept(Lcom/sun/tools/javac/tree/JCTree$Visitor;)V @ 2
+Event: 33.597 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0ffff01ea0 method=com.sun.tools.javac.tree.JCTree$JCMethodInvocation.accept(Lcom/sun/tools/javac/tree/JCTree$Visitor;)V @ 2
+Event: 34.024 Thread 0x00007f0fb8007000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f0fffb20914 method=com.sun.tools.javac.comp.Attr.selectSym(Lcom/sun/tools/javac/tree/JCTree$JCFieldAccess;Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/c
+Event: 34.458 Thread 0x00007f0fb8007000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f0ffd3a8698 method=java.util.concurrent.ConcurrentHashMap.putVal(Ljava/lang/Object;Ljava/lang/Object;Z)Ljava/lang/Object; @ 192
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 25.274 Thread 0x00007f0fb8005000 Exception <a 'sun/nio/fs/UnixException'> (0x00000000e10d5c68) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 709]
+Event: 25.275 Thread 0x00007f0fb8005000 Exception <a 'sun/nio/fs/UnixException'> (0x00000000e10db480) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 709]
+Event: 25.275 Thread 0x00007f0fb8005000 Exception <a 'java/io/FileNotFoundException'> (0x00000000e10dd130) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 709]
+Event: 25.275 Thread 0x00007f0fb8005000 Exception <a 'java/io/FileNotFoundException'> (0x00000000e10deec0) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/prims/jni.cpp, line 709]
+Event: 26.236 Thread 0x00007f0f98003800 Exception <a 'java/lang/InterruptedException'> (0x00000000d58c5f68) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/runtime/objectMonitor.cpp, line 1684]
+Event: 26.464 Thread 0x00007f0fb8007000 Implicit null exception at 0x00007f0ffef76163 to 0x00007f0ffef761a1
+Event: 26.543 Thread 0x00007f0fb8007000 Implicit null exception at 0x00007f0ffe89547e to 0x00007f0ffe896361
+Event: 32.845 Thread 0x00007f0fb8007000 Exception <a 'java/lang/ClassNotFoundException': com/sun/org/glassfish/hk2/osgiresourcelocator/ServiceLoader> (0x00000000d98d3548) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 210]
+Event: 32.873 Thread 0x00007f0fb8007000 Exception <a 'java/lang/NullPointerException'> (0x00000000d98dc0f8) thrown at [/buildbot/src/googleplex-android/openjdk/out/hotspot/src/share/vm/interpreter/linkResolver.cpp, line 1301]
+Event: 33.288 Thread 0x00007f0fb8007000 Implicit null exception at 0x00007f0fffa84ad0 to 0x00007f0fffa84f89
+
+Events (10 events):
+Event: 34.356 Thread 0x00007f0fb8007000 DEOPT PACKING pc=0x00007f0fffb7677b sp=0x00007f0fec1952d0
+Event: 34.356 Thread 0x00007f0fb8007000 DEOPT UNPACKING pc=0x00007f0ffd0474c4 sp=0x00007f0fec195060 mode 0
+Event: 34.453 Thread 0x00007f0fb8007000 Uncommon trap: trap_request=0xffffffde fr.pc=0x00007f0ffd3a8698
+Event: 34.453 Executing VM operation: RevokeBias
+Event: 34.453 Executing VM operation: RevokeBias done
+Event: 34.458 Thread 0x00007f0fb8007000 DEOPT PACKING pc=0x00007f0ffd3a8698 sp=0x00007f0fec1945d0
+Event: 34.458 Thread 0x00007f0fb8007000 DEOPT UNPACKING pc=0x00007f0ffd04547a sp=0x00007f0fec194558 mode 2
+Event: 34.709 Thread 0x00007f0fb8007000 DEOPT PACKING pc=0x00007f0fff805e5b sp=0x00007f0fec194f50
+Event: 34.709 Thread 0x00007f0fb8007000 DEOPT UNPACKING pc=0x00007f0ffd0474c4 sp=0x00007f0fec194ce0 mode 0
+Event: 34.760 Executing VM operation: ParallelGCFailedAllocation
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 08:01 8129103                            /home/amandeep/android-studio/jre/jre/bin/java
+00401000-00402000 rw-p 00000000 08:01 8129103                            /home/amandeep/android-studio/jre/jre/bin/java
+00e09000-00e2a000 rw-p 00000000 00:00 0                                  [heap]
+80000000-8e080000 rw-p 00000000 00:00 0 
+8e080000-d5580000 ---p 00000000 00:00 0 
+d5580000-f4b80000 rw-p 00000000 00:00 0 
+fab80000-100000000 ---p 00000000 00:00 0 
+100000000-100980000 rw-p 00000000 00:00 0 
+100980000-140000000 ---p 00000000 00:00 0 
+7f0f90000000-7f0f90021000 rw-p 00000000 00:00 0 
+7f0f90021000-7f0f94000000 ---p 00000000 00:00 0 
+7f0f98000000-7f0f98e66000 rw-p 00000000 00:00 0 
+7f0f98e66000-7f0f9c000000 ---p 00000000 00:00 0 
+7f0f9c8d1000-7f0f9c911000 rw-p 00000000 00:00 0 
+7f0f9c911000-7f0f9cad1000 ---p 00000000 00:00 0 
+7f0f9cad1000-7f0f9ccd1000 rw-p 00000000 00:00 0 
+7f0f9ccd1000-7f0f9cce4000 r--s 00345000 08:01 8129002                    /home/amandeep/android-studio/jre/jre/lib/resources.jar
+7f0f9cce4000-7f0f9cee4000 rw-p 00000000 00:00 0 
+7f0f9cee4000-7f0f9d0e4000 rw-p 00000000 00:00 0 
+7f0f9d0e4000-7f0f9d1c9000 r-xp 00000000 08:01 10094905                   /tmp/room-60305a19-c828-4d04-a0a6-0cf531a71ec6/sqlite-3.20.1-c106cc92-d4d6-4aee-8304-e5ca35d06ef8-libsqlitejdbc.so
+7f0f9d1c9000-7f0f9d3c8000 ---p 000e5000 08:01 10094905                   /tmp/room-60305a19-c828-4d04-a0a6-0cf531a71ec6/sqlite-3.20.1-c106cc92-d4d6-4aee-8304-e5ca35d06ef8-libsqlitejdbc.so
+7f0f9d3c8000-7f0f9d3cd000 rw-p 000e4000 08:01 10094905                   /tmp/room-60305a19-c828-4d04-a0a6-0cf531a71ec6/sqlite-3.20.1-c106cc92-d4d6-4aee-8304-e5ca35d06ef8-libsqlitejdbc.so
+7f0f9d3cd000-7f0f9d5ce000 rw-p 00000000 00:00 0 
+7f0f9d5ce000-7f0f9d7ce000 rw-p 00000000 00:00 0 
+7f0f9d7ce000-7f0f9d7d5000 r--s 0004c000 08:01 9965023                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.esotericsoftware/kryo/4.0.1/5053899c213a6ce50a800d4902c5a9de49fe0098/kryo-4.0.1.jar
+7f0f9d7d5000-7f0f9d7d9000 r--s 00016000 08:01 9965022                    /home/amandeep/.gradle/caches/modules-2/files-2.1/de.javakaffee/kryo-serializers/0.40/562cb61898302da4e8d3fd141c821edb1bc6b36d/kryo-serializers-0.40.jar
+7f0f9d7d9000-7f0f9d7da000 r--s 00000000 08:01 9965010                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/annotations/4.7.1/796c0bf0a61141278c4bc32de2b92e6eb7fa8b1a/annotations-4.7.1.jar
+7f0f9d7da000-7f0f9d7db000 r--s 00004000 08:01 9965009                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/disklrucache/4.7.1/21e6054c134c7f5c435ab7635984f39c5375083e/disklrucache-4.7.1.jar
+7f0f9d7db000-7f0f9d7dc000 r--s 00002000 08:01 9967526                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.0.18/5f65affce1684999e2f4024983835efc3504012e/error_prone_annotations-2.0.18.jar
+7f0f9d7dc000-7f0f9d7ee000 r--s 00042000 08:01 9969327                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.0.0/518929596ee3249127502a8573b2e008e2d51ed3/checker-qual-2.0.0.jar
+7f0f9d7ee000-7f0f9d7f1000 r--s 00006000 08:01 9967525                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar
+7f0f9d7f1000-7f0f9d7f2000 r--s 00001000 08:01 9971350                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/8038ec69507ae7fe8fe62e8dcc7b5561/jars/classes.jar
+7f0f9d7f2000-7f0f9d7f4000 r--s 00008000 08:01 9965007                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpmime/4.3/5b0002c5fb66867ca919be0fbd86de1cfaf76da7/httpmime-4.3.jar
+7f0f9d7f4000-7f0f9d7fe000 r--s 00074000 08:01 9965006                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient-android/4.3.5.1/eecbb0b998e77629862a13d957d552b3be58fc4e/httpclient-android-4.3.5.1.jar
+7f0f9d7fe000-7f0f9d7ff000 r--s 00003000 08:01 8918900                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/paperdb-2.6.aar/ef318c85cab54cc40c98f8640a9a69da/jars/classes.jar
+7f0f9d7ff000-7f0f9d800000 r--s 00000000 08:01 9966032                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.2/323964c36556eb0e6209f65c1cef72b53b461ab8/reactive-streams-1.0.2.jar
+7f0f9d800000-7f0f9d803000 r--s 00019000 08:01 9965245                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.support.constraint/constraint-layout-solver/1.1.0/931532e953a477f876f2de18c2e7f16eee01078f/constraint-layout-solver-1.1.0.jar
+7f0f9d803000-7f0f9d809000 r--s 00037000 08:01 13632247                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/fabric-1.4.7.aar/e2731b854df9f2cc530e061f84d31ddd/jars/classes.jar
+7f0f9d809000-7f0f9d80b000 r--s 00010000 08:01 13632240                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/answers-1.4.6.aar/82143b41f50712ecd527c118fcbbc9b0/jars/classes.jar
+7f0f9d80b000-7f0f9d80f000 r--s 00029000 08:01 13632234                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/crashlytics-core-2.6.7.aar/ed4c1b9302790aefa660f0e3ec35c1a2/jars/classes.jar
+7f0f9d80f000-7f0f9d810000 r--s 00000000 08:01 13632230                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/beta-1.2.10.aar/2a606a7bf30e6267192c727678bccbc7/jars/classes.jar
+7f0f9d810000-7f0f9d812000 r--s 00014000 08:01 9965217                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.15.0/bc28b5a964c8f5721eb58ee3f3c47a9bcbf4f4d8/okio-1.15.0.jar
+7f0f9d812000-7f0f9d842000 r--s 0023e000 08:01 9969326                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.5-android/4d11fefa7af9a26f4ad0071c2939537755224cba/guava-23.5-android.jar
+7f0f9d842000-7f0f9d847000 r--s 00036000 08:01 9969320                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/f645ed69d595b24d4cf8b3fbb64cc505bede8829/gson-2.8.5.jar
+7f0f9d847000-7f0f9d848000 r--s 00001000 08:01 9969325                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.6.2/ed193d86e0af90cc2342aedbe73c5d86b03fa09b/auto-value-annotations-1.6.2.jar
+7f0f9d848000-7f0f9d84b000 r--s 00018000 08:01 3670482                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/volley-1.1.1.aar/5ca3a99a59f254328e51a417d67a7f5d/jars/classes.jar
+7f0f9d84b000-7f0f9d84d000 r--s 00005000 08:01 9965020                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/27.1.1/39ded76b5e1ce1c5b2688e1d25cdc20ecee32007/support-annotations-27.1.1.jar
+7f0f9d84d000-7f0f9d84f000 r--s 00004000 08:01 9965031                    /home/amandeep/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.1.0/edf3f7bfb84a7521d0599efa3b0113a0ee90f85/common-1.1.0.jar
+7f0f9d84f000-7f0f9d850000 r--s 00002000 08:01 9966609                    /home/amandeep/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.1.1/e55b70d1f5620db124b3e85a7f4bdc7bd48d9f95/common-1.1.1.jar
+7f0f9d850000-7f0f9d851000 r--s 00004000 08:01 9183177                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/22373712445b9ffe71aab4daf1156926/jars/classes.jar
+7f0f9d851000-7f0f9d853000 r--s 00000000 08:01 10094957                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/a94c5210a305ddee67f4c2ff5567f761/jars/classes.jar
+7f0f9d853000-7f0f9d854000 r--s 00002000 08:01 9712398                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/85d014e3d10c19471061c2ccae94322b/jars/classes.jar
+7f0f9d854000-7f0f9d855000 r--s 00002000 08:01 12074597                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/db-1.1.1.aar/926c152dccb6223ea2db71588eee09af/jars/classes.jar
+7f0f9d855000-7f0f9d856000 r--s 00002000 08:01 12074592                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/db-framework-1.1.1.aar/9c16a2ec07d8840adfa72c61bf1361e1/jars/classes.jar
+7f0f9d856000-7f0f9d859000 r--s 00026000 08:01 3671057                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-measurement-base-15.0.4.aar/822c788686db2e0924656bb2e272a4bf/jars/classes.jar
+7f0f9d859000-7f0f9d85a000 r--s 00002000 08:01 9445516                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/53affbae2bb83d44517455d1067be0ea/jars/classes.jar
+7f0f9d85a000-7f0f9d866000 r--s 00080000 08:01 9836562                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/52129cc94868d0352decb73b190bda89/jars/classes.jar
+7f0f9d866000-7f0f9d86e000 r--s 0004c000 08:01 11142375                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/56d1fab9000c31a70024cadaf3301301/jars/classes.jar
+7f0f9d86e000-7f0f9d86f000 r--s 00007000 08:01 9836555                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/a1cdf403941f9c8e04c55d33ba039526/jars/classes.jar
+7f0f9d86f000-7f0f9d872000 r--s 00017000 08:01 9712389                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/f58003c060bf23dc8a38fe599384ea3d/jars/classes.jar
+7f0f9d872000-7f0f9d877000 r--s 0002c000 08:01 9445525                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/0cf6a1f52b387b86810b4b319d247b7e/jars/classes.jar
+7f0f9d877000-7f0f9d87b000 r--s 00043000 08:01 9712391                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/8b857f5e79bfc149418a13f6810dc7f1/jars/classes.jar
+7f0f9d87b000-7f0f9d87c000 r--s 00008000 08:01 9310808                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/615833b03206dbd93add44a790df51f2/jars/classes.jar
+7f0f9d87c000-7f0f9d880000 r--s 00029000 08:01 9445514                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/5d14203e0f716691ff806da8924f717e/jars/classes.jar
+7f0f9d880000-7f0f9d890000 r--s 00091000 08:01 8395755                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/aea30246cdf68be707f7ab4a443410af/jars/classes.jar
+7f0f9d890000-7f0f9d892000 r--s 0000c000 08:01 10094901                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/4e9a79bf30924b7b30852a5b50d8edd1/jars/classes.jar
+7f0f9d892000-7f0f9d894000 r--s 00008000 08:01 12195035                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/tokenautocomplete-2.0.3.aar/597181e5f695deb58f711299158e3dda/jars/classes.jar
+7f0f9d894000-7f0f9d89a000 r--s 00051000 08:01 9965005                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.10.3/b842f960942503cf1abbcc8c173a7f2c19d43726/jsoup-1.10.3.jar
+7f0f9d89a000-7f0f9d8cb000 r--s 001fd000 08:01 9966029                    /home/amandeep/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava2/rxjava/2.1.12/975d34a9f14da5b0aecffa603501e9716aae5aa4/rxjava-2.1.12.jar
+7f0f9d8cb000-7f0f9d8cd000 r--s 00001000 08:01 4196356                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/rxandroid-2.0.2.aar/382cc0976333aa51774736c38e00866b/jars/classes.jar
+7f0f9d8cd000-7f0f9d8ce000 r--s 00004000 08:01 4196344                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/circleprogress-1.2.1.aar/5b8b9d0ffaee460e7eb9009f82044103/jars/classes.jar
+7f0f9d8ce000-7f0f9d8d4000 r--s 00046000 08:01 9965923                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v2.1.6/b036abbb61656165da99cf44898e4b9123687e65/MPAndroidChart-v2.1.6.jar
+7f0f9d8d4000-7f0f9d8d6000 r--s 00014000 08:01 4196388                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/multipicker-1.6.aar/da279cc06c5f9d892f63418f3abcfdbb/jars/classes.jar
+7f0f9d8d6000-7f0f9d8d7000 r--s 0000e000 08:01 12326290                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.0.aar/d89ba86ef333801bb8ff3b99aa4a3b1f/jars/classes.jar
+7f0f9d8d7000-7f0f9d8d8000 r--s 00001000 08:01 12720808                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/crashlytics-2.9.8.aar/779c34db189616e4b3aeeed28ba37272/jars/classes.jar
+7f0f9d8d8000-7f0f9d8db000 r--s 0001b000 08:01 9965920                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar
+7f0f9d8db000-7f0f9d8e1000 r--s 00062000 08:01 9965216                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.12.2/6ebea791309851e6cf95df2127731631fbba0a9d/okhttp-3.12.2.jar
+7f0f9d8e1000-7f0f9d8e3000 r--s 00001000 08:01 9965003                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.9.1/36e71ab9e903fc4d1b4a58d80572a91d9fd60caf/logging-interceptor-3.9.1.jar
+7f0f9d8e3000-7f0f9d8e6000 r--s 00014000 08:01 9965002                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.4.0/fc4aa382632bfaa7be7b41579efba41d5a71ecf3/retrofit-2.4.0.jar
+7f0f9d8e6000-7f0f9d8e7000 r--s 00001000 08:01 9964996                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.4.0/15d7790ee311d961379c51b00aba12d5967cb7ea/converter-gson-2.4.0.jar
+7f0f9d8e7000-7f0f9d8eb000 r--s 0001a000 08:01 9965215                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.9.0/a681c044244d9fc375198588297a39ba78028423/retrofit-1.9.0.jar
+7f0f9d8eb000-7f0f9d8ec000 r--s 00001000 08:01 9965220                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.jakewharton.retrofit/retrofit1-okhttp3-client/1.0.2/7ed8a7e78c34074ec462b408b3c8a161028cb650/retrofit1-okhttp3-client-1.0.2.jar
+7f0f9d8ec000-7f0f9d8ed000 r--s 00000000 08:01 9310802                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/70c61e798f1ceb1c07b651f7b42617c7/jars/classes.jar
+7f0f9d8ed000-7f0f9d8f4000 r--s 0007a000 08:01 3670864                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-basement-16.2.0.aar/bc59e57ad6efddb6b0d30a656f1396c2/jars/classes.jar
+7f0f9d8f4000-7f0f9d8f5000 r--s 00005000 08:01 3670873                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-ads-identifier-15.0.1.aar/abdcac9ff9237ab6716f44e8876673df/jars/classes.jar
+7f0f9d8f5000-7f0f9d8f6000 r--s 00003000 08:01 3670856                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-stats-16.0.1.aar/db8c6c2fe949be3d99a3a246b975a030/jars/classes.jar
+7f0f9d8f6000-7f0f9d8f7000 r--s 00001000 08:01 3670848                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-measurement-connector-17.0.1.aar/1430cfc156d42cd3297f4aa3b6a3b406/jars/classes.jar
+7f0f9d8f7000-7f0f9d8f9000 r--s 00012000 08:01 3670838                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-tasks-16.0.1.aar/8e0253fb64a656c3fed47db313a114dd/jars/classes.jar
+7f0f9d8f9000-7f0f9d903000 r--s 000eb000 08:01 3670555                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-base-16.1.0.aar/9a879973f5a39780b1a95c9cf3ffc60a/jars/classes.jar
+7f0f9d903000-7f0f9d905000 r--s 0000d000 08:01 3670551                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-phenotype-16.0.0.aar/4283d225a9388acbf7fed66fd2491353/jars/classes.jar
+7f0f9d905000-7f0f9d906000 r--s 00000000 08:01 3670535                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-iid-interop-16.0.1.aar/416690013c72fd3051d1f17e7f7f86aa/jars/classes.jar
+7f0f9d906000-7f0f9d90f000 r--s 000b3000 08:01 3670834                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-clearcut-16.0.0.aar/00f8fbb2bd9a80f63617095996cf5aa0/jars/classes.jar
+7f0f9d90f000-7f0f9d913000 r--s 0003b000 08:01 3670563                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-15.1.0.aar/d0e439a588e65e047fe117eb99a92337/jars/classes.jar
+7f0f9d913000-7f0f9d914000 r--s 00004000 08:01 3670540                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-15.0.1.aar/07f12a497897353b2bbe050bff1efe52/jars/classes.jar
+7f0f9d914000-7f0f9d916000 r--s 00019000 08:01 3670522                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-common-16.0.3.aar/c704c25c0e4e40c2fc9ed0b50b28daa0/jars/classes.jar
+7f0f9d916000-7f0f9d919000 r--s 00024000 08:01 3670518                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-iid-17.0.4.aar/8cf3a97c4a42b893a865e1102e4c2b40/jars/classes.jar
+7f0f9d919000-7f0f9d91f000 r--s 000b7000 08:01 11145246                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-16.0.0.aar/3dddc4b99cf044f415c5ca95834fbc3f/jars/classes.jar
+7f0f9d91f000-7f0f9d921000 r--s 00001000 08:01 11143515                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-analytics-16.0.0.aar/bb0143250331773ea0832f452cc415da/jars/classes.jar
+7f0f9d921000-7f0f9d922000 r--s 00003000 08:01 11143500                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-measurement-connector-impl-16.0.0.aar/a3433fd3b21c60e8f234bcde0e467c84/jars/classes.jar
+7f0f9d922000-7f0f9d923000 r--s 00001000 08:01 3670496                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-places-placereport-16.0.0.aar/55fa6d1509a5db47f2c52d49dd6e4126/jars/classes.jar
+7f0f9d923000-7f0f9d928000 r--s 00058000 08:01 3670505                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-analytics-impl-16.0.0.aar/34772dc130ccad3cbc814de8a66f2063/jars/classes.jar
+7f0f9d928000-7f0f9d92e000 r--s 00063000 08:01 3670491                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-tagmanager-v4-impl-16.0.0.aar/70aff2c744b9eec06bbe939c27947122/jars/classes.jar
+7f0f9d92e000-7f0f9d939000 r--s 000a0000 08:01 10099678                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/f37f18e404428b5e485be5dae7300e58/jars/classes.jar
+7f0f9d939000-7f0f9d93b000 r--s 00004000 08:01 9971336                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.1.aar/4fc8e4257006ab6af2cdc8d727d3ec2f/jars/classes.jar
+7f0f9d93b000-7f0f9d941000 r--s 00058000 08:01 9576712                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/41e47edd622041c4ece72d48b011dc0c/jars/classes.jar
+7f0f9d941000-7f0f9d947000 r--s 00043000 08:01 9445507                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/d7b47b7a7cdeb0e543a2b862297acd8b/jars/classes.jar
+7f0f9d947000-7f0f9d94d000 r--s 00045000 08:01 12194974                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/stripe-android-6.1.2.aar/24bec36855bc48237dda9a31d301665e/jars/classes.jar
+7f0f9d94d000-7f0f9d962000 r--s 00130000 08:01 4195440                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/fugu-1.76.1.aar/61a795744a6d8c04dde605f7661046ec/jars/classes.jar
+7f0f9d962000-7f0f9d965000 r--s 0002e000 08:01 3670406                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-auth-16.0.0.aar/8e651c7b49ca10fd006ff04b95acc339/jars/classes.jar
+7f0f9d965000-7f0f9d966000 r--s 00000000 08:01 9704727                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-core-16.0.0.aar/b3e9c0c79013cd37b8ad98be845805e3/jars/classes.jar
+7f0f9d966000-7f0f9d967000 r--s 0000b000 08:01 3670294                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/firebase-messaging-17.3.4.aar/0ba936c612d731a20321196cc7fb5472/jars/classes.jar
+7f0f9d967000-7f0f9d96b000 r--s 00049000 08:01 3670050                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-location-16.0.0.aar/f3e02a967868cdc5f4c8250f4ac60df3/jars/classes.jar
+7f0f9d96b000-7f0f9d973000 r--s 0007d000 08:01 3670059                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-maps-16.0.0.aar/763c60b74493fc7413df358f4c3eed8a/jars/classes.jar
+7f0f9d973000-7f0f9d97f000 r--s 0006b000 08:01 3670060                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/places-1.0.0.aar/18c52fb49f9a5da369a4559f0219592b/jars/classes.jar
+7f0f9d97f000-7f0f9d980000 r--s 00001000 08:01 3670053                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/play-services-analytics-16.0.0.aar/94dad5b64299d95b942d5124f528c7e0/jars/classes.jar
+7f0f9d980000-7f0f9d983000 r--s 0000e000 08:01 10099673                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/library-3.3.2.aar/8d9395b42e7f809b9e4d62cb07ce4b14/jars/classes.jar
+7f0f9d983000-7f0f9d98a000 r--s 0001f000 08:01 9965372                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.21/f30e4a9897913e53d778f564110bafa1fef46643/kotlin-stdlib-common-1.3.21.jar
+7f0f9d98a000-7f0f9d9bc000 r--s 0026c000 08:01 9964303                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/26.0-jre/6a806eff209f36f635f943e16d97491f00f6bfab/guava-26.0-jre.jar
+7f0f9d9bc000-7f0f9d9d3000 r--s 00154000 08:01 9964310                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.5.3/f35db7e4b2446e4174ba6a73db7bd6b3e6bb5da1/antlr4-4.5.3.jar
+7f0f9d9d3000-7f0f9dadf000 r--s 01b1a000 08:01 9964382                    /home/amandeep/Android/Sdk/platforms/android-27/android.jar
+7f0f9dadf000-7f0f9dae2000 ---p 00000000 00:00 0 
+7f0f9dae2000-7f0f9dde0000 rw-p 00000000 00:00 0 
+7f0f9dde0000-7f0f9dfe0000 rw-p 00000000 00:00 0 
+7f0f9dfe0000-7f0f9e1e0000 rw-p 00000000 00:00 0 
+7f0f9e1e0000-7f0f9e3e0000 rw-p 00000000 00:00 0 
+7f0f9e3e0000-7f0f9e5e0000 rw-p 00000000 00:00 0 
+7f0f9e5e0000-7f0f9e7e0000 rw-p 00000000 00:00 0 
+7f0f9e7e0000-7f0f9e7e1000 r--s 00006000 08:01 10230619                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/multidex-1.0.3.aar/a977f149614886f4be319f67f9c3d686/jars/classes.jar
+7f0f9e7e1000-7f0f9e7e4000 r--s 00011000 08:01 10230606                   /home/amandeep/.gradle/caches/transforms-1/files-1.1/adapters-3.3.2.aar/0623c0434ebb45ac7c317a56ca4223a7/jars/classes.jar
+7f0f9e7e4000-7f0f9e7e6000 r--s 00006000 08:01 4195426                    /home/amandeep/.gradle/caches/transforms-1/files-1.1/signature-pad-1.2.1.aar/7c2f52b1b5469269adb019684781efa4/jars/classes.jar
+7f0f9e7e6000-7f0f9e7e7000 r--s 00000000 08:01 9964352                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar
+7f0f9e7e7000-7f0f9e7f1000 r--s 00026000 08:01 9964350                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.5.2/cea74543d5904a30861a61b4643a5f2bb372efc4/checker-qual-2.5.2.jar
+7f0f9e7f1000-7f0f9e9f1000 rw-p 00000000 00:00 0 
+7f0f9e9f1000-7f0f9ebf1000 rw-p 00000000 00:00 0 
+7f0f9ebf1000-7f0f9edf1000 rw-p 00000000 00:00 0 
+7f0f9edf1000-7f0f9eff1000 rw-p 00000000 00:00 0 
+7f0f9eff1000-7f0f9eff3000 r--s 00001000 08:01 9964351                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/ed28ded51a8b1c6b112568def5f4b455e6809019/j2objc-annotations-1.1.jar
+7f0f9eff3000-7f0f9eff5000 r--s 00002000 08:01 9965371                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar
+7f0f9eff5000-7f0f9eff7000 r--s 00003000 08:01 9964319                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar
+7f0f9eff7000-7f0f9eff8000 r--s 00001000 08:01 9964300                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.tools/annotations/26.3.2/b44255ac410552d5e65e159830596b2a9a0a3d9a/annotations-26.3.2.jar
+7f0f9eff8000-7f0f9effd000 r--s 00034000 08:01 9964304                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar
+7f0f9effd000-7f0f9f000000 r--s 00004000 08:01 9966351                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/26.1.0/814258103cf26a15fcc26ecce35f5b7d24b73f8/support-annotations-26.1.0.jar
+7f0f9f000000-7f0f9f200000 rw-p 00000000 00:00 0 
+7f0f9f200000-7f0f9f400000 rw-p 00000000 00:00 0 
+7f0f9f400000-7f0f9f600000 rw-p 00000000 00:00 0 
+7f0f9f600000-7f0f9f800000 rw-p 00000000 00:00 0 
+7f0f9f800000-7f0f9fa00000 rw-p 00000000 00:00 0 
+7f0f9fa00000-7f0f9fc00000 rw-p 00000000 00:00 0 
+7f0f9fc00000-7f0f9fe00000 rw-p 00000000 00:00 0 
+7f0f9fe00000-7f0fa0000000 rw-p 00000000 00:00 0 
+7f0fa0000000-7f0fa0021000 rw-p 00000000 00:00 0 
+7f0fa0021000-7f0fa4000000 ---p 00000000 00:00 0 
+7f0fa4000000-7f0fa553a000 rw-p 00000000 00:00 0 
+7f0fa553a000-7f0fa8000000 ---p 00000000 00:00 0 
+7f0fa8000000-7f0fa8021000 rw-p 00000000 00:00 0 
+7f0fa8021000-7f0fac000000 ---p 00000000 00:00 0 
+7f0fac000000-7f0fac021000 rw-p 00000000 00:00 0 
+7f0fac021000-7f0fb0000000 ---p 00000000 00:00 0 
+7f0fb0000000-7f0fb002a000 rw-p 00000000 00:00 0 
+7f0fb002a000-7f0fb4000000 ---p 00000000 00:00 0 
+7f0fb4000000-7f0fb4021000 rw-p 00000000 00:00 0 
+7f0fb4021000-7f0fb8000000 ---p 00000000 00:00 0 
+7f0fb8000000-7f0fb8021000 rw-p 00000000 00:00 0 
+7f0fb8021000-7f0fbc000000 ---p 00000000 00:00 0 
+7f0fbc000000-7f0fbc021000 rw-p 00000000 00:00 0 
+7f0fbc021000-7f0fc0000000 ---p 00000000 00:00 0 
+7f0fc0000000-7f0fc0021000 rw-p 00000000 00:00 0 
+7f0fc0021000-7f0fc4000000 ---p 00000000 00:00 0 
+7f0fc4000000-7f0fc4021000 rw-p 00000000 00:00 0 
+7f0fc4021000-7f0fc8000000 ---p 00000000 00:00 0 
+7f0fc8000000-7f0fc9d72000 rw-p 00000000 00:00 0 
+7f0fc9d72000-7f0fcc000000 ---p 00000000 00:00 0 
+7f0fcc000000-7f0fcd6c1000 rw-p 00000000 00:00 0 
+7f0fcd6c1000-7f0fd0000000 ---p 00000000 00:00 0 
+7f0fd0000000-7f0fd0021000 rw-p 00000000 00:00 0 
+7f0fd0021000-7f0fd4000000 ---p 00000000 00:00 0 
+7f0fd4000000-7f0fd6092000 rw-p 00000000 00:00 0 
+7f0fd6092000-7f0fd8000000 ---p 00000000 00:00 0 
+7f0fd8000000-7f0fd8021000 rw-p 00000000 00:00 0 
+7f0fd8021000-7f0fdc000000 ---p 00000000 00:00 0 
+7f0fdc000000-7f0fdc021000 rw-p 00000000 00:00 0 
+7f0fdc021000-7f0fe0000000 ---p 00000000 00:00 0 
+7f0fe0000000-7f0fe002a000 rw-p 00000000 00:00 0 
+7f0fe002a000-7f0fe4000000 ---p 00000000 00:00 0 
+7f0fe4000000-7f0fe42bf000 rw-p 00000000 00:00 0 
+7f0fe42bf000-7f0fe8000000 ---p 00000000 00:00 0 
+7f0fe8000000-7f0fe8021000 rw-p 00000000 00:00 0 
+7f0fe8021000-7f0fec000000 ---p 00000000 00:00 0 
+7f0fec000000-7f0fec001000 r--s 00003000 08:01 9964308                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/3.3.2/f47429190ed8581146471c690bb425ac466f4b62/baseLibrary-3.3.2.jar
+7f0fec001000-7f0fec004000 r--s 00033000 08:01 9964311                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/cd49678784c46aa8789c060538e0154013bb421b/juniversalchardet-1.0.3.jar
+7f0fec004000-7f0fec008000 r--s 0002a000 08:01 9964309                    /home/amandeep/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar
+7f0fec008000-7f0fec00a000 r--s 00002000 08:01 9963592                    /home/amandeep/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/common/1.1.1/8094cc50760b9ac665a8ea76b51888f70042e2b5/common-1.1.1.jar
+7f0fec00a000-7f0fec011000 r--s 0003f000 08:01 9966271                    /home/amandeep/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar
+7f0fec011000-7f0fec015000 r--s 00651000 08:01 9970249                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.xerial/sqlite-jdbc/3.20.1/df3068e837e9490a9554212fcab40a2c55faf0a3/sqlite-jdbc-3.20.1.jar
+7f0fec015000-7f0fec017000 r--s 00015000 08:01 9964312                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.squareup/javapoet/1.8.0/e858dc62ef484048540d27d36f3ec2177a3fa9b1/javapoet-1.8.0.jar
+7f0fec017000-7f0fec01a000 r--s 0000f000 08:01 9970247                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.google.auto/auto-common/0.6/cf7212b0f8bfef12657b942df8f4f2cf032d3f41/auto-common-0.6.jar
+7f0fec01a000-7f0fec02d000 r--s 0010f000 08:01 9965376                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.21/4bcc2012b84840e19e1e28074284cac908be0295/kotlin-stdlib-1.3.21.jar
+7f0fec02d000-7f0fec06b000 r--s 002f3000 08:01 9970248                    /home/amandeep/.gradle/caches/modules-2/files-2.1/me.eugeniomarletti.kotlin.metadata/kotlin-compiler-lite/1.0.3-k-1.2.40/a16e967c276379eaf6e1fa03af77664f003db947/kotlin-compiler-lite-1.0.3-k-1.2.40.jar
+7f0fec06b000-7f0fec076000 r--s 000fe000 08:01 9965378                    /home/amandeep/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler/3.3.2/dd3411d9e93dada227e8f6a8a13c851cfa9532b4/databinding-compiler-3.3.2.jar
+7f0fec076000-7f0fec085000 r--s 000e7000 08:01 9970244                    /home/amandeep/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/compiler/1.1.1/53037626f1971006fcf8e112594c6902efafff6/compiler-1.1.1.jar
+7f0fec085000-7f0fec099000 r--s 00128000 08:01 9965416                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.40/b8a521c687329303778548e2f09b0ba5b2665236/kotlin-stdlib-1.3.40.jar
+7f0fec099000-7f0fec09c000 ---p 00000000 00:00 0 
+7f0fec09c000-7f0fec39a000 rw-p 00000000 00:00 0 
+7f0fec39a000-7f0fec39d000 r--s 0001c000 08:01 9964275                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.android.tools.build.jetifier/jetifier-core/1.0.0-beta02/fa93fdb83bdfd51e80e09a808fb2515a7134d406/jetifier-core-1.0.0-beta02.jar
+7f0fec39d000-7f0fec3a4000 r--s 00052000 08:01 9964252                    /home/amandeep/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler-common/3.3.2/62da33e20ba59e879f3cd60ed0d8353f1dbddeba/databinding-compiler-common-3.3.2.jar
+7f0fec3a4000-7f0fec3b5000 r--s 00102000 08:01 9969744                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.2.2/6ff48bdfc38a8c22e3fc37605b6a6afaed3b6dbd/kotlinx-coroutines-core-1.2.2.jar
+7f0fec3b5000-7f0fec3b7000 r--s 0000c000 08:01 9965034                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.4/da08b8cce7bbf903602a25a3a163ae252435795/asm-5.0.4.jar
+7f0fec3b7000-7f0fec3b8000 r--s 00003000 08:01 9964307                    /home/amandeep/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-common/3.3.2/c3d3a2bd4075de662778b79f7bcf480ca1d4e0d9/databinding-common-3.3.2.jar
+7f0fec3b8000-7f0fec3b9000 r--s 00000000 08:01 9964285                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.21/d207ce2c9bcf17dc8e51bab4dbfdac4d013e7138/kotlin-stdlib-jdk7-1.3.21.jar
+7f0fec3b9000-7f0fec3bb000 r--s 00002000 08:01 9964265                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.3.21/d0634d54452abc421db494ad32dd215e6591c49f/kotlin-stdlib-jdk8-1.3.21.jar
+7f0fec3bb000-7f0fec3be000 r--s 0000c000 08:01 9970246                    /home/amandeep/.gradle/caches/modules-2/files-2.1/me.eugeniomarletti.kotlin.metadata/kotlin-metadata/1.4.0/f90c95f5fc4db865dfb0499671a81e02e2080032/kotlin-metadata-1.4.0.jar
+7f0fec3be000-7f0fec3c5000 r--s 00021000 08:01 9969741                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.40/ff8f3da514fc2877d1303d55e22d6da8156c29fb/kotlin-stdlib-common-1.3.40.jar
+7f0fec3c5000-7f0fec3ca000 r--s 00042000 08:01 9965983                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-annotation-processing-gradle/1.3.0/d348139d1750895f6081773c5ef6392cba7139ae/kotlin-annotation-processing-gradle-1.3.0.jar
+7f0fec3ca000-7f0fec3d1000 r--s 0004b000 08:01 9965985                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.3.0/87970b36b9e1855d0d0e4942865f63a1015026c9/kotlin-android-extensions-1.3.0.jar
+7f0fec3d1000-7f0fec3d2000 r--s 00003000 08:01 9970245                    /home/amandeep/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/migration/1.1.1/663d64aaa09566ad57d8367c38bd82b810674782/migration-1.1.1.jar
+7f0fec3d2000-7f0fec3d3000 r--s 00004000 08:01 9969900                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.2.2/99e862f247efbf786bce0bd0f9e5ec9c6332e85b/kotlinx-coroutines-android-1.2.2.jar
+7f0fec3d3000-7f0fec3d4000 r--s 00000000 08:01 9966031                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.0/683e04a4e7f17437d7e1390480f312e122e42e9e/kotlin-stdlib-jdk7-1.3.0.jar
+7f0fec3d4000-7f0fec3d7000 r--s 0000b000 08:01 9965030                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.5.1/272bab9a4e5994757044d1fc43ce480c8cb907a4/objenesis-2.5.1.jar
+7f0fec3d7000-7f0fec5d7000 rw-p 00000000 00:00 0 
+7f0fec5d7000-7f0fec7d7000 rw-p 00000000 00:00 0 
+7f0fec7d7000-7f0fec9d7000 rw-p 00000000 00:00 0 
+7f0fec9d7000-7f0fecbd7000 rw-p 00000000 00:00 0 
+7f0fecbd7000-7f0fecdd7000 rw-p 00000000 00:00 0 
+7f0fecdd7000-7f0fecfd7000 rw-p 00000000 00:00 0 
+7f0fecfd7000-7f0fecfda000 ---p 00000000 00:00 0 
+7f0fecfda000-7f0fed0d8000 rw-p 00000000 00:00 0 
+7f0fed0d8000-7f0fed0db000 ---p 00000000 00:00 0 
+7f0fed0db000-7f0fed3d9000 rw-p 00000000 00:00 0 
+7f0fed3d9000-7f0fed3dc000 ---p 00000000 00:00 0 
+7f0fed3dc000-7f0fed4da000 rw-p 00000000 00:00 0 
+7f0fed4da000-7f0fed4dd000 ---p 00000000 00:00 0 
+7f0fed4dd000-7f0fed5db000 rw-p 00000000 00:00 0 
+7f0fed5db000-7f0fed5de000 ---p 00000000 00:00 0 
+7f0fed5de000-7f0fed6dc000 rw-p 00000000 00:00 0 
+7f0fed6dc000-7f0fed6df000 ---p 00000000 00:00 0 
+7f0fed6df000-7f0fed7dd000 rw-p 00000000 00:00 0 
+7f0fed7dd000-7f0fed7e0000 ---p 00000000 00:00 0 
+7f0fed7e0000-7f0fed8de000 rw-p 00000000 00:00 0 
+7f0fed8de000-7f0fed8e1000 ---p 00000000 00:00 0 
+7f0fed8e1000-7f0fed9df000 rw-p 00000000 00:00 0 
+7f0fed9df000-7f0feda59000 r--s 010fd000 08:01 8129121                    /home/amandeep/android-studio/jre/lib/tools.jar
+7f0feda59000-7f0feda60000 r--s 0001e000 08:01 9966035                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.0/84a2e0288dc17cd64d692eb1e5e0de8cd5ff0846/kotlin-stdlib-common-1.3.0.jar
+7f0feda60000-7f0feda6a000 r--s 00116000 08:01 8129087                    /home/amandeep/android-studio/jre/jre/lib/ext/localedata.jar
+7f0feda6a000-7f0feda85000 r--s 00394000 08:01 8129080                    /home/amandeep/android-studio/jre/jre/lib/ext/cldrdata.jar
+7f0feda85000-7f0feda9b000 r-xp 00000000 08:01 8129056                    /home/amandeep/android-studio/jre/jre/lib/amd64/libnet.so
+7f0feda9b000-7f0feda9c000 rw-p 00016000 08:01 8129056                    /home/amandeep/android-studio/jre/jre/lib/amd64/libnet.so
+7f0feda9c000-7f0fedad2000 r--s 00250000 08:01 9966030                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.0/6fd129fd9ba8581f2cb9c58bfd431dda4ee0457e/kotlin-reflect-1.3.0.jar
+7f0fedad2000-7f0fedb11000 rw-p 00000000 00:00 0 
+7f0fedb11000-7f0fedce6000 r--s 01a6d000 08:01 9965991                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.0/6e8167f9aab0f6cfec309c2722f72dc26572a782/kotlin-compiler-embeddable-1.3.0.jar
+7f0fedce6000-7f0fedce7000 ---p 00000000 00:00 0 
+7f0fedce7000-7f0fedde7000 rw-p 00000000 00:00 0 
+7f0fedde7000-7f0feddea000 ---p 00000000 00:00 0 
+7f0feddea000-7f0fedee8000 rw-p 00000000 00:00 0 
+7f0fedee8000-7f0fedee9000 ---p 00000000 00:00 0 
+7f0fedee9000-7f0fedeec000 ---p 00000000 00:00 0 
+7f0fedeec000-7f0fedfe9000 rw-p 00000000 00:00 0 
+7f0fedfe9000-7f0fedfea000 ---p 00000000 00:00 0 
+7f0fedfea000-7f0fedfed000 ---p 00000000 00:00 0 
+7f0fedfed000-7f0fee0ea000 rw-p 00000000 00:00 0 
+7f0fee0ea000-7f0fee0eb000 ---p 00000000 00:00 0 
+7f0fee0eb000-7f0fee0ee000 ---p 00000000 00:00 0 
+7f0fee0ee000-7f0fee1eb000 rw-p 00000000 00:00 0 
+7f0fee1eb000-7f0fee1ee000 ---p 00000000 00:00 0 
+7f0fee1ee000-7f0fee2ec000 rw-p 00000000 00:00 0 
+7f0fee2ec000-7f0feecbb000 r--p 00000000 08:01 9312891                    /usr/lib/locale/locale-archive
+7f0feecbb000-7f0feecbe000 ---p 00000000 00:00 0 
+7f0feecbe000-7f0feedbc000 rw-p 00000000 00:00 0 
+7f0feedbc000-7f0feedbf000 ---p 00000000 00:00 0 
+7f0feedbf000-7f0feeebd000 rw-p 00000000 00:00 0 
+7f0feeebd000-7f0feeebe000 ---p 00000000 00:00 0 
+7f0feeebe000-7f0fefe2f000 rw-p 00000000 00:00 0 
+7f0fefe2f000-7f0ff0000000 r--s 03c8a000 08:01 8129019                    /home/amandeep/android-studio/jre/jre/lib/rt.jar
+7f0ff0000000-7f0ff0021000 rw-p 00000000 00:00 0 
+7f0ff0021000-7f0ff4000000 ---p 00000000 00:00 0 
+7f0ff4000000-7f0ff8000000 rw-p 00000000 00:00 0 
+7f0ff8000000-7f0ff8021000 rw-p 00000000 00:00 0 
+7f0ff8021000-7f0ffc000000 ---p 00000000 00:00 0 
+7f0ffc000000-7f0ffc005000 r--s 0009a000 08:01 8129076                    /home/amandeep/android-studio/jre/jre/lib/jsse.jar
+7f0ffc005000-7f0ffc018000 r--s 0010e000 08:01 9966033                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.0/a134b0cfe9bb44f98b0b3e889cda07923eea9428/kotlin-stdlib-1.3.0.jar
+7f0ffc018000-7f0ffcdfe000 rw-p 00000000 00:00 0 
+7f0ffcdfe000-7f0ffcdff000 ---p 00000000 00:00 0 
+7f0ffcdff000-7f0ffceff000 rw-p 00000000 00:00 0 
+7f0ffceff000-7f0ffcf00000 ---p 00000000 00:00 0 
+7f0ffcf00000-7f0ffd000000 rw-p 00000000 00:00 0 
+7f0ffd000000-7f0ffff60000 rwxp 00000000 00:00 0 
+7f0ffff60000-7f100c000000 ---p 00000000 00:00 0 
+7f100c000000-7f100c415000 rw-p 00000000 00:00 0 
+7f100c415000-7f1010000000 ---p 00000000 00:00 0 
+7f1010000000-7f1010010000 r-xp 00000000 08:01 8129047                    /home/amandeep/android-studio/jre/jre/lib/amd64/libnio.so
+7f1010010000-7f1010011000 rw-p 00010000 08:01 8129047                    /home/amandeep/android-studio/jre/jre/lib/amd64/libnio.so
+7f1010011000-7f101006c000 rw-p 00000000 00:00 0 
+7f101006c000-7f101006d000 ---p 00000000 00:00 0 
+7f101006d000-7f101016d000 rw-p 00000000 00:00 0 
+7f101016d000-7f101016e000 ---p 00000000 00:00 0 
+7f101016e000-7f10102df000 rw-p 00000000 00:00 0 
+7f10102df000-7f1010519000 ---p 00000000 00:00 0 
+7f1010519000-7f101058a000 rw-p 00000000 00:00 0 
+7f101058a000-7f10107c3000 ---p 00000000 00:00 0 
+7f10107c3000-7f10108bf000 rw-p 00000000 00:00 0 
+7f10108bf000-7f1010919000 ---p 00000000 00:00 0 
+7f1010919000-7f10109d8000 rw-p 00000000 00:00 0 
+7f10109d8000-7f1010cda000 ---p 00000000 00:00 0 
+7f1010cda000-7f1010ce5000 r-xp 00000000 08:01 1053434                    /lib/x86_64-linux-gnu/libnss_files-2.27.so
+7f1010ce5000-7f1010ee4000 ---p 0000b000 08:01 1053434                    /lib/x86_64-linux-gnu/libnss_files-2.27.so
+7f1010ee4000-7f1010ee5000 r--p 0000a000 08:01 1053434                    /lib/x86_64-linux-gnu/libnss_files-2.27.so
+7f1010ee5000-7f1010ee6000 rw-p 0000b000 08:01 1053434                    /lib/x86_64-linux-gnu/libnss_files-2.27.so
+7f1010ee6000-7f1010eec000 rw-p 00000000 00:00 0 
+7f1010eec000-7f1010f03000 r-xp 00000000 08:01 1053428                    /lib/x86_64-linux-gnu/libnsl-2.27.so
+7f1010f03000-7f1011102000 ---p 00017000 08:01 1053428                    /lib/x86_64-linux-gnu/libnsl-2.27.so
+7f1011102000-7f1011103000 r--p 00016000 08:01 1053428                    /lib/x86_64-linux-gnu/libnsl-2.27.so
+7f1011103000-7f1011104000 rw-p 00017000 08:01 1053428                    /lib/x86_64-linux-gnu/libnsl-2.27.so
+7f1011104000-7f1011106000 rw-p 00000000 00:00 0 
+7f1011106000-7f1011111000 r-xp 00000000 08:01 1053445                    /lib/x86_64-linux-gnu/libnss_nis-2.27.so
+7f1011111000-7f1011310000 ---p 0000b000 08:01 1053445                    /lib/x86_64-linux-gnu/libnss_nis-2.27.so
+7f1011310000-7f1011311000 r--p 0000a000 08:01 1053445                    /lib/x86_64-linux-gnu/libnss_nis-2.27.so
+7f1011311000-7f1011312000 rw-p 0000b000 08:01 1053445                    /lib/x86_64-linux-gnu/libnss_nis-2.27.so
+7f1011312000-7f101131a000 r-xp 00000000 08:01 1053430                    /lib/x86_64-linux-gnu/libnss_compat-2.27.so
+7f101131a000-7f101151a000 ---p 00008000 08:01 1053430                    /lib/x86_64-linux-gnu/libnss_compat-2.27.so
+7f101151a000-7f101151b000 r--p 00008000 08:01 1053430                    /lib/x86_64-linux-gnu/libnss_compat-2.27.so
+7f101151b000-7f101151c000 rw-p 00009000 08:01 1053430                    /lib/x86_64-linux-gnu/libnss_compat-2.27.so
+7f101151c000-7f1011523000 r-xp 00000000 08:01 1053485                    /lib/x86_64-linux-gnu/librt-2.27.so
+7f1011523000-7f1011722000 ---p 00007000 08:01 1053485                    /lib/x86_64-linux-gnu/librt-2.27.so
+7f1011722000-7f1011723000 r--p 00006000 08:01 1053485                    /lib/x86_64-linux-gnu/librt-2.27.so
+7f1011723000-7f1011724000 rw-p 00007000 08:01 1053485                    /lib/x86_64-linux-gnu/librt-2.27.so
+7f1011724000-7f101233c000 r-xp 00000000 08:01 8129029                    /home/amandeep/android-studio/jre/jre/lib/amd64/server/libjvm.so
+7f101233c000-7f101240b000 rw-p 00c18000 08:01 8129029                    /home/amandeep/android-studio/jre/jre/lib/amd64/server/libjvm.so
+7f101240b000-7f1012450000 rw-p 00000000 00:00 0 
+7f1012450000-7f1012467000 r-xp 00000000 08:01 1048658                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f1012467000-7f1012666000 ---p 00017000 08:01 1048658                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f1012666000-7f1012667000 r--p 00016000 08:01 1048658                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f1012667000-7f1012668000 rw-p 00017000 08:01 1048658                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f1012668000-7f1012805000 r-xp 00000000 08:01 1053407                    /lib/x86_64-linux-gnu/libm-2.27.so
+7f1012805000-7f1012a04000 ---p 0019d000 08:01 1053407                    /lib/x86_64-linux-gnu/libm-2.27.so
+7f1012a04000-7f1012a05000 r--p 0019c000 08:01 1053407                    /lib/x86_64-linux-gnu/libm-2.27.so
+7f1012a05000-7f1012a06000 rw-p 0019d000 08:01 1053407                    /lib/x86_64-linux-gnu/libm-2.27.so
+7f1012a06000-7f1012bed000 r-xp 00000000 08:01 1053344                    /lib/x86_64-linux-gnu/libc-2.27.so
+7f1012bed000-7f1012ded000 ---p 001e7000 08:01 1053344                    /lib/x86_64-linux-gnu/libc-2.27.so
+7f1012ded000-7f1012df1000 r--p 001e7000 08:01 1053344                    /lib/x86_64-linux-gnu/libc-2.27.so
+7f1012df1000-7f1012df3000 rw-p 001eb000 08:01 1053344                    /lib/x86_64-linux-gnu/libc-2.27.so
+7f1012df3000-7f1012df7000 rw-p 00000000 00:00 0 
+7f1012df7000-7f1012dfa000 r-xp 00000000 08:01 1053367                    /lib/x86_64-linux-gnu/libdl-2.27.so
+7f1012dfa000-7f1012ff9000 ---p 00003000 08:01 1053367                    /lib/x86_64-linux-gnu/libdl-2.27.so
+7f1012ff9000-7f1012ffa000 r--p 00002000 08:01 1053367                    /lib/x86_64-linux-gnu/libdl-2.27.so
+7f1012ffa000-7f1012ffb000 rw-p 00003000 08:01 1053367                    /lib/x86_64-linux-gnu/libdl-2.27.so
+7f1012ffb000-7f1013015000 r-xp 00000000 08:01 1053477                    /lib/x86_64-linux-gnu/libpthread-2.27.so
+7f1013015000-7f1013214000 ---p 0001a000 08:01 1053477                    /lib/x86_64-linux-gnu/libpthread-2.27.so
+7f1013214000-7f1013215000 r--p 00019000 08:01 1053477                    /lib/x86_64-linux-gnu/libpthread-2.27.so
+7f1013215000-7f1013216000 rw-p 0001a000 08:01 1053477                    /lib/x86_64-linux-gnu/libpthread-2.27.so
+7f1013216000-7f101321a000 rw-p 00000000 00:00 0 
+7f101321a000-7f1013393000 r-xp 00000000 08:01 9308806                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+7f1013393000-7f1013593000 ---p 00179000 08:01 9308806                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+7f1013593000-7f101359d000 r--p 00179000 08:01 9308806                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+7f101359d000-7f101359f000 rw-p 00183000 08:01 9308806                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+7f101359f000-7f10135a3000 rw-p 00000000 00:00 0 
+7f10135a3000-7f10135ca000 r-xp 00000000 08:01 1053316                    /lib/x86_64-linux-gnu/ld-2.27.so
+7f10135ca000-7f10135cb000 r--s 00001000 08:01 9965029                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.esotericsoftware/minlog/1.3.0/ff07b5f1b01d2f92bb00a337f9a94873712f0827/minlog-1.3.0.jar
+7f10135cb000-7f10135cd000 r--s 00004000 08:01 9965028                    /home/amandeep/.gradle/caches/modules-2/files-2.1/com.esotericsoftware/reflectasm/1.11.3/8b102eed2f12412b254946811111ea48bc03a266/reflectasm-1.11.3.jar
+7f10135cd000-7f10135d5000 r-xp 00000000 08:01 8129023                    /home/amandeep/android-studio/jre/jre/lib/amd64/libmanagement.so
+7f10135d5000-7f10135d6000 rw-p 00007000 08:01 8129023                    /home/amandeep/android-studio/jre/jre/lib/amd64/libmanagement.so
+7f10135d6000-7f1013647000 rw-p 00000000 00:00 0 
+7f1013647000-7f1013661000 r-xp 00000000 08:01 8129055                    /home/amandeep/android-studio/jre/jre/lib/amd64/libzip.so
+7f1013661000-7f1013662000 rw-p 00019000 08:01 8129055                    /home/amandeep/android-studio/jre/jre/lib/amd64/libzip.so
+7f1013662000-7f101366a000 rw-s 00000000 08:01 9964210                    /tmp/hsperfdata_amandeep/8280
+7f101366a000-7f1013695000 r-xp 00000000 08:01 8129054                    /home/amandeep/android-studio/jre/jre/lib/amd64/libjava.so
+7f1013695000-7f1013697000 rw-p 0002b000 08:01 8129054                    /home/amandeep/android-studio/jre/jre/lib/amd64/libjava.so
+7f1013697000-7f1013698000 ---p 00000000 00:00 0 
+7f1013698000-7f101369b000 ---p 00000000 00:00 0 
+7f101369b000-7f101379d000 rw-p 00000000 00:00 0 
+7f101379d000-7f10137b2000 r-xp 00000000 08:01 8129058                    /home/amandeep/android-studio/jre/jre/lib/amd64/jli/libjli.so
+7f10137b2000-7f10137b3000 rw-p 00015000 08:01 8129058                    /home/amandeep/android-studio/jre/jre/lib/amd64/jli/libjli.so
+7f10137b3000-7f10137b5000 r--s 00003000 08:01 9964341                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar
+7f10137b5000-7f10137b7000 r--s 00009000 08:01 9965988                    /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.0/c7173ea6208fa189fb56d679624fbc5e2026187f/kotlin-script-runtime-1.3.0.jar
+7f10137b7000-7f10137b8000 rw-p 00000000 00:00 0 
+7f10137b8000-7f10137b9000 ---p 00000000 00:00 0 
+7f10137b9000-7f10137c6000 r-xp 00000000 08:01 8129036                    /home/amandeep/android-studio/jre/jre/lib/amd64/libverify.so
+7f10137c6000-7f10137c8000 rw-p 0000c000 08:01 8129036                    /home/amandeep/android-studio/jre/jre/lib/amd64/libverify.so
+7f10137c8000-7f10137ca000 rw-p 00000000 00:00 0 
+7f10137ca000-7f10137cb000 r--p 00027000 08:01 1053316                    /lib/x86_64-linux-gnu/ld-2.27.so
+7f10137cb000-7f10137cc000 rw-p 00028000 08:01 1053316                    /lib/x86_64-linux-gnu/ld-2.27.so
+7f10137cc000-7f10137cd000 rw-p 00000000 00:00 0 
+7ffc0daa1000-7ffc0dac3000 rw-p 00000000 00:00 0                          [stack]
+7ffc0db63000-7ffc0db66000 r--p 00000000 00:00 0                          [vvar]
+7ffc0db66000-7ffc0db68000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -Djava.awt.headless=true -Djava.rmi.server.hostname=127.0.0.1 -Xmx2048m -XX:MaxPermSize=2048m -Dkotlin.environment.keepalive 
+java_command: org.jetbrains.kotlin.daemon.KotlinCompileDaemon --daemon-runFilesPath /home/amandeep/.local/share/kotlin/daemon --daemon-autoshutdownIdleSeconds=7200 --daemon-compilerClasspath /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.0/6e8167f9aab0f6cfec309c2722f72dc26572a782/kotlin-compiler-embeddable-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.0/6fd129fd9ba8581f2cb9c58bfd431dda4ee0457e/kotlin-reflect-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.0/a134b0cfe9bb44f98b0b3e889cda07923eea9428/kotlin-stdlib-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.0/c7173ea6208fa189fb56d679624fbc5e2026187f/kotlin-script-runtime-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.0/84a2e0288dc17cd64d692eb1e5e0de8cd5ff0846/kotlin-stdlib-common-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/amandeep/android-studio/jre/lib/tools.jar
+java_class_path (initial): /home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.0/6e8167f9aab0f6cfec309c2722f72dc26572a782/kotlin-compiler-embeddable-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.0/6fd129fd9ba8581f2cb9c58bfd431dda4ee0457e/kotlin-reflect-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.0/a134b0cfe9bb44f98b0b3e889cda07923eea9428/kotlin-stdlib-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.0/c7173ea6208fa189fb56d679624fbc5e2026187f/kotlin-script-runtime-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.0/84a2e0288dc17cd64d692eb1e5e0de8cd5ff0846/kotlin-stdlib-common-1.3.0.jar:/home/amandeep/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/amandeep/android-studio/jre/lib/tools.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+USERNAME=amandeep
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+SHELL=/bin/bash
+DISPLAY=:0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xa00760], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGBUS: [libjvm.so+0xa00760], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGFPE: [libjvm.so+0x863090], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGPIPE: [libjvm.so+0x863090], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGXFSZ: [libjvm.so+0x863090], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGILL: [libjvm.so+0x863090], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGUSR1: SIG_DFL, sa_mask[0]=00000000000000000000000000000000, sa_flags=none
+SIGUSR2: [libjvm.so+0x862f60], sa_mask[0]=00100000000000000000000000000000, sa_flags=SA_RESTART|SA_SIGINFO
+SIGHUP: [libjvm.so+0x863150], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGINT: [libjvm.so+0x863150], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGTERM: [libjvm.so+0x863150], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGQUIT: [libjvm.so+0x863150], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+
+
+---------------  S Y S T E M  ---------------
+
+OS:DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=18.04
+DISTRIB_CODENAME=bionic
+DISTRIB_DESCRIPTION="Ubuntu 18.04.3 LTS"
+
+uname:Linux 4.15.0-58-generic #64-Ubuntu SMP Tue Aug 6 11:12:41 UTC 2019 x86_64
+libc:glibc 2.27 NPTL 2.27 
+rlimit: STACK 8192k, CORE 0k, NPROC 30496, NOFILE 4096, AS infinity
+load average:4.45 2.45 2.01
+
+/proc/meminfo:
+MemTotal:        7851468 kB
+MemFree:          101136 kB
+MemAvailable:          0 kB
+Buffers:             564 kB
+Cached:           376604 kB
+SwapCached:         7752 kB
+Active:          6652084 kB
+Inactive:         835684 kB
+Active(anon):    6640724 kB
+Inactive(anon):   829864 kB
+Active(file):      11360 kB
+Inactive(file):     5820 kB
+Unevictable:         112 kB
+Mlocked:             112 kB
+SwapTotal:       2097148 kB
+SwapFree:              0 kB
+Dirty:               120 kB
+Writeback:            24 kB
+AnonPages:       7103992 kB
+Mapped:           277360 kB
+Shmem:            359484 kB
+Slab:             105404 kB
+SReclaimable:      47668 kB
+SUnreclaim:        57736 kB
+KernelStack:       15312 kB
+PageTables:        75804 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     6022880 kB
+Committed_AS:   15197184 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      197720 kB
+DirectMap2M:     7870464 kB
+DirectMap1G:     1048576 kB
+
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 69 stepping 1, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 69
+model name	: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+stepping	: 1
+microcode	: 0x25
+cpu MHz		: 2594.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 2
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts md_clear flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs
+bogomips	: 4988.46
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 69
+model name	: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+stepping	: 1
+microcode	: 0x25
+cpu MHz		: 2594.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 2
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts md_clear flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs
+bogomips	: 4988.46
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 69
+model name	: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+stepping	: 1
+microcode	: 0x25
+cpu MHz		: 2594.004
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 2
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts md_clear flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs
+bogomips	: 4988.46
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 69
+model name	: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz
+stepping	: 1
+microcode	: 0x25
+cpu MHz		: 2594.004
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 2
+apicid		: 3
+initial apicid	: 3
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts md_clear flush_l1d
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs
+bogomips	: 4988.46
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 7851468k(101564k free), swap 2097148k(0k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.152-b16-5323222) for linux-amd64 JRE (1.8.0_152-release-1343-b16-5323222), built by "android-build" with gcc 4.8
+
+time: Fri Aug 30 14:20:44 2019
+elapsed time: 35 seconds (0d 0h 0m 35s)
+

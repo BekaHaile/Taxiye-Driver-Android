@@ -217,7 +217,7 @@ class EmergencyContactsFragment : Fragment() {
         if (Data.userData.emergencyContactsList != null) {
             contactBeans!!.clear()
             for (emergencyContact in Data.userData.emergencyContactsList) {
-                val contactBean = ContactBean(emergencyContact.name, emergencyContact.phoneNo, emergencyContact.countryCode, "")
+                val contactBean = ContactBean(emergencyContact.name, emergencyContact.phoneNo, emergencyContact.countryCode, "", ContactBean.ContactBeanViewType.CONTACT, null, null)
                 contactBean.id = emergencyContact.id
                 contactBeans!!.add(contactBean)
             }

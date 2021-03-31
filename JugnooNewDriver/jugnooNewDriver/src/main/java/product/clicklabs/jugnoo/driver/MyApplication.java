@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.room.database.CommonRoomDatabase;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -44,6 +45,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             .getSimpleName();
 
     private static MyApplication mInstance;
+    static Context mContext;
 
     private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
@@ -196,6 +198,16 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             }
         }).start();
     }
+	public void insertRideLogToEngagements(String log) {
+		try {
+			ArrayList<CustomerInfo> list = Data.getAssignedCustomerInfosListForEngagedStatus();
+			for (CustomerInfo customerInfo : list) {
+				Database2.getInstance(this).insertRideLog(DateOperations.getMillisInHHMMSS(System.currentTimeMillis())+": "+log, customerInfo.getEngagementId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     public void insertRideDataToEngagements(String lat, String lng, String t) {
         try {

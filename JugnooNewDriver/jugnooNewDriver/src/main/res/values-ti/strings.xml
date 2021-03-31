@@ -387,7 +387,7 @@
     <string name="driver_to_customer">ሽፈር ንዓሚል</string>
     <string name="driver_to_driver">ሽፈር ንሽፈር</string>
     <string name="rate_card">ካርድና ናአድ</string>
-    <string name="applicable_after">ድሕሪ 1 ሰከንድ ተግባራዊ ዝኾን</string>
+    <string name="applicable_after">ድሕሪ %1$s ሰከንድ ተግባራዊ ዝኾን</string>
     <string name="per_format">(ብ %)</string>
     <string name="delivery_off">ቐረብእ ጠፊኡ</string>
     <string name="Yesterday">ትማሊ</string>
@@ -399,7 +399,7 @@
     <string name="register_via_agent">ብወኪል ተመዝገቡ</string>
     <string name="upload_Documents">መረዳእታታት ፀዓን</string>
     <string name="last_trip_earning">ክፍሊት ሽፈር አብ መጨረሽታ ዝተገበረ ጉዕዞ</string>
-    <string name="diffrential_pricing_rate">ድሕሪ 1 ሰከንድ ናይዝርሕቐት ክፍሊት</string>
+    <string name="diffrential_pricing_rate">ድሕሪ %1$s ሰከንድ ናይዝርሕቐት %2$s ክፍሊት</string>
     <string name="payment_sent">ክፍሊት ተፈፂሙ</string>
     <string name="this_week_cap">አብዝ ሰሙን</string>
     <string name="ride_history_cap">ታሪክ ጉዕዞ</string>
@@ -590,7 +590,6 @@
     <string name="added">ተወሲኹ</string>
     <string name="deducted">ነከየ</string>
     <string name="view_wallet_transactions">ናይ ዋሌት ልውውጥ ንምርአይ</string>
-    <string name="dont_touch_me">አይትንኩኡኒ</string>
     <string name="schedule_call_message">ንሓገዝ አብ ታሕቲ ዝርከብ መልጎም ይጠውቑ። ናትና ሰራሕተኛታት አብ ሓፂር እዋን ክድውሉሎም እዮም።</string>
     <string name="get_call">ጥሪ ተቐበል</string>
     <string name="get_support_call">ይደውሉልና</string>
@@ -752,7 +751,7 @@
     <string name="hint_cvv">ሲቪቪ</string>
     <string name="add_card_title">ካርዲ አእትው</string>
     <string name="edit_card_title">ካርዲ አስተኻኽል</string>
-    <string name="stripe_delete_card">ርግፀኛ ዲኻብ %5 ዝውድእ ካርዲ ምጥፍእ ከምትዲሊ</string>
+    <string name="stripe_delete_card">ርግፀኛ ዲኻብ %s ዝውድእ ካርዲ ምጥፍእ ከምትዲሊ</string>
     <string name="stripe_add_card_error">ትክክለኛ አይኾነን</string>
     <string name="card_number">ቁፅሪ ካርዲ</string>
     <string name="expiry_date">ዘበቀዐሉ መአልቲ</string>
@@ -769,10 +768,10 @@
     <string name="add_cash">ጥረ ገንዘብ አእትው</string>
     <string name="no_cards_linked">ምንም ዝተጋነየ ካርዲ የብሎምን። በጃኹም ካርዲ ይፀምብሩ ናብ ዋሌቶም ገንዘብ ንምውሳኽ።</string>
     <string name="wallet">ዋሌት</string>
-    <string name="add_cash_stripe_confirmation">ከ %5 ዝወድእ ካርዲ ብምጥቃም %5 ናብ ዋሌቶም አእትዩ</string>
+    <string name="add_cash_stripe_confirmation">ከ %s ዝወድእ ካርዲ ብምጥቃም %s ናብ ዋሌቶም አእትዩ</string>
     <string name="add">አእትይ</string>
     <string name="permissions_message">እዞም ፍቓዳት መጀመርታ ናብ መሳሪሕኮዎ ምእታው የድልዮም እዩ</string>
-    <string name="permissions_title">ን %5 ንምጥቃም ፈቓድ ተዋሂቡ</string>
+    <string name="permissions_title">ን %s ንምጥቃም ፈቓድ ተዋሂቡ</string>
     <string name="permissions_location_phone">ከባቢ ከምኡውን መለለዮ ስልኪ</string>
     <string name="permissions_location">ከባቢ</string>
     <string name="permissions_phone">መለለዮ ስልኪ</string>
@@ -853,14 +852,14 @@
     <string name="customer_live_location">ተሳፋራይ ዝርገበሉ ቦታ</string>
     <string name="not_match">አይራኸብዓ</string>
     <string name="please_enter_email">በጃኹም ኢሜይል አእትው</string>
-    <string name="error_empty_mandatory_field">%5 አገዳሲ እዩ</string>
+    <string name="error_empty_mandatory_field">%s አገዳሲ እዩ</string>
     <string name="please_enter_less_value_for_bid">በጃኹም ዝነኣስ ዋጋ አእትው</string>
     <string name="note">መዘካኸሪ</string>
     <string name="rate_card_title_rental_packages">ናይ ክራይ አማራፅታት</string>
     <string name="rate_card_title_outstation_packages">አውትስቴሽን አማራፅታት</string>
     <string name="additional_per_min">ተወሳኺ ክፍሊት ብደቒቃ</string>
-    <string name="additional_per_km_fare">ተወሳኺ ክፍሊት ብ %5</string>
-    <string name="package_rate_format">ቑፅሪ ፓኬጅ %5</string>
+    <string name="additional_per_km_fare">ተወሳኺ ክፍሊት ብ %s</string>
+    <string name="package_rate_format">ቑፅሪ ፓኬጅ %s</string>
     <string name="rental_hour">ሰዓት</string>
     <string name="rental_hours">ሰዓታት</string>
     <string name="rental_min">ደቒቃ</string>
@@ -910,9 +909,9 @@
     <string name="choose_image_from">ምስሊ ምረፅ ካብ</string>
     <string name="send_invoice">ክፍሊት ለአኽ</string>
     <string name="delivery_earnings">ክፍሊት ቐረብ</string>
-    <string name="branding_msg">ብግርስ ምፍላጥ ክሳብ %5 ገንዘብ ይርከቡ</string>
-    <string name="branding_msg_autos">ከአውቶ ምፍላጥ ክሳብ %5 ገንዘብ ይርከቡ</string>
-    <string name="branding_msg_here_maps">ቦታታት ከምውሳኽ ክሳብ %5 ገንዘብ ይርከቡ</string>
+    <string name="branding_msg">ብግርስ ምፍላጥ ክሳብ %s ገንዘብ ይርከቡ</string>
+    <string name="branding_msg_autos">ከአውቶ ምፍላጥ ክሳብ %s ገንዘብ ይርከቡ</string>
+    <string name="branding_msg_here_maps">ቦታታት ከምውሳኽ ክሳብ %s ገንዘብ ይርከቡ</string>
     <string name="valid_till">ቕቡል ክሳብ</string>
     <string name="title_tasks">ስራሕቲ</string>
     <string name="driver_tasks">ናይ ሽፈር ስራሕቲ</string>
@@ -987,5 +986,30 @@
     <string name="we_are_unable_to_process_your_request">ከይዲ ትእዛዞም አይተሳክዐን። በጃኹም ፅንሕ ኢሎም ይፈትኑ።</string>
     <string name="please_install_whatsapp">በጃኹም ዋትስአፕ ኢንስታል ይግበሩ</string>
 
+    <string name="subscriptions">ኵንትራት</string>
+    <string name="total_rides">ጠቕላላ መገድታት</string>
+    <string name="rides_pending">ኣብ መመገቢ ኣንሶላ</string>
+    <string name="rides_valid_upto">ዝሰርሕ ክሳብ</string>
+    <string name="unlimited">ዘይተገደበ</string>
 
+
+    <string name="driver">ኣውቲስታ</string>
+    <string name="customer">ዓሚል</string>
+    <string name="transfer_to">ምስግጋር</string>
+    <string name="select_transfer_to">ትራንስፈር ምረጽ</string>
+
+    <string name="instructions_colon"><b>መምርሒ:</b></string>
+
+    <string name="gender">ጾታ</string>
+    <string name="gender_male">ወዲ</string>
+    <string name="gender_female">ሰበይቲ</string>
+    <string name="gender_others">ካልኦት</string>
+    <string name="label_select_gender">ጾታ ምረጽ</string>
+    <string name="please_select_gender">ጾታ ምረጽ</string>
+
+    <string name="resend_OTP_call">ጸወዓኒ</string>
+    <string name="subscription_title">ኵንትራት</string>
+    <string name="subscription_desc">ናይ በይኑ ጥቕሚ ንምርካብ ሕጂ ኮንትራት</string>
+
+    <string name="alert_low_wallet_balance">ዋለት ባላንስ ትሑት እዩ ። ጠለብ ንምቕባል ንዋለትካ ክረክቦ ።</string>
 </resources>

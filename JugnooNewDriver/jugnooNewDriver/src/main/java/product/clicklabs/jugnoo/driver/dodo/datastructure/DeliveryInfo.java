@@ -2,8 +2,6 @@ package product.clicklabs.jugnoo.driver.dodo.datastructure;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import product.clicklabs.jugnoo.driver.Data;
-
 /**
  * Created by aneeshbansal on 30/05/16.
  */
@@ -23,6 +21,9 @@ public class DeliveryInfo {
 	private boolean sate = false;
 	private String cancelReason;
 	private String currency;
+
+	private String recipientName;
+	private boolean recipientSignTaken;
 
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
@@ -44,6 +45,9 @@ public class DeliveryInfo {
 		this.falseDelivery = falseDelivery;
 		this.loadUnload = loadUnload;
 		this.currency = currency;
+
+		this.recipientSignTaken = false;
+		this.recipientName = null;
 	}
 
 	public void setReturnData(int totalDelivery, int delSuccess, int delFail){
@@ -58,7 +62,7 @@ public class DeliveryInfo {
 
 
 	public String getCurrency() {
-		return Data.getCurrencyNullSafety(currency);
+		return currency;
 	}
 
 	public void setCurrency(String currency) {
@@ -223,5 +227,21 @@ public class DeliveryInfo {
 
 	public void setLoadUnload(int loadUnload) {
 		this.loadUnload = loadUnload;
+	}
+
+	public String getRecipientName() {
+		return recipientName;
+	}
+
+	public void setRecipientName(String recipientName) {
+		this.recipientName = recipientName;
+	}
+
+	public boolean isRecipientSignTaken() {
+		return recipientSignTaken;
+	}
+
+	public void setRecipientSignTaken(boolean recipientSignTaken) {
+		this.recipientSignTaken = recipientSignTaken;
 	}
 }
