@@ -46,6 +46,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NotesDialog;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -110,7 +111,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
 		textViewCashCollected.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		TextView textViewReturnText = (TextView) taskItemView.findViewById(R.id.textViewReturnText);
-
+		TextView tvCustomerNotes = (TextView) taskItemView.findViewById(R.id.tvCustomerNotes);
+		tvCustomerNotes.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		RelativeLayout call = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
 		final RelativeLayout relativelayoutProgressInfo = (RelativeLayout) taskItemView.findViewById(R.id.relativelayoutProgressInfo);
 		TextView textViewDeliveryText = (TextView) taskItemView.findViewById(R.id.textViewDeliveryText);
@@ -284,7 +286,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 							new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									markDelivered(String.valueOf(engagemnetId), task);
+									markDeliveredApi(activity, String.valueOf(engagemnetId), task);
 								}
 							},
 							new View.OnClickListener() {
@@ -296,6 +298,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 				} else {
 					final DeliveryInfo task = tasksList.get(pos);
+
 					String address = task.getDeliveryAddress();
 					int sepratorIndex = address.indexOf(":::");
 					String onlyAddress = "", itemDetails = "-1";
@@ -317,7 +320,14 @@ public class DeliveryListAdapter extends PagerAdapter {
 							new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									markDelivered(String.valueOf(engagemnetId), task);
+									//check if recipient signature taken
+									if(Prefs.with(activity).getInt(Constants.KEY_CUSTOMER_SIGNATURE_ON_MARK_DELIVER, 0) == 1
+											&& !task.isRecipientSignTaken()){
+										activity.openCustomerSignatureFragment(engagemnetId, task);
+										return;
+									}
+
+									markDeliveredApi(activity, String.valueOf(engagemnetId), task);
 								}
 							},
 							new View.OnClickListener() {
@@ -326,6 +336,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 								}
 							}, false, true);
+
 				}
 			}
 		});
@@ -337,7 +348,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				final DeliveryInfo task = tasksList.get(pos);
 				DialogPopup.alertPopupDeliveryReturnWithListeners(activity,
 						activity.getResources().getString(R.string.order_id) + ": " + task.getId(),
-						activity.getResources().getString(R.string.deposite_cash_1)
+						activity.getResources().getString(R.string.deposite_cash_1) + " "
 								+  Utils.formatCurrencyValue(task.getCurrency(),task.getAmount()),
 						task.getTotalDelivery(), task.getDelSuccess(), task.getDelFail(),
 						activity.getResources().getString(R.string.deposite_cash),
@@ -483,7 +494,7 @@ public class DeliveryListAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
-	public void markDelivered(String engagementId, final DeliveryInfo deliveryInfo) {
+	public static void markDeliveredApi(HomeActivity activity, String engagementId, final DeliveryInfo deliveryInfo) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
@@ -497,6 +508,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
+
+				params.put(Constants.KEY_RECIPIENT_NAME, String.valueOf(deliveryInfo.getRecipientName()));
 				params.put("app_version", "" + Data.appVersion);
 				final double distance = activity.getCurrentDeliveryDistance(customerInfo);
 				final long deliveryTime = activity.getCurrentDeliveryTime(customerInfo);

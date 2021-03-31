@@ -27,9 +27,10 @@ public interface AppInterruptHandler {
 	public void onCashAddedToWalletByCustomer(int engagementId, int userId, double balance);
 
 	void onDropLocationUpdated(String engagementId, LatLng dropLatLng, String dropAddress, String message);
-	
-	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
-								 Location lastFusedLocation, double totalHaversineDistance);
+
+	void onNewStopAdded(String message);
+
+	public void updateMeteringUI(Location lastGPSLocation, Location lastFusedLocation);
 
 	void googleApiHitStart();
 	void googleApiHitStop();

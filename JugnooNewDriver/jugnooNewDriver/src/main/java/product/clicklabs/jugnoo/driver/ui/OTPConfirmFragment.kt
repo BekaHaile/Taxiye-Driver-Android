@@ -18,18 +18,27 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.android.synthetic.main.frag_otp_confirm.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.Constants.KEY_PHONE_NO
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscription
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscriptionEnabled
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -37,8 +46,7 @@ import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
 
-
-class OTPConfirmFragment : Fragment(){
+ class OTPConfirmFragment : Fragment(){
 
     private var countryCode: String? = null
     private var missedCallNumber: String? = null
@@ -52,7 +60,7 @@ class OTPConfirmFragment : Fragment(){
     private lateinit var edtOTP: EditText
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
-    private  var mListener: SplashFragment.InteractionListener?  = null;
+    public  var mListener: SplashFragment.InteractionListener?  = null;
 
 
     companion object {
@@ -72,6 +80,13 @@ class OTPConfirmFragment : Fragment(){
         }
 
     }
+     fun openHomeFragment()
+     {
+         if(mListener!=null)
+         {
+             mListener?.goToHomeScreen()
+         }
+     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -177,6 +192,39 @@ class OTPConfirmFragment : Fragment(){
 
         return rootView
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val showOtpViaCall = Prefs.with(requireContext()).getInt(Constants.KEY_ENABLE_OTP_VIA_CALL,1)
+        if(showOtpViaCall == 1){
+            tvResendOtpViaCall.visible()
+            tvResendOtpViaCall.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
+            tvResendOtpViaCall.typeface = Fonts.mavenRegular(requireActivity())
+            tvResendOtpViaCall.setOnClickListener {
+                sendOtpViaCall()
+            }
+        }else{
+            tvResendOtpViaCall.gone()
+        }
+    }
+
+    private fun sendOtpViaCall() {
+        val params = HashMap<String, String>()
+
+        params[KEY_PHONE_NO] = countryCode + phoneNumber
+        params[KEY_COUNTRY_CODE] = countryCode +""
+        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(params,ApiName.OTP_VIA_CALL,
+                object: APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+                    override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+                        Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                        return false
+                    }
+
+                })
     }
 
     private fun showCountDownPopup() {
@@ -335,11 +383,35 @@ class OTPConfirmFragment : Fragment(){
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())) {
                                 JSONParser().parseAccessTokenLoginData(requireActivity(), jsonString)
                                 requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
-                                mListener?.goToHomeScreen()
+
+                                if ((Data.userData.driverSubscriptionEnabled == DriverSubscriptionEnabled.MANDATORY.getOrdinal()||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&& 0 == Data.userData.deliveryEnabled) {
+                                    if (Data.userData.driverSubscription == DriverSubscription.UNSUBSCRIBED.getOrdinal()) {
+                                        lateinit var subsFrag:SubscriptionFragment
+                                        subsFrag = SubscriptionFragment()
+                                        val args = Bundle()
+                                        args.putString("AccessToken", Data.userData.accessToken as String)
+                                        args.putInt("stripe_key", 0 as Int)
+                                        //args.putInt("")
+                                        subsFrag.setArguments(args)
+                                        fragmentManager!!.findFragmentByTag(OTPConfirmFragment::class.simpleName)?.let {
+                                            fragmentManager!!.beginTransaction()
+                                                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                                                    .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
+                                                    .hide(it)
+                                                    .addToBackStack(SubscriptionFragment::class.java.name)
+                                                    .commit()
+                                        }
+                                    } else {
+                                        mListener?.goToHomeScreen()
+                                    }
+                                } else {
+                                    mListener?.goToHomeScreen()
+                                }
                             }
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
-                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
-                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+                                val vehicleModelEnabled = jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0)
+                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, vehicleModelEnabled)
 
                                 Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
                             }
@@ -350,8 +422,9 @@ class OTPConfirmFragment : Fragment(){
     //                            }
                         else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
-                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
-                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+                                val vehicleModelEnabled = jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0)
+                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, vehicleModelEnabled)
 
                                 Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
                                 if(jObj.has(Constants.KEY_LOGIN)) {
@@ -404,6 +477,40 @@ class OTPConfirmFragment : Fragment(){
             }
         })
     }
+//    lateinit var subsFrag:SubscriptionFragment
+//
+//
+//    fun checkForSubscribedDriver(jsonString: String,moveTo: Int): Boolean {
+//        val jObj = JSONObject(jsonString)
+//        val jLoginObject = jObj.getJSONObject("login")
+//        if(jLoginObject.has("driver_subscription")){
+//            if(jLoginObject.getInt("driver_subscription")==1){
+//                var key =0;
+//                if(jLoginObject.has("stripe_cards_enabled")){
+//                    key = jLoginObject.getInt("stripe_cards_enabled")
+//                }
+//                val token = jLoginObject.get("access_token");
+//                subsFrag = SubscriptionFragment()
+//                val args = Bundle()
+//                args.putString("AccessToken", token as String)
+//                args.putInt("stripe_key", key as Int)
+//                //args.putInt("")
+//                subsFrag.setArguments(args)
+//                fragmentManager!!.findFragmentByTag(OTPConfirmFragment::class.simpleName)?.let {
+//                    fragmentManager!!.beginTransaction()
+//                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+//                            .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
+//                            .hide(it)
+//                            .addToBackStack(SubscriptionFragment::class.java.name)
+//                            .commit()
+//                }
+//                return false
+//            }else{
+//                return true
+//            }
+//        }
+//     return true
+//    }
 
     private fun generateOTP() {
 
@@ -413,7 +520,7 @@ class OTPConfirmFragment : Fragment(){
         params.put(Constants.LOGIN_TYPE, "1")
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-        ApiCommon<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }
@@ -489,9 +596,7 @@ class OTPConfirmFragment : Fragment(){
         val task = client.startSmsRetriever()
         task.addOnSuccessListener{
             smsReceiver = createSmsBroadcastReceiver()
-            if(activity != null) {
-                requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
-            }
+            requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
         }
         task.addOnFailureListener{ }
 

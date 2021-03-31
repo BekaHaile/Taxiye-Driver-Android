@@ -141,7 +141,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         if(getSupportFragmentManager().getFragments().size()==0){
             setToolbarText(getString(R.string.your_vehicles));
 
-            setAddBtnVisibility(View.VISIBLE);
+                setAddBtnVisibility(View.VISIBLE);
         }
     }
 

@@ -695,6 +695,7 @@
     <string name = "app_needs_overlay_permission"> يحتاج التطبيق إلى إذن تراكب لعرض زر المساعد على الشاش</string>
 
     <string name="incentive">Incentives</string>
+    <string name="unlimited">Unlimited</string>
     <!--login with phone-->
 
 </resources>

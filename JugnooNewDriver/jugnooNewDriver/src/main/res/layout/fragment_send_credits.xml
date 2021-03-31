@@ -16,6 +16,7 @@
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:visibility="gone"
             android:src="@drawable/ic_send_credits_to_driver"
             />
 
@@ -23,7 +24,7 @@
             android:id="@+id/tvCreditsLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:padding="20dp"
             android:text="@string/credits"
             android:textColor="@color/text_color"
             android:textSize="20sp"
@@ -32,6 +33,45 @@
             app:layout_constraintTop_toBottomOf="@+id/ivBackground"
             />
 
+
+        <TextView
+            android:id="@+id/tvTransferTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/transfer_to"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreditsLeft"
+            />
+
+
+        <RadioButton
+            android:id="@+id/rbCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/customer"
+            android:layout_marginStart="25dp"
+            android:buttonTint="@color/themeColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTransferTo"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/rbDriver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/driver"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/themeColor"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rbCustomer"
+            android:checked="false"/>
 
         <TextView
             android:id="@+id/tvCredits"
@@ -43,7 +83,7 @@
             android:textColor="@color/text_color"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCreditsLeft"
+            app:layout_constraintTop_toBottomOf="@+id/rbDriver"
             />
 
 

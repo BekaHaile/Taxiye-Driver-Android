@@ -268,15 +268,68 @@
             android:id="@+id/rvVehicleTypes"
             android:layout_width="match_parent"
             android:clipToPadding="false"
-            android:paddingTop="@dimen/spacing_grid_recycler_view"
-            android:paddingBottom="@dimen/spacing_grid_recycler_view"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:visibility="invisible"
+            android:padding="@dimen/spacing_grid_recycler_view"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             app:layout_constraintTop_toBottomOf="@+id/barrierCityLabel" />
+        <TextView
+            android:id="@+id/labelVehicleNumber"
+            android:layout_width="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/vehicle_number"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/rvVehicleTypes" />
+
+        <EditText
+            android:id="@+id/edtVehicleNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textDirection="locale"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/enter_vehicle_number"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapCharacters"
+            android:padding="13sp"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            app:layout_constraintTop_toBottomOf="@+id/labelVehicleNumber" />
+        <TextView
+            android:id="@+id/tvOwnerShip"
+            android:layout_width="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/ownership_status"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/edtVehicleNo"
+            />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ownershipSpinner"
+            android:entries="@array/ownership"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            app:layout_constraintTop_toBottomOf="@+id/tvOwnerShip"
+            />
+
+
 
         <TextView
             android:id="@+id/tvSelectFleet"
@@ -288,7 +341,7 @@
             android:text="@string/select_fleet"
             android:textColor="@color/textColorMedium"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes"
+            app:layout_constraintTop_toBottomOf="@+id/ownershipSpinner"
             android:fontFamily="@font/maven_pro_regular"
             android:visibility="visible"
             />
@@ -346,16 +399,34 @@
             android:text="@string/by_signing_you_agree"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
             />
-
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/multipleVehicleEnabledGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvOwnerShip,ownershipSpinner,edtVehicleNo,labelVehicleNumber">
+        </androidx.constraintlayout.widget.Group>
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities,tvTermsOfUse"/>
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupDetails"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectFleet,tvFleetSelected,tvPromo,edtPromo"/>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/selectCityGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvSelectVehicle,tvCities"/>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/promoGroupView"

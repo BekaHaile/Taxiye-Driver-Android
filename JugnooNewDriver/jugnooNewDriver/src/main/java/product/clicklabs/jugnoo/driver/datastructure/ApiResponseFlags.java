@@ -84,4 +84,8 @@ public enum ApiResponseFlags {
 	public int getOrdinal() {
 		return ordinal;
 	}
+	public int getKOrdinal() {
+		return ordinal;
+	}
+
 }

@@ -34,7 +34,7 @@
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <integer name="show_language_control">@integer/view_visible</integer>
     <integer name="driver_logout_enabled">0</integer>
-    <integer name="like_us_on_fb_enabled">@integer/view_gone</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <integer name="show_driver_timer">@integer/view_invisible</integer>
     <bool name="vehicle_model_enabled">false</bool>
     <integer name="visibility_faq">@integer/view_gone</integer>
@@ -56,10 +56,10 @@
     <string name="app_name">Jugnoo Taxi Driver</string>
 
     <!--White Label Key-->
-    <string name="white_label_key"></string>
+    <string name="white_label_key">d7f228ce89b10cb02ec9fccdb47355d5</string>
 
-    <string name="fugu_app_key"></string>
-    <string name="fugu_app_key_test"></string>
+    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
     <string name="file_provider">product.clicklabs.jugnoo.white.driver.provider</string>
     <string name="hippo_support_faq_name_default">Driver</string>
@@ -69,7 +69,7 @@
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">World Taxi</string><!--* IMP-->
-    <string name="google_maps_api_key">AIzaSyCc7cCs0yv9EK7lNobBxtHUxM2Q5iq5G_0</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyDRlxbwMF-rjd0m2jitT5Czg_pjQP4kqRk</string> <!--IMP-->
 
     <string name="bank_deposit_text">@string/bank_deposite</string>
 
@@ -95,6 +95,8 @@
     <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <dimen name="ic_splash_logo_width">147dp</dimen>
     <dimen name="ic_splash_logo_height">157dp</dimen>
+    <dimen name="ic_login_logo_width">147dp</dimen>
+    <dimen name="ic_login_logo_height">157dp</dimen>
     <bool name="animate_splash_logo">true</bool>
 
 
@@ -189,8 +191,8 @@
     <integer name="driver_emergency_mode_enabled">1</integer>
 
     <string name="driver_here_auth_service_id">here_app</string>
-    <string name="driver_here_auth_identifier"></string>
-    <string name="driver_here_auth_secret"></string>
+    <string name="driver_here_auth_identifier">Y8pzxL8Y52FBp0qtaYVO</string>
+    <string name="driver_here_auth_secret">Am5XvFppRInSeFpAtijKeg</string>
     <string name="driver_here_app_id">jugnoo</string>
     <bool name="is_check_toll_amount">false</bool>
     <item name="max_toll_amount" type="dimen" format="float">0</item>
@@ -204,6 +206,7 @@
     <string name="driver_alt_drop_deviation_distance">200.0</string>
 
     <integer name="driver_google_caching_enabled">0</integer>
+    <integer name="driver_directions_caching">0</integer>
 
     <!--Delivery new keys-->
     <bool name="show_customer_info_in_inride">true</bool>
@@ -231,8 +234,17 @@
 
 
     <integer name="hippo_call_enabled">0</integer>
+    <integer name="enable_otp_via_call">0</integer>
 
 <!--    Branch Key-->
-    <string name="branch_key"></string>
-    <string name="jungle_map_fm_token"></string>
+    <string name="branch_key">key_live_dnqxibDLJYashvD4X7WIikjltvnR35LO</string>
+    <string name="jungle_map_fm_token">58a5d2d0-4cb7-11ea-856a-a78d05413d47</string>
+
+
+    <string name="driver_speed_lower_limit">3.0</string>
+    <string name="driver_speed_default">5.0</string>
+
+<!--    customer signature needed before mar delivery api -->
+    <integer name="customer_signature_on_mark_deliver">0</integer>
+
 </resources>

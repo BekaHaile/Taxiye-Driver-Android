@@ -6,7 +6,6 @@ import android.content.Intent;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -56,10 +55,6 @@ public class PendingApiHit {
 								Prefs.with(context).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_RIDE_EARNING);
 								context.sendBroadcast(fetchDocIntent);
-								if(Data.userData.getMinDriverBalance()>0){
-                                    Intent balanceAlertIntent = new Intent(Constants.ACTION_ALERT_FOR_MINIMUM_BALANCE);
-                                    context.sendBroadcast(balanceAlertIntent);
-                                }
 							}
 						} else if (PendingCall.END_DELIVERY.getPath().equalsIgnoreCase(pendingAPICall.url)) {
                             String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());

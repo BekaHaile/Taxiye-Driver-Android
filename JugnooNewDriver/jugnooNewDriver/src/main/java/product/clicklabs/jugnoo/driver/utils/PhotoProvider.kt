@@ -16,8 +16,7 @@ class PhotoProvider : ContentProvider() {
         return true
     }
 
-    @Nullable
-    override fun query(@NonNull uri: Uri, @Nullable projection: Array<String>, @Nullable selection: String, @Nullable selectionArgs: Array<String>, @Nullable sortOrder: String): Cursor? {
+    override fun query(uri: Uri, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?): Cursor? {
         return null
     }
 
@@ -26,16 +25,15 @@ class PhotoProvider : ContentProvider() {
         return null
     }
 
-    @Nullable
-    override fun insert(@NonNull uri: Uri, @Nullable values: ContentValues): Uri? {
+    override fun insert(uri: Uri, values: ContentValues?): Uri? {
         return null
     }
 
-    override fun delete(@NonNull uri: Uri, @Nullable selection: String, @Nullable selectionArgs: Array<String>): Int {
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         return 0
     }
 
-    override fun update(@NonNull uri: Uri, @Nullable values: ContentValues, @Nullable selection: String, @Nullable selectionArgs: Array<String>): Int {
+    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
         return 0
     }
 

@@ -105,16 +105,16 @@ public class Data {
 		Data.multipleVehiclesEnabled = multipleVehiclesEnabled;
 	}
 	//TODO
-	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
+	public static final String DEV_SERVER_URL = "https://prod.taxiye.com:8012";
 	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
-	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
+	public static final String TRIAL_SERVER_URL = "https://prod.taxiye.com:8200";
 
-    public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
-    public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
-    public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
+    public static final String DEV_1_SERVER_URL = "https://prod.taxiye.com:8013";
+    public static final String DEV_2_SERVER_URL = "https://prod.taxiye.com:8014";
+    public static final String DEV_3_SERVER_URL = "https://prod.taxiye.com:8015";
 
-    public static final String CHAT_URL_DEV = "https://test.jugnoo.in:8095";
-    public static final String CHAT_URL_LIVE = "https://prod-autos-api.jugnoo.in:4010";
+    public static final String CHAT_URL_DEV = "https://prod.taxiye.com:8095";
+    public static final String CHAT_URL_LIVE = "https://prod.taxiye.com:4010";
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
@@ -200,6 +200,7 @@ public class Data {
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
 			Prefs.with(context).remove(Constants.SP_OVERLAY_PERMISSION_ASKED);
+			Prefs.with(context).remove(Constants.SP_USER_ID);
 
 			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -283,23 +284,23 @@ public class Data {
 	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
-		if(assignedCustomerInfos != null) {
+		if(getAssignedCustomerInfos() != null) {
 			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
-			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+			for (CustomerInfo customerInfo : getAssignedCustomerInfos()) {
 				if (customerInfo.getStatus() == status) {
 					customerInfos.add(customerInfo);
 				}
 			}
 			return customerInfos;
 		} else{
-			return null;
+			return new ArrayList<>();
 		}
 	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForEngagedStatus(){
-		if(assignedCustomerInfos != null) {
+		if(getAssignedCustomerInfos() != null) {
 			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
-			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+			for (CustomerInfo customerInfo : getAssignedCustomerInfos()) {
 				if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
 						|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
@@ -308,7 +309,7 @@ public class Data {
 			}
 			return customerInfos;
 		} else{
-			return null;
+			return new ArrayList<>();
 		}
 	}
 
@@ -401,8 +402,7 @@ public class Data {
 	public static DriverScreenMode getCurrentState(){
 		CustomerInfo currentCustomerInfo = getCurrentCustomerInfo();
 		if(currentCustomerInfo == null){
-			if(getAssignedCustomerInfosListForEngagedStatus() != null
-					&& getAssignedCustomerInfosListForEngagedStatus().size() > 0){
+			if(getAssignedCustomerInfosListForEngagedStatus().size() > 0){
 				currentCustomerInfo = getAssignedCustomerInfosListForEngagedStatus().get(0);
 				setCurrentEngagementId(String.valueOf(currentCustomerInfo.getEngagementId()));
 				return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
@@ -563,12 +563,5 @@ public class Data {
 	}
 
 	private static ArrayList<SupportOption> supportOptions, creditOptions;
-
-	public static String getCurrencyNullSafety(String currencyUnit){
-		return currencyUnit != null && !currencyUnit.isEmpty() ? currencyUnit
-				: userData != null && userData.getCurrency() != null && !userData.getCurrency().isEmpty()
-				? userData.getCurrency()
-				: null;
-	}
 
 }

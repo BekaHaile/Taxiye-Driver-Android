@@ -5,11 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
@@ -18,6 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.picker.Country
 import com.picker.CountryPicker
 import com.tokenautocomplete.FilteredArrayAdapter
@@ -118,7 +118,7 @@ class EmergencyContactOperationsFragment : Fragment() {
     private var firstTime: Boolean = false
     private var isGrantCalled: Boolean = false
 
-    private val async by lazy{ ContactsFetchAsync(requireActivity(), phoneContactBeans!!, false, object : ContactsFetchAsync.Callback {
+    private val async by lazy{ ContactsFetchAsync(requireActivity(), phoneContactBeans!!, object : ContactsFetchAsync.Callback {
         override fun onPreExecute() {
             progressWheelLoadContacts.visibility = View.VISIBLE
         }
@@ -126,6 +126,10 @@ class EmergencyContactOperationsFragment : Fragment() {
         override fun onPostExecute(contactBeans: ArrayList<ContactBean>) {
             progressWheelLoadContacts.visibility = View.GONE
             phoneContactsListAdapter!!.notifyDataSetChanged()
+        }
+
+        override fun onCancel() {
+            performBackPressed()
         }
     })}
 
@@ -272,7 +276,7 @@ class EmergencyContactOperationsFragment : Fragment() {
                 if (mask.length > 2) {
                     mask = mask.toLowerCase()
 
-                    return person.name.toLowerCase().contains(mask) || person.phoneNo.toLowerCase().contains(mask)
+                    return person.name!!.toLowerCase().contains(mask) || person.phoneNo.toLowerCase().contains(mask)
                 } else {
                     return false
                 }
@@ -370,7 +374,7 @@ class EmergencyContactOperationsFragment : Fragment() {
         if (Data.userData.emergencyContactsList != null) {
             emergencyContactBeans!!.clear()
             for (emergencyContact in Data.userData.emergencyContactsList) {
-                val contactBean = ContactBean(emergencyContact.name, emergencyContact.phoneNo, emergencyContact.countryCode, "")
+                val contactBean = ContactBean(emergencyContact.name, emergencyContact.phoneNo, emergencyContact.countryCode, "", ContactBean.ContactBeanViewType.CONTACT, null, null)
                 contactBean.id = emergencyContact.id
                 emergencyContactBeans!!.add(contactBean)
             }
@@ -401,7 +405,7 @@ class EmergencyContactOperationsFragment : Fragment() {
     private fun setSelectedObject(contactBean: ContactBean?) {
         try {
             val index = phoneContactBeans!!.indexOf(ContactBean(contactBean!!.name,
-                    contactBean.phoneNo, contactBean.countryCode, contactBean.type))
+                    contactBean.phoneNo, contactBean.countryCode, contactBean.type, ContactBean.ContactBeanViewType.CONTACT, null, null))
             phoneContactBeans!![index].isSelected = true
             phoneContactsListAdapter!!.notifyDataSetChanged()
             (recyclerViewPhoneContacts!!.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(index, 20)
@@ -448,7 +452,7 @@ class EmergencyContactOperationsFragment : Fragment() {
         if (contacts.size == 0) {
             DialogPopup.alertPopup(activity, "",
                     activity!!.resources.getString(R.string.send_ride_status_no_contacts_message))
-        } else if (contacts.size > 10) {
+        } else if (contacts.size > 5) {
             DialogPopup.alertPopupTwoButtonsWithListeners(activity,
                     "",
                     String.format(activity!!.resources
@@ -497,6 +501,10 @@ class EmergencyContactOperationsFragment : Fragment() {
     fun dialogConfirmEmergencyContact(activity: FragmentActivity?, title: String, message: String,
                                       cancellable: Boolean, contactBean: ContactBean?) {
         try {
+            if(contactBean == null){
+                return
+            }
+
             dismissAlertPopup()
 
             dialog = Dialog(activity!!, android.R.style.Theme_Translucent_NoTitleBar)
@@ -537,7 +545,13 @@ class EmergencyContactOperationsFragment : Fragment() {
                 tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
             }
             llCountryCode.setOnClickListener { countryPicker.showDialog(activity.supportFragmentManager) }
-            editTextPhoneNumber.setText(contactBean!!.phoneNo.replaceFirst("^0+(?!$)".toRegex(), ""))
+
+            val phoneNo: String = contactBean.phoneNo
+            val ccpn = UtilsKt.splitCountryCodeAndPhoneNumber(requireContext(), phoneNo)
+
+            tvCountryCode.setText(ccpn.countryCode)
+            editTextPhoneNumber.setText(ccpn.phoneNo)
+
             editTextPhoneNumber.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 

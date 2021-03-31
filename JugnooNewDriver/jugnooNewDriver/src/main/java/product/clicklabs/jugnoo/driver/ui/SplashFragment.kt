@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.PowerManager
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +26,12 @@ import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscription
+import product.clicklabs.jugnoo.driver.datastructure.DriverSubscriptionEnabled
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -84,6 +85,14 @@ class SplashFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.frag_splash)
+    }
+
+    fun openHomeFragment()
+    {
+        if(mListener!=null)
+        {
+            mListener?.goToHomeScreen()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -152,7 +161,7 @@ class SplashFragment : Fragment() {
 
             if(it.isDisposed) return@create
 
-            val pendingAPICalls: ArrayList<PendingAPICall> = Database2.getInstance(MyApplication.getInstance()).allPendingAPICalls
+            val pendingAPICalls: ArrayList<PendingAPICall> = Database2.getInstance(context).allPendingAPICalls
 
             for (pendingAPICall in pendingAPICalls) {
                 PendingApiHit().startAPI(context, pendingAPICall)
@@ -168,15 +177,37 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun startExecutionForPendingAPis() {
-        isPendingExecutionOngoing = true
-        compositeDisposable.add(hitPendingApis().subscribeOn(Schedulers.io()).retry(CACHED_API_RETRY_COUNT)
-                .observeOn(AndroidSchedulers.mainThread()).
-                    subscribe({Log.i(TAG,"onNext for startExecutionForPendingAPis")},{
-                    Log.i(TAG,"onError for startExecutionForPendingAPis {${it.message}}");showBlockerDialog(getString(R.string.cached_api_error))
-                }, {Log.i(TAG,"onComplete for startExecutionForPendingAPis"); behaviourSubject.onComplete() } ))
-
-    }
+//    lateinit var subsFrag:SubscriptionFragment
+//     fun checkForSubscribedDriver(jsonString: String): Boolean {
+//        val jObj = JSONObject(jsonString)
+//        val jLoginObject = jObj.getJSONObject("login")
+//        if(jLoginObject.has("driver_subscription")){
+//            if(jLoginObject.getInt("driver_subscription")==1){
+//                var key =0;
+//                if(jLoginObject.has("stripe_cards_enabled")){
+//                    key = jLoginObject.getInt("stripe_cards_enabled")
+//                }
+//                val token = jLoginObject.get("access_token");
+//                subsFrag = SubscriptionFragment()
+//                val args = Bundle()
+//                args.putString("AccessToken", token as String)
+//                args.putInt("stripe_key", key as Int)
+//                subsFrag.setArguments(args)
+//                fragmentManager!!.findFragmentByTag(SplashFragment::class.simpleName)?.let {
+//                    fragmentManager!!.beginTransaction()
+//                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+//                            .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
+//                            .hide(it)
+//                            .addToBackStack(SubscriptionFragment::class.java.name)
+//                            .commit()
+//                }
+//                return false
+//            }else{
+//                return true
+//            }
+//        }
+//        return true
+//    }
 
     private fun accessTokenLogin(mActivity: Activity?) {
 
@@ -300,7 +331,30 @@ class SplashFragment : Fragment() {
                                     DialogPopup.alertPopup(mActivity, "", message)
                                 } else {
 
-                                    mListener?.goToHomeScreen()
+                                    if ((Data.userData.driverSubscriptionEnabled == DriverSubscriptionEnabled.MANDATORY.ordinal||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&& 0 == Data.userData.deliveryEnabled) {
+                                        if (Data.userData.driverSubscription == DriverSubscription.UNSUBSCRIBED.ordinal) {
+
+                                            lateinit var subsFrag: SubscriptionFragment
+                                            subsFrag = SubscriptionFragment()
+                                            val args = Bundle()
+                                            args.putString("AccessToken", Data.userData.accessToken as String)
+                                            args.putInt("stripe_key", 0 as Int)
+                                            subsFrag.setArguments(args)
+                                            fragmentManager!!.findFragmentByTag(SplashFragment::class.simpleName)?.let {
+                                                fragmentManager!!.beginTransaction()
+                                                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                                                        .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
+                                                        .hide(it)
+                                                        .addToBackStack(SubscriptionFragment::class.java.name)
+                                                        .commit()
+                                            }
+
+                                        } else {
+                                            mListener?.goToHomeScreen()
+                                        }
+                                    } else {
+                                        mListener?.goToHomeScreen()
+                                    }
 
                                 }
 
@@ -311,8 +365,9 @@ class SplashFragment : Fragment() {
                             }
                         } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
-                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
-                                       if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+                                val vehicleModelEnabled = jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0)
+                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, vehicleModelEnabled)
                                         Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
                                 if(jObj.has(Constants.KEY_LOGIN)) {
                                     Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_DOB_INPUT, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_DOB_INPUT,
@@ -354,6 +409,16 @@ class SplashFragment : Fragment() {
         })
     }
 
+    private fun startExecutionForPendingAPis() {
+        isPendingExecutionOngoing = true
+        compositeDisposable.add(hitPendingApis().subscribeOn(Schedulers.io()).retry(CACHED_API_RETRY_COUNT)
+                .observeOn(AndroidSchedulers.mainThread()).
+                    subscribe({Log.i(TAG,"onNext for startExecutionForPendingAPis")},{
+                    Log.i(TAG,"onError for startExecutionForPendingAPis {${it.message}}");showBlockerDialog(getString(R.string.cached_api_error))
+                }, {Log.i(TAG,"onComplete for startExecutionForPendingAPis"); behaviourSubject.onComplete() } ))
+
+    }
+
 
     private var logoutCallback = object: LogoutCallback {
         override fun redirectToSplash(): Boolean {
@@ -372,9 +437,6 @@ class SplashFragment : Fragment() {
                 , { parentActivity?.finish(); })
     }
 
-    private var handler: Handler? = null
-    private var resumeCalled = false
-
     override fun onResume() {
         super.onResume()
 
@@ -385,12 +447,7 @@ class SplashFragment : Fragment() {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
             if(!it.isSuccessful) {
                 Log.w(TAG,"device_token_unsuccessful - onReceive",it.exception)
-                try {
-                    deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
-                }
-                catch (e: Exception){
-                    e.printStackTrace()
-                }
+                deviceTokenObservable.onError(Throwable(it.exception?.localizedMessage))
                 return@addOnCompleteListener
             }
             if(it.result?.token != null) {
@@ -403,7 +460,7 @@ class SplashFragment : Fragment() {
 
         // if the pending api execution has already been subscribed once, resubscribe
         if (isPendingExecutionOngoing && apiDisposable?.isDisposed == true) {
-            Log.i(TAG, "onResume resubscribing to subscribeSubjectForAccessTokenLogin")
+            Log.i(TAG,"onResume resubscribing to subscribeSubjectForAccessTokenLogin")
             subscribeSubjectForAccessTokenLogin()
         }
     }

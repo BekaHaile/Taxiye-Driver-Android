@@ -197,9 +197,9 @@ public class EditDriverProfile extends BaseFragmentActivity {
 					}
 				} else {
 					editTextPhone.requestFocus();
-					editTextPhone.setEnabled(true);
+					editTextPhone.setEnabled(false);
 					editTextPhone.setSelection(editTextPhone.getText().length());
-					tvCountryCode.setEnabled(true);
+					tvCountryCode.setEnabled(false);
 					imageViewEditPhone.setImageDrawable(saveDrawable);
 					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
 					Utils.showSoftKeyboard(EditDriverProfile.this, editTextPhone);
@@ -210,7 +210,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		imageViewEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (editTextPhone.isEnabled()) {
+				if (editTextUserEmail.isEnabled()) {
 					String phoneChanged = editTextPhone.getText().toString().trim();
 					String emailChanged = editTextUserEmail.getText().toString().trim();
 					if(!TextUtils.isEmpty(emailChanged) && !Utils.isEmailValid(emailChanged)){
@@ -260,9 +260,9 @@ public class EditDriverProfile extends BaseFragmentActivity {
 					}else if(canEditEmail){
 						editTextUserEmail.requestFocus();
 					}
-					editTextPhone.setEnabled(true);
+					editTextPhone.setEnabled(false);
 					editTextUserEmail.setSelection(editTextUserEmail.getText().length());
-					tvCountryCode.setEnabled(true);
+					tvCountryCode.setEnabled(false);
 					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
 					imageViewEdit.setImageDrawable(saveDrawable);
 					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserEmail);

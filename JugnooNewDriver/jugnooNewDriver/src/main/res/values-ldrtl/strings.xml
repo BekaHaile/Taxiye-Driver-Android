@@ -2,4 +2,5 @@
 <resources>
     <string name="pickup_time_format">Pickup time: %s</string>
     <string name="incentive">Incentives</string>
+    <string name="unlimited">Unlimited</string>
 </resources>

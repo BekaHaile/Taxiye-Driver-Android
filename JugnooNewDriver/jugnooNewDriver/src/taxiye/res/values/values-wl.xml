@@ -26,7 +26,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Taxiye Driver/Taxiye Pictures</string>
     <string name="file_provider">production.taxiye.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyCjFxlk0I6oi8-FbP3VlMGPVufW4Fu-n2o</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyDRlxbwMF-rjd0m2jitT5Czg_pjQP4kqRk</string> <!--IMP-->
 
 
     <!--App Level Constants-->
@@ -69,7 +69,7 @@
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <bool name="waze_navigation_enabled">true</bool>
-    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="show_language_control">@integer/view_visible</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
     <string name="currency_fallback">MEX</string>
 
@@ -89,5 +89,8 @@
     <color name="themeColorAlternateLight">#bb3c3638</color>
 
     <string name="default_lang">en</string>
+
+    <integer name="apply_default_country_code">1</integer>
+    <string name="default_country_code">+251</string>
 
 </resources>
