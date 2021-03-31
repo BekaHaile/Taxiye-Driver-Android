@@ -26,7 +26,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Taxiye Driver/Taxiye Pictures</string>
     <string name="file_provider">production.taxiye.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyCjFxlk0I6oi8-FbP3VlMGPVufW4Fu-n2o</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyDtxq1wWwO3NLmMKmMXZnf3vxicTP8EWKU</string> <!--IMP-->
 
 
     <!--App Level Constants-->
