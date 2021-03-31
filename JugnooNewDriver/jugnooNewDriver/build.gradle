@@ -99,7 +99,7 @@ android {
             buildConfigField "boolean", "DEBUG_MODE", "false"
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.txt'
-            signingConfig signingConfigs.config
+            signingConfig signingConfigs.debug
         }
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
@@ -195,7 +195,6 @@ dependencies {
     implementation 'com.params.progressview:step-progress:1.0.2'
     implementation 'androidx.fragment:fragment-ktx:1.1.0'
     implementation 'io.socket:socket.io-client:1.0.0'
-<<<<<<< HEAD
 
     // androidx security dependency
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
@@ -203,11 +202,9 @@ dependencies {
     // root checker library
     implementation 'com.scottyab:rootbeer-lib:0.0.8'
 
-=======
     implementation 'com.google.guava:guava:27.0.1-android'
 
     implementation 'io.michaelrocks:libphonenumber-android:8.10.16'
->>>>>>> 32e519598c325c35e925355092bf8936eaeaae9b
 }
 
 apply plugin: 'com.google.gms.google-services'
