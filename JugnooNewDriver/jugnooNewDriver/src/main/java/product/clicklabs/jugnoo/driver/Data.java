@@ -105,16 +105,16 @@ public class Data {
 		Data.multipleVehiclesEnabled = multipleVehiclesEnabled;
 	}
 	//TODO
-	public static final String DEV_SERVER_URL = "https://prod.taxiye.com:8012";
+	public static final String DEV_SERVER_URL = BuildConfig.DEV_SERVER_URL;
 	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
-	public static final String TRIAL_SERVER_URL = "https://prod.taxiye.com:8200";
+	public static final String TRIAL_SERVER_URL = BuildConfig.TRIAL_SERVER_URL;
 
-    public static final String DEV_1_SERVER_URL = "https://prod.taxiye.com:8013";
-    public static final String DEV_2_SERVER_URL = "https://prod.taxiye.com:8014";
-    public static final String DEV_3_SERVER_URL = "https://prod.taxiye.com:8015";
+    public static final String DEV_1_SERVER_URL = BuildConfig.DEV_1_SERVER_URL;
+    public static final String DEV_2_SERVER_URL = BuildConfig.DEV_2_SERVER_URL;
+    public static final String DEV_3_SERVER_URL = BuildConfig.DEV_3_SERVER_URL;
 
-    public static final String CHAT_URL_DEV = "https://prod.taxiye.com:8095";
-    public static final String CHAT_URL_LIVE = "https://prod.taxiye.com:4010";
+    public static final String CHAT_URL_DEV = BuildConfig.CHAT_URL_DEV;
+    public static final String CHAT_URL_LIVE = BuildConfig.CHAT_URL_LIVE;
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
