@@ -81,6 +81,11 @@ public class FareStructure {
 		} else {
 			fare = fareOfRideTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
 		}
+
+        //congestion fare
+        double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
+        fare = fare + fareOfWaitTime;
+
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
@@ -101,12 +106,6 @@ public class FareStructure {
 				mandatoryFareApplicable = 0;
 			}
 		}
-
-
-		//congestion fare
-		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
-		fare = fare + fareOfWaitTime;
-
 
 		fare = fare + computeLuggageChargesCharges(luggageCount);
 

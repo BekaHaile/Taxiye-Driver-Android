@@ -233,24 +233,9 @@ object GoogleRestApis {
         return response
     }
 
-    fun getPlaceDetails(placeId:String): Response {
+    fun getPlaceDetails(placeId:String, sessiontoken:String): Response {
         val response:Response
-        if (BuildConfig.MAPS_APIS_SIGN) {
-            val urlToSign = ("/maps/api/geocode/json?" +
-                    "place_id=" + placeId
-                    + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + CHANNEL())
-            var googleSignature: String? = null
-            try {
-                googleSignature = generateGoogleSignature(urlToSign)
-            } catch (ignored: Exception) {
-            }
-
-
-            response = RestClient.getGoogleApiServices().placeDetails(placeId, BuildConfig.MAPS_CLIENT, CHANNEL(), googleSignature)
-        } else {
-            response = RestClient.getGoogleApiServices().placeDetails(placeId, BuildConfig.MAPS_BROWSER_KEY)
-        }
+        response = RestClient.getGoogleApiServices().placeDetailsByPlaceId(placeId, sessiontoken, BuildConfig.MAPS_BROWSER_KEY)
 
         logGoogleRestAPI("0", "0", API_NAME_PLACES)
         return response

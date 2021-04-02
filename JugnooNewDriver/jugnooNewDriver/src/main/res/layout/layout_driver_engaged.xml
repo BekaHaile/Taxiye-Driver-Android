@@ -843,12 +843,28 @@
                     android:layout_marginTop="24px"
                     android:layout_marginBottom="24px"
                     >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+                        <Button
+                            android:id="@+id/driverEndStopBtn"
+                            style="@style/ButtonThemeAlternate"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/end_stop"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="14dp"
+                            android:backgroundTint="@color/grey_btn"
+                            android:visibility="visible"/>
 
-                    <Button
-                        android:id="@+id/driverEndRideBtn"
-                        style="@style/ButtonThemeAlternate"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/end_ride"/>
+                        <Button
+                            android:layout_weight="1"
+                            android:id="@+id/driverEndRideBtn"
+                            style="@style/ButtonThemeAlternate"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/end_ride"/>
+                    </LinearLayout>
+
 
                     <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                         android:id="@+id/buttonMakeDelivery"

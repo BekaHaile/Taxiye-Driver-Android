@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.ui.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import product.clicklabs.jugnoo.driver.Constants
 
 /**
  * Created by Parminder Saini on 28/04/18.
@@ -17,8 +18,11 @@ data class DriverLanguageResponse(
 @Expose @SerializedName("email_input_at_signup") val emailInputAtSignup:Int?,
 @Expose @SerializedName("driver_email_optional") val driverEmailOptional:Int?,
 @Expose @SerializedName("driver_dob_input") val driverDobInput:Int?,
-@Expose @SerializedName("driver_gender_filter") val driverGenderFilter:Int?
-):FeedCommonResponse()
+@Expose @SerializedName("driver_gender_filter") val driverGenderFilter:Int?,
+@Expose @SerializedName(Constants.KEY_ENABLE_OTP_VIA_CALL) val otpEnabledViaCall:Int?
+
+
+):FeedCommonResponseKotlin()
 
 class LocaleModel(@Expose @SerializedName("locale") val locale:String?,
                        @Expose @SerializedName("name") val name:String?){

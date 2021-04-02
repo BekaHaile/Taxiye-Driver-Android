@@ -4,11 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
@@ -17,6 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.picker.Country
 import com.picker.CountryPicker
 import com.tokenautocomplete.FilteredArrayAdapter
@@ -203,7 +203,7 @@ class AddEmergencyContactsFragment : Fragment() {
     }
 
     private val async by lazy {
-        ContactsFetchAsync(requireActivity(), contactBeans!!, false, object : ContactsFetchAsync.Callback {
+        ContactsFetchAsync(requireActivity(), contactBeans!!, object : ContactsFetchAsync.Callback {
             override fun onPreExecute() {
                 progressWheelLoadContacts.visibility = View.VISIBLE
             }
@@ -213,10 +213,14 @@ class AddEmergencyContactsFragment : Fragment() {
                 contactsListAdapter!!.setCountAndNotify()
                 contactsArrayAdapter!!.notifyDataSetChanged()
             }
+
+            override fun onCancel() {
+                performBackPressed()
+            }
         })
     }
 
-    fun addEmergencyContact(contactBean: ContactBean, countryCode:String, phoneNo:String) {
+    fun addEmergencyContact(contactBean: ContactBean, countryCode: String, phoneNo: String) {
         try {
             val jsonArray = JSONArray()
             if (contactBean.isSelected) {
@@ -255,7 +259,7 @@ class AddEmergencyContactsFragment : Fragment() {
     private fun setSelectedObject(selected: Boolean, contactBean: ContactBean) {
         try {
             contactBeans!![contactBeans!!.indexOf(ContactBean(contactBean.name,
-                    contactBean.phoneNo, contactBean.countryCode, contactBean.type))].isSelected = selected
+                    contactBean.phoneNo, contactBean.countryCode, contactBean.type, ContactBean.ContactBeanViewType.CONTACT, null, null))].isSelected = selected
             contactsListAdapter!!.setCountAndNotify()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -290,6 +294,7 @@ class AddEmergencyContactsFragment : Fragment() {
                             if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                 if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
                                     DialogPopup.dialogBanner(activity, message)
+                                    performBackPressed()
                                 } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                                     DialogPopup.dialogBanner(activity, message)
                                     performBackPressed()
@@ -364,7 +369,14 @@ class AddEmergencyContactsFragment : Fragment() {
                 tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
             }
             llCountryCode.setOnClickListener { countryPicker.showDialog(activity.supportFragmentManager) }
-            editTextPhoneNumber.setText(contactBean.phoneNo!!.replaceFirst("^0+(?!$)".toRegex(), ""))
+
+            val phoneNo: String = contactBean.phoneNo
+            val ccpn = UtilsKt.splitCountryCodeAndPhoneNumber(requireContext(), phoneNo)
+
+            tvCountryCode.setText(ccpn.countryCode)
+            editTextPhoneNumber.setText(ccpn.phoneNo)
+
+
             editTextPhoneNumber.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 

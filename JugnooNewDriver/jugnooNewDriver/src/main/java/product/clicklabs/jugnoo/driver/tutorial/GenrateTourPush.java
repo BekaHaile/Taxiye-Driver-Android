@@ -132,7 +132,7 @@ public class GenrateTourPush {
                                         referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
                                         isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
                                         new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, new ArrayList<String>(),
-                                        0d,currency, 0, 0, 0, 10d, 0, "", "", 0, 0,"","",startTimeLocal,DateOperations.getCurrentTime());
+                                        0d,currency, 0, 0, 0, 10d, 0, "", "", 0, 0,"","",startTimeLocal,DateOperations.getCurrentTime(), 0);
                                 Data.addCustomerInfo(customerInfo);
 
                                 startRing(context, engagementId, changeRing);
@@ -299,7 +299,6 @@ public class GenrateTourPush {
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null) {
                         boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId));
                         if (removed) {
                             if (HomeActivity.appInterruptHandler != null) {
@@ -307,7 +306,6 @@ public class GenrateTourPush {
                             }
                             stopRing(true, context);
                         }
-                    }
                     Log.i("RequestTimeoutTimerTask", "onFinish");
                     stopTimer();
                 }

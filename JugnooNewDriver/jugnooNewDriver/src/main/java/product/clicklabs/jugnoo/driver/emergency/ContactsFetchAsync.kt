@@ -1,6 +1,9 @@
 package product.clicklabs.jugnoo.driver.emergency
 
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.net.Uri
 import android.os.AsyncTask
 import android.provider.ContactsContract
 import androidx.fragment.app.FragmentActivity
@@ -13,99 +16,107 @@ import java.util.*
 /**
  * Created by shankar on 2/26/16.
  */
-class ContactsFetchAsync(private val activity: FragmentActivity, private val contactBeans: ArrayList<ContactBean>, private val showLoadingDialog: Boolean, private val callback: Callback) : AsyncTask<String, Int, String>() {
-
+class ContactsFetchAsync(private val activity: Context, private val contactBeans: ArrayList<ContactBean>, private val callback: Callback) : AsyncTask<String?, Int?, String>() {
+    private var stopInterrupt = false
+    private val progressDialog: ProgressDialog
     override fun onPreExecute() {
         super.onPreExecute()
-        if (showLoadingDialog) {
-            DialogPopup.showLoadingDialog(activity, activity.resources.getString(R.string.loading))
-        }
+        showLoading()
         callback.onPreExecute()
     }
 
-    override fun doInBackground(vararg params: String): String {
+    override fun doInBackground(vararg params: String?): String {
         fetchContacts()
         return ""
     }
 
     override fun onPostExecute(s: String) {
         super.onPostExecute(s)
-        if (showLoadingDialog) {
-            DialogPopup.dismissLoadingDialog()
+        progressDialog.dismiss()
+        if (!stopInterrupt) {
+            callback.onPostExecute(contactBeans)
         }
-        callback.onPostExecute(contactBeans)
     }
 
     private fun fetchContacts() {
         val contactBeans = ArrayList<ContactBean>()
         try {
-
             val cr = activity.contentResolver
             val cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
-
             if (cur!!.count > 0) {
-                while (cur.moveToNext()) {
+                progressDialog.max = cur.count
+                while (cur.moveToNext() && !stopInterrupt) {
                     val id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID))
                     val name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                     val hasPhoneNumber = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))
-                    if (Integer.parseInt(hasPhoneNumber) > 0) {
+                    val imageUri = cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+                    var uri: Uri? = null
+                    if (imageUri != null) {
+                        try {
+                            uri = Uri.parse(imageUri)
+                        } catch (e: java.lang.Exception) {
+                        }
+                    }
+                    if (hasPhoneNumber.toInt() > 0) {
                         val pCur = cr.query(
-                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                arrayOf(id), null)
-
-                        while (pCur!!.moveToNext()) {
-                            var phone: String? = pCur
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", arrayOf(id), null)
+                        while (pCur!!.moveToNext() && !stopInterrupt) {
+                            var phone = pCur
                                     .getString(pCur
                                             .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                            val type = getContactTypeString(activity, pCur.getString(
-                                    pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)))
 
-                            phone = Utils.retrievePhoneNumberTenChars("",phone!!)
-                            if (phone != null && Utils.validPhoneNumber(phone)) {
-                                contactBeans.add(ContactBean(name, phone, "", type))
+                            var type =""
+                            type = if(pCur.getString(
+                                            pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))== null){
+                                ""
+                            }else
+                                getContactTypeString(activity, pCur.getString(
+                                        pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)))
+
+                            phone = phone.replace(" ", "")
+                            phone = phone.replace("-", "")
+                            if (Utils.validPhoneNumber(phone)) {
+                                contactBeans.add(ContactBean(name, phone, "", type, ContactBean.ContactBeanViewType.CONTACT, uri, null))
                             }
                         }
                         pCur.close()
                     }
+                    progressDialog.incrementProgressBy(1)
                 }
             }
             cur.close()
-
             loadList(contactBeans)
-
-
             return
-
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-
         return
     }
 
     private fun loadList(list: ArrayList<ContactBean>) {
-
-        val set = TreeSet(Comparator<ContactBean> { o1, o2 ->
-            if (o1.phoneNo.toString().equals(o2.phoneNo.toString(), ignoreCase = true)) {
-                0
-            } else 1
-        })
-
-        set.addAll(list)
-
-        val newList = ArrayList(set)
-        newList.sortWith(Comparator { o1, o2 ->
-            o1.name.compareTo(o2.name, true)
-        })
-        contactBeans.addAll(newList)
+        if (!stopInterrupt) {
+            val set: MutableSet<ContactBean> = object: TreeSet<ContactBean>(
+                    object : Comparator<ContactBean?> {
+                        override fun compare(o1: ContactBean?, o2: ContactBean?): Int {
+                            return if (o1?.phoneNo.equals(o2?.phoneNo)) {
+                                0
+                            } else 1
+                        }
+                    }
+            ){}
+            set.addAll(list)
+            val newList: ArrayList<ContactBean> = ArrayList<ContactBean>(set)
+            Collections.sort(newList, Comparator { o1: ContactBean, o2: ContactBean -> o1.name?.compareTo(o2.name?:"", true) ?: 0 })
+            contactBeans.addAll(newList)
+        }
     }
 
-
     private fun getContactTypeString(context: Context, type: String): String {
-        try {
-            val typeInt = Integer.parseInt(type)
-            return if (typeInt == ContactsContract.CommonDataKinds.Phone.TYPE_HOME) {
+        return try {
+            val typeInt = type.toInt()
+            if (typeInt == ContactsContract.CommonDataKinds.Phone.TYPE_HOME) {
                 context.getString(R.string.home)
             } else if (typeInt == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
                 context.getString(R.string.mobile)
@@ -114,17 +125,40 @@ class ContactsFetchAsync(private val activity: FragmentActivity, private val con
             } else {
                 context.getString(R.string.other)
             }
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
-            return context.getString(R.string.mobile)
+            context.getString(R.string.mobile)
         }
-
     }
 
+    fun stop() {
+        stopInterrupt = true
+        cancel(true)
+        callback.onCancel()
+    }
 
     interface Callback {
         fun onPreExecute()
         fun onPostExecute(contactBeans: ArrayList<ContactBean>)
+        fun onCancel()
+    }
+
+    private fun showLoading() {
+        progressDialog.setMessage("Loading contacts...")
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel") { dialog: DialogInterface?, which: Int ->
+            stop()
+            progressDialog.dismiss()
+        }
+        progressDialog.setCancelable(false)
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+    }
+
+    init {
+        stopInterrupt = false
+        progressDialog = ProgressDialog(activity, R.style.MyProgressDialog)
     }
 
 }
+

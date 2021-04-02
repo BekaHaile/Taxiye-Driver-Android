@@ -60,7 +60,6 @@ public class EarningsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class FeedCommonResponse {
     }
 
     public String getMessage() {
-        return message == null ? error : message;
+        return message==null?error:message;
     }
 
 
@@ -41,13 +41,4 @@ public class FeedCommonResponse {
     public void setError(String error) {
         this.error = error;
     }
-
-    public String serverMessage() {
-        if (message == null || message.isEmpty()) {
-            if (error != null) return error;
-            else return "";
-        } else {
-            return message;
-        }
-}
 }

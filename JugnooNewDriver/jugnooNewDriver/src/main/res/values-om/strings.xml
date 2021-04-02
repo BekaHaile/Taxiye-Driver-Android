@@ -590,7 +590,6 @@
     <string name="added">Dabalameera</string>
     <string name="deducted">Hir\'ifameera</string>
     <string name="view_wallet_transactions">Bittaaf gurgurtaa borsaa maallaqaa ilaali</string>
-    <string name="dont_touch_me">NattiHinBu\'in</string>
     <string name="schedule_call_message">%s irraa deeggarsa argachuuf biinkoo kana gadii tuqi. Hoji raawwachiistuun keenya amma siif bilbilu.</string>
     <string name="get_call">Bilbila argadhu</string>
     <string name="get_support_call">Deeggarsa bilbilaa argadhu</string>
@@ -987,4 +986,27 @@
     <string name="we_are_unable_to_process_your_request">Ammaaf gaaffii kee adeemsisuu hin dandeenye. Maaloo booda irra deebiin yaali.</string>
     <string name="please_install_whatsapp">Maaloo Whatsapp fe\'i</string>
 
+
+    <string name="subscriptions">Subscriptions</string>
+    <string name="total_rides">Total Rides</string>
+    <string name="rides_pending">Rides Pending</string>
+    <string name="rides_valid_upto">Valid Upto</string>
+    <string name="unlimited">Unlimited</string>
+
+    <string name="driver">Driver</string>
+    <string name="customer">Customer</string>
+    <string name="transfer_to">Transfer to</string>
+    <string name="select_transfer_to">Select Transfer to</string>
+
+    <string name="instructions_colon"><b>Instructions :</b></string>
+
+    <string name="gender">Gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_others">Others</string>
+    <string name="label_select_gender">Select your gender</string>
+    <string name="please_select_gender">Please select gender</string>
+    <string name="resend_OTP_call">Call me</string>
+
+    <string name="alert_low_wallet_balance">Wallet Balance is low. Credit your Wallet to receive requests.</string>
 </resources>

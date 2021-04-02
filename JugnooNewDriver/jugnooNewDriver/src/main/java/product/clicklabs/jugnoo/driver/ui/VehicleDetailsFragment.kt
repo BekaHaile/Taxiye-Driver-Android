@@ -623,18 +623,7 @@ class VehicleDetailsFragment : Fragment() {
                                 if(t.driverVehicleMappinId!=-1){
                                     Data.setDriverMappingIdOnBoarding(t.driverVehicleMappinId)
                                 }
-                                if (isEditMode) {
-                                    val vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber, year,
-                                            currentModelSelected!!.make, currentModelSelected!!.modelName, currentModelSelected!!.id,
-                                            currentColorSelected!!.value, currentColorSelected!!.id,
-                                            currentDoorSelected!!.value, currentDoorSelected!!.id,
-                                            currentSeatBeltSelected!!.value, currentSeatBeltSelected!!.id)
-
-                                    vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
-
-                                } else {
-                                    openDocumentUploadActivity()
-                                }
+                                updateDetailsOrOpenDocument(vehicleNumber, year)
                             }
 
 
@@ -656,7 +645,15 @@ class VehicleDetailsFragment : Fragment() {
                 }
 
                 override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
-                    return false;
+                    if (flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal()) {
+                        DialogPopup.alertPopupWithListener(activity, "", message) {
+                            updateDetailsOrOpenDocument(vehicleNumber, year)
+                        }
+                        return true
+                    } else {
+                        return false
+
+                    }
                 }
 
             })
@@ -675,9 +672,24 @@ class VehicleDetailsFragment : Fragment() {
         val intent = Intent(activity, DriverDocumentActivity::class.java).apply {
             putExtra("access_token", accessToken)
             putExtra("in_side", false)
-            putExtra("doc_required", 3)
+            putExtra("doc_required", 0)
         }
         startActivity(intent)
+    }
+
+    private fun updateDetailsOrOpenDocument(vehicleNumber:String?, year:String?){
+        if (isEditMode) {
+            val vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber, year,
+                    currentModelSelected!!.make, currentModelSelected!!.modelName, currentModelSelected!!.id,
+                    currentColorSelected!!.value, currentColorSelected!!.id,
+                    currentDoorSelected!!.value, currentDoorSelected!!.id,
+                    currentSeatBeltSelected!!.value, currentSeatBeltSelected!!.id)
+
+            vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
+
+        } else {
+            openDocumentUploadActivity()
+        }
     }
 
     private val yearWatcher = object:TextWatcher{

@@ -256,12 +256,195 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvSubscriptions"
+            android:tag="@string/dont_touch_me"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/textViewSubscriptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    style="@style/TextLarge"
+                    android:text="@string/subscriptions"
+                    android:textColor="@color/textColor"
+                    android:background="@color/bgColor" />
+
+                <RelativeLayout
+                    android:id="@+id/rlTotalRides"
+                    android:layout_width="match_parent"
+                    android:minHeight="45dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <TextView
+                        style="@style/TextNormal"
+                        android:id="@+id/textViewTotalRidesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/total_rides"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewTotalRidesValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextNormal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="0000"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontalSubs1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:id="@+id/takenRidesViewSubsRl"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
+
+                    <TextView
+                        android:id="@+id/textViewRidesTakenTextSubs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/rides_taken"
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColorMedium" />
+
+                    <TextView
+                        android:id="@+id/textViewRidesTakenValueSubs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        style="@style/TextNormal"
+                        android:text="0000"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontalSubs3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:id="@+id/pendingViewSubsRl"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
+
+                    <TextView
+                        android:id="@+id/textViewRidesPendingSubs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/rides_pending"
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColorMedium" />
+
+                    <TextView
+                        android:id="@+id/textViewRidesPendingValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="0000"
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColor"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontalSubs2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/dividerColor"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
+
+                    <TextView
+                        android:id="@+id/textViewRidesValidUptoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        style="@style/TextNormal"
+                        android:text="@string/rides_valid_upto"
+                        android:textColor="@color/textColorMedium" />
+
+                    <TextView
+                        android:id="@+id/textViewRidesValidValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        style="@style/TextNormal"
+                        android:text="0000"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvScore"
             android:tag="@string/dont_touch_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/cvSubscriptions"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
@@ -636,6 +819,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="20dp"
+                    android:visibility="gone"
                     android:layout_marginEnd="20dp"
                     android:background="@color/dividerColor"/>
                 <androidx.appcompat.widget.SwitchCompat
@@ -646,6 +830,7 @@
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
+                    android:visibility="gone"
                     android:paddingTop="15dp"
                     android:text="@string/only_cash_rides"
                     android:theme="@style/ThemeSwitch"
@@ -657,6 +842,7 @@
                     android:layout_height="1dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:visibility="gone"
                     android:background="@color/dividerColor"/>
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchOnlyLongRides"
@@ -666,6 +852,7 @@
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
+                    android:visibility="gone"
                     android:paddingTop="15dp"
                     android:text="@string/only_long_rides"
                     android:theme="@style/ThemeSwitch"
@@ -676,6 +863,7 @@
                     android:layout_height="1dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:visibility="gone"
                     android:background="@color/dividerColor"/>
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchExternalGps"
@@ -684,6 +872,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
+                    android:visibility="gone"
                     android:paddingStart="20dp"
                     android:paddingTop="15dp"
                     android:text="@string/vehicle_gps"

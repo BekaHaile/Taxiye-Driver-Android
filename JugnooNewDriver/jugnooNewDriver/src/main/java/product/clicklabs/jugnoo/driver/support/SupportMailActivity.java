@@ -13,6 +13,7 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.EmailIntentBuilder;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -65,11 +66,17 @@ public class SupportMailActivity extends BaseActivity implements View.OnClickLis
 					return;
 				}
 				if(Data.userData != null) {
-					Utils.openMailIntent(this,
-							new String[]{Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL, getString(R.string.support_email))},
-							Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, getString(R.string.support_email_subject)),
-							etMessage.getText().toString().trim());
-					etMessage.setText("");
+//					Utils.openMailIntent(this,
+//							new String[]{Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL, getString(R.string.support_email))},
+//							Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, getString(R.string.support_email_subject)),
+//							etMessage.getText().toString().trim());
+//					etMessage.setText("");
+
+					EmailIntentBuilder.from(this)
+							.to(Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL, getString(R.string.support_email)))
+							.subject(Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, getString(R.string.support_email_subject)))
+							.body(etMessage.getText().toString().trim())
+							.start();
 				}
 				break;
 		}

@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-import product.clicklabs.jugnoo.driver.Data;
-
 public class InvoiceInfo {
 
 	public int id;
@@ -13,7 +11,7 @@ public class InvoiceInfo {
 	public String currencyUnit;
 
 	public String getCurrencyUnit() {
-		return Data.getCurrencyNullSafety(currencyUnit);
+		return currencyUnit;
 	}
 
 	public InvoiceInfo(int id, double fare, String fromTime, String toTime,

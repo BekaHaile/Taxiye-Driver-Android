@@ -29,7 +29,7 @@ import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
-import product.clicklabs.jugnoo.driver.directions.GAPIDirections
+import product.clicklabs.jugnoo.driver.directions.JungleApisImpl
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.Log
@@ -178,7 +178,7 @@ class AltMeteringService : Service() {
     fun generateNotification(context: Context, message: String, notificationId: Int): Notification? {
         try {
             val `when` = System.currentTimeMillis()
-            val notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT)
+            val notificationManager = GCMIntentService.getNotificationManagerSilent(context, Constants.NOTIF_CHANNEL_METERING)
 
             val notificationIntent = Intent(context, DriverSplashActivity::class.java)
 
@@ -186,13 +186,13 @@ class AltMeteringService : Service() {
             val intent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
 
 
-            val builder = NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT)
+            val builder = NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_METERING)
             builder.setAutoCancel(false)
             builder.setContentTitle(context.resources.getString(R.string.app_name))
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(message))
             builder.setContentText(message)
             builder.setTicker(message)
-            builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT)
+            builder.setChannelId(Constants.NOTIF_CHANNEL_METERING)
 
             builder.setWhen(`when`)
             builder.setLargeIcon(BitmapFactory.decodeResource(context.resources, GCMIntentService.NOTIFICATION_BIG_ICON))
@@ -305,7 +305,8 @@ class AltMeteringService : Service() {
                 //here we will divide the waypoints list in DirectionWaypointData consisting of source destination and at max 8 waypoints
                 //because to restrict google directions advanced api usage
                 val drWpList = mutableListOf<DirectionWaypointData>()
-                var sb:StringBuilder? = StringBuilder()
+//                var sb:StringBuilder? = StringBuilder()
+                var waypointsBetween = ArrayList<LatLng>()
                 var sbPos = StringBuilder()
                 var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null, null, null)
                 for (i in waypoints.indices) {
@@ -317,16 +318,17 @@ class AltMeteringService : Service() {
                         (i > 0 && i%10 == 0) || i == waypoints.size-1 -> {
                             drwp!!.destination = waypoints[i].latitude.toString()+comma+waypoints[i].longitude
                             drwp.destLatLng = waypoints[i]
-                            drwp.waypoints = sb.toString()
+                            drwp.waypoints = waypointsBetween
                             drWpList.add(drwp)
                             sbPos.append("-").append(i).append("\n")
 
                             drwp = DirectionWaypointData(drwp.destination, null, null, drwp.sourceLatLng, null)
-                            sb = StringBuilder()
+                            waypointsBetween = ArrayList()
                             sbPos.append(i).append("-")
                         }
                         else -> {
-                            sb!!.append(via).append(waypoints[i].latitude).append(p2c).append(waypoints[i].longitude).append(p7c)
+//                            sb!!.append(via).append(waypoints[i].latitude).append(p2c).append(waypoints[i].longitude).append(p7c)
+                            waypointsBetween.add(waypoints[i])
                             sbPos.append(i).append(",")
                         }
                     }
@@ -337,13 +339,12 @@ class AltMeteringService : Service() {
                 //latLngs, which we got from the api, in main list for concenated route
                 for(drwpObj in drWpList){
                     log("gapi hitting", "drwp=$drwpObj")
-                    if (!TextUtils.isEmpty(drwpObj.waypoints)) {
-                        val response = GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
-                        val result = String((response.body as TypedByteArray).bytes)
+                    if (drwpObj.waypoints != null && drwpObj.waypoints!!.size > 0) {
+                        val directionsResult =  JungleApisImpl.getDirectionsWaypointsPathSync(engagementId.toLong(), drwpObj.sourceLatLng!!, drwpObj.destLatLng!!, drwpObj.waypoints!!, "alt_metering", true)
 
-                        list.addAll(MapUtils.getLatLngListFromPath(result))
+                        list.addAll(directionsResult!!.latLngs)
                     } else {
-                        val directionsResult = GAPIDirections.getDirectionsPathSync(engagementId.toLong(), drwpObj.sourceLatLng!!, drwpObj.destLatLng!!, "alt_metering")
+                        val directionsResult = JungleApisImpl.getDirectionsPathSync(engagementId.toLong(), drwpObj.sourceLatLng!!, drwpObj.destLatLng!!, "alt_metering", true)
 
                         list.addAll(directionsResult!!.latLngs)
                     }
@@ -616,7 +617,7 @@ class AltMeteringService : Service() {
         }
     }
 
-    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?, var sourceLatLng: LatLng?, var destLatLng: LatLng?){
+    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:ArrayList<LatLng>?, var sourceLatLng: LatLng?, var destLatLng: LatLng?){
         override fun toString(): String {
             return "$source<>$destination<>$waypoints"
         }

@@ -1,19 +1,19 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import java.util.Locale;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
@@ -31,13 +31,16 @@ import static product.clicklabs.jugnoo.driver.Constants.REQUEST_OVERLAY_PERMISSI
 /**
  * Created by clicklabs on 7/3/15.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		BaseFragmentActivity.updateLanguage(this, null);
 		updateStatusBar();
+
+		if (BuildConfig.DEBUG)
+			Thread.setDefaultUncaughtExceptionHandler(JugnooExceptionHandler.getInstance(this));
     }
 
 	@Override

@@ -16,15 +16,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
@@ -40,14 +48,13 @@ import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverSubscriptionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SubscriptionData;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommon;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
-import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -63,7 +70,6 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import product.clicklabs.jugnoo.driver.vehicleGpsTracker.TrackerLocationUpdater;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -74,7 +80,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     RelativeLayout relative;
     RelativeLayout driverDetailsRL;
     LinearLayout driverDetailsRLL;
-    View backBtn,ivDeliveryEnable;
+    View backBtn, ivDeliveryEnable;
     TextView title;
 
     TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
@@ -83,9 +89,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     TextView tvGender, tvDateOfBirth;
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
-    CardView cvSwitchNavigation;
-    SwitchCompat switchNavigation, switchMaxSound,enableDelivery;
-    TextView tvDocuments, tvEmergencyContacts, tvSelectRingtone;
+    CardView cvSwitchNavigation, cvSubs;;
+    private TextView totalRides, consumedRides, pendingRides, validUptoSubs, textViewTotalRides, textViewPendingRides, textViewConsumedRides, textViewValidUpto;
+    SwitchCompat switchNavigation, switchMaxSound,enableDelivery;;
+    TextView tvDocuments, tvEmergencyContacts,tvSelectRingtone;
     private   RecyclerView rvVehicleTypes;
     private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
 
@@ -95,10 +102,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     private VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter;
     int delivery_available = 0;
     boolean checked = false;
+    private RelativeLayout pendingRidesRl, takenRidesRl;
+    private ImageView upperSubs, secondsSubs;
+    private List<SubscriptionData> subscriptionData = new ArrayList<SubscriptionData>();
 
 	private SwitchCompat switchOnlyCashRides;
-	private SwitchCompat switchOnlyLongRides,externalGps;
-	private  TrackerLocationUpdater tracker;
+	private SwitchCompat switchOnlyLongRides;
 
     @Override
     protected void onResume() {
@@ -150,13 +159,13 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
         cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
-        enableDelivery = (SwitchCompat)findViewById(R.id.deliveryEnable);
-        if(Data.userData.getDeliveryEnabled()==1){
+        enableDelivery = (SwitchCompat) findViewById(R.id.deliveryEnable);
+        if (Data.userData.getDeliveryEnabled() == 1) {
             enableDelivery.setVisibility(View.VISIBLE);
             ivDeliveryEnable.setVisibility(View.VISIBLE);
-            if(Data.userData.getDeliveryAvailable()==1){
+            if (Data.userData.getDeliveryAvailable() == 1) {
                 enableDelivery.setChecked(true);
-            }else{
+            } else {
                 enableDelivery.setChecked(false);
             }
         } else {
@@ -203,7 +212,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
         textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
         textViewRidesCancelledText.setTypeface(Fonts.mavenRegular(this));
-        tvServiceType =  (TextView)findViewById(R.id.tvServiceType);
+        tvServiceType = (TextView) findViewById(R.id.tvServiceType);
 
         tvDocuments = findViewById(R.id.tvDocuments);
         tvEmergencyContacts = findViewById(R.id.tvEmergencyContacts);
@@ -218,12 +227,36 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         profileImg = (ImageView) findViewById(R.id.profileImg);
         imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
+        cvSubs = findViewById(R.id.cvSubscriptions);
+        totalRides = findViewById(R.id.textViewTotalRidesValue);
+        totalRides.setTypeface(Fonts.mavenRegular(this));
+        consumedRides = findViewById(R.id.textViewRidesTakenValueSubs);
+        consumedRides.setTypeface(Fonts.mavenRegular(this));
+        pendingRides = findViewById(R.id.textViewRidesPendingValue);
+        pendingRides.setTypeface(Fonts.mavenRegular(this));
+        validUptoSubs = findViewById(R.id.textViewRidesValidValue);
+        validUptoSubs.setTypeface(Fonts.mavenRegular(this));
+
+        textViewTotalRides = findViewById(R.id.textViewTotalRidesText);
+        textViewTotalRides.setTypeface(Fonts.mavenRegular(this));
+        textViewConsumedRides = findViewById(R.id.textViewRidesTakenTextSubs);
+        textViewConsumedRides.setTypeface(Fonts.mavenRegular(this));
+        textViewPendingRides = findViewById(R.id.textViewRidesPendingSubs);
+        textViewPendingRides.setTypeface(Fonts.mavenRegular(this));
+        textViewValidUpto = findViewById(R.id.textViewRidesValidUptoText);
+        textViewValidUpto.setTypeface(Fonts.mavenRegular(this));
+
+        pendingRidesRl = findViewById(R.id.pendingViewSubsRl);
+        takenRidesRl = findViewById(R.id.takenRidesViewSubsRl);
+        upperSubs = findViewById(R.id.imageViewHorizontalSubs1);
+        secondsSubs = findViewById(R.id.imageViewHorizontalSubs3);
+
         backBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE + "_" + FirebaseEvents.BACK, null);
-               onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -293,8 +326,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         enableDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(enableDelivery.isChecked()){
-                    delivery_available =1;
+                if (enableDelivery.isChecked()) {
+                    delivery_available = 1;
                 }
                 try {
                     if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -302,7 +335,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                         HashMap<String, String> params = new HashMap<>();
                         params.put("client_id", Data.CLIENT_ID);
                         params.put("access_token", Data.userData.accessToken);
-                        params.put("delivery_available",""+delivery_available);
+                        params.put("delivery_available", "" + delivery_available);
                         HomeUtil.putDefaultParams(params);
 
                         Log.i("params", ">" + params);
@@ -316,13 +349,13 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                                     JSONObject jObj = new JSONObject(responseStr);
                                     int flag = jObj.getInt("flag");
                                     if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-                                      setDefaultValue();
+                                        setDefaultValue();
                                         String error = jObj.getString("error");
                                         DialogPopup.dialogBanner(DriverProfileActivity.this, error);
                                     } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                                         Data.userData.setDeliveryAvailable(delivery_available);
                                     } else {
-                                       setDefaultValue();
+                                        setDefaultValue();
                                         DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_ERROR_MSG);
                                     }
 
@@ -349,7 +382,6 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
 
             }
@@ -380,109 +412,102 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         rvVehicleTypes.setNestedScrollingEnabled(false);
         setVehicleModelData();
 
-        layoutVehicleServiceDetails =    findViewById(R.id.layoutVehicleServiceDetails);
-        dividerVehicleServiceDetails  =    findViewById(R.id.ivDivVehicleServiceDetails);
+        layoutVehicleServiceDetails = findViewById(R.id.layoutVehicleServiceDetails);
+        dividerVehicleServiceDetails = findViewById(R.id.ivDivVehicleServiceDetails);
         setVehicleSetsData();
 
 
-		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
-		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
-		externalGps = findViewById(R.id.switchExternalGps);
-
-		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
-			switchOnlyCashRides.setVisibility(View.VISIBLE);
-			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
-			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
-
-			switchOnlyLongRides.setVisibility(View.VISIBLE);
-			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
-			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
-
-			switchOnlyCashRides.setOnClickListener((view) -> {
-				updateDriverPreferences(Constants.KEY_TOGGLE_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
-			});
-			switchOnlyLongRides.setOnClickListener((view) -> {
-				updateDriverPreferences(Constants.KEY_TOGGLE_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
-			});
-
-		}
-		else {
-			switchOnlyCashRides.setVisibility(View.GONE);
-			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.GONE);
-
-			switchOnlyLongRides.setVisibility(View.GONE);
-			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
-		}
-		if(Data.getExternalGpsEnabled()==1){
-		    externalGps.setVisibility(View.VISIBLE);
-		    if(Data.getGpsPreference()==1){
-		        externalGps.setChecked(true);
-            }else{
-		        externalGps.setChecked(false);
-            }
-        }else{
-		    externalGps.setVisibility(View.GONE);
-        }
-        tracker = new TrackerLocationUpdater();
-		externalGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateGpsPreference(externalGps.isChecked());
-            }
-        });
+//		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
+//		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+//
+//		if(Data.userData != null && Data.userData.getDriverSubscription() == 1){
+//			switchOnlyCashRides.setVisibility(View.VISIBLE);
+//			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
+//			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
+//
+//			switchOnlyLongRides.setVisibility(View.VISIBLE);
+//			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
+//			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
+//
+//			switchOnlyCashRides.setOnClickListener((view) -> {
+//				updateDriverPreferences(Constants.KEY_TOGGLE_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
+//			});
+//			switchOnlyLongRides.setOnClickListener((view) -> {
+//				updateDriverPreferences(Constants.KEY_TOGGLE_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
+//			});
+//
+//		}
+//		else {
+//			switchOnlyCashRides.setVisibility(View.GONE);
+//			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.GONE);
+//
+//			switchOnlyLongRides.setVisibility(View.GONE);
+//			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
+//		}
 
     }
 
-    private void updateGpsPreference(boolean checked) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put(Constants.DEVICE_IMEI_NUMBER, Data.getGpsDeviceImeiNo());
-        if(checked){
-            params.put(Constants.GPS_PREFERENCE,"1");
-        }else{
-            params.put(Constants.GPS_PREFERENCE,"0")  ;
+    private void callSubscriptionDetailsApi() {
+        /*final HashMap<String, String> params = new HashMap<>();
+        params.put("driver_id", Data.userData.getUserId());
+        RestClient.getApiServices().getDriverSubscriptionData(params,new Callback<DriverSubscriptionResponse>()  {
+            @Override
+            public void success(DriverSubscriptionResponse subscriptionResponse, Response response) {
+                String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                Log.e("subscription detail response", jsonString);
+
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });*/
+        if (subscriptionData.size() == 0) {
+            cvSubs.setVisibility(View.GONE);
+        } else {
+            if (subscriptionData.get(0).getNum_of_rides_allowed() == 0) {
+                totalRides.setText(getResources().getString(R.string.unlimited));
+                totalRides.setTextColor(getResources().getColor(R.color.green_btn));
+                validUptoSubs.setText(DateOperations.convertDateViaFormat(DateOperations.utcToLocalWithTZFallback(subscriptionData.get(0).getEnd_on())));
+                pendingRidesRl.setVisibility(View.GONE);
+                takenRidesRl.setVisibility(View.GONE);
+                upperSubs.setVisibility(View.GONE);
+                secondsSubs.setVisibility(View.GONE);
+            } else {
+                totalRides.setText(subscriptionData.get(0).getNum_of_rides_allowed() + "");
+                consumedRides.setText(subscriptionData.get(0).getCurrent_ride_count() + "");
+                int value = subscriptionData.get(0).getNum_of_rides_allowed() - subscriptionData.get(0).getCurrent_ride_count();
+                pendingRides.setText(value + "");
+                validUptoSubs.setText(DateOperations.convertDateViaFormat(DateOperations.utcToLocalWithTZFallback(subscriptionData.get(0).getEnd_on())));
+            }
         }
-        new ApiCommonKt<FeedCommonResponseKotlin>(this, true, false, true)
-                .execute(params, ApiName.UPDATE_GPS_PREFERENCE, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
-                    @Override
-                    public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                        if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            if(checked==true){
-                                externalGps.setChecked(true);
-                                Data.setGpsPreference(1);
-                                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LONGITUDE,"");
-                                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_GPS_LATITUDE,"");
-                                tracker.connectGpsDevice(Data.getGpsDeviceImeiNo(),DriverProfileActivity.this);
-                            }else{
-                                externalGps.setChecked(false);
-                                Data.setGpsPreference(0);
-                                if(tracker!=null)
-                                tracker.stopTracker();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-                        externalGps.setChecked(checked != true);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onFailure(RetrofitError error) {
-                        externalGps.setChecked(checked != true);
-                        return super.onFailure(error);
-                    }
-                });
     }
 
     private void setDefaultValue() {
-        if(Data.userData.getDeliveryAvailable()==1){
+        if (Data.userData.getDeliveryAvailable() == 1) {
             checked = true;
-        }else{
+        } else {
             checked = false;
         }
         enableDelivery.setChecked(checked);
     }
+
+    public String getDateCurrentTimeZone(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
 
     private void setVehicleSetsData() {
         boolean showVehicleServiceDetails = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS, 0) == 1;
@@ -510,7 +535,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                         driverVehicleServiceTypePopup.setData(vehicleServiceDetails);
 
                     }
-                    if(!driverVehicleServiceTypePopup.isShowing()){
+                    if (!driverVehicleServiceTypePopup.isShowing()) {
                         driverVehicleServiceTypePopup.show();
 
                     }
@@ -526,15 +551,15 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     public void setVehicleSetDetails() {
         StringBuilder builder = new StringBuilder();
         String sep = ", ";
-        for(DriverVehicleServiceTypePopup.VehicleServiceDetail vehicleSet: Data.userData.getVehicleServicesModel()){
-            if(vehicleSet.getChecked()==1){
+        for (DriverVehicleServiceTypePopup.VehicleServiceDetail vehicleSet : Data.userData.getVehicleServicesModel()) {
+            if (vehicleSet.getChecked() == 1) {
                 builder.append(vehicleSet.getServiceName());
                 builder.append(", ");
             }
 
         }
-        if(builder.length()>1){
-            builder.delete(builder.length()-sep.length(),builder.length());
+        if (builder.length() > 1) {
+            builder.delete(builder.length() - sep.length(), builder.length());
 
         }
         tvServiceType.setText(builder.toString());
@@ -549,12 +574,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0){
+        if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0) {
             title.setText(getString(R.string.profile));
             terms.setVisibility(View.VISIBLE);
             super.onBackPressed();
 
-        }else{
+        } else {
             finish();
             overridePendingTransition(R.anim.left_in, R.anim.left_out);
         }
@@ -643,6 +668,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                                             if (jObj.has("currency")) {
                                                 currency = jObj.getString("currency");
                                             }
+
+                                            if (jObj.has("driver_subscriptions")) {
+                                                Type type = new TypeToken<ArrayList<SubscriptionData>>() {}.getType();
+                                                subscriptionData = new GsonBuilder().create().fromJson(jObj.get("driver_subscriptions").toString(), type);
+                                                callSubscriptionDetailsApi();
+                                            }
                                             openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
                                                     textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,
                                                     textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI, accNo, ifscCode,
@@ -698,7 +729,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             if (openedProfileInfo != null && Data.userData != null) {
                 textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
                 textViewDriverId.setText(getStringText(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);
-				textViewPhoneNumber.setText(getStringText(R.string.phone_no) + " " + Data.userData.phoneNo);
+                textViewPhoneNumber.setText(getStringText(R.string.phone_no) + " " + Data.userData.phoneNo);
                 if (openedProfileInfo.textViewRankCity == 0) {
                     textViewRankCity.setVisibility(View.GONE);
                 } else {
@@ -746,11 +777,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
     }
 
-    public void setVehicleModelData(){
-        boolean showVehicleSettings = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_EDIT_SETTING,0)==1;
+    public void setVehicleModelData() {
+        boolean showVehicleSettings = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_EDIT_SETTING, 0) == 1;
+        VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
 
 
-        if(!showVehicleSettings){
+        if (!showVehicleSettings) {
             vehicleDetails.setVisibility(View.GONE);
             return;
         }
@@ -761,19 +793,18 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
 
 
-        if(Data.userData.getVehicleDetailsLogin()!=null){
-            VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
+        if (Data.userData.getVehicleDetailsLogin() != null) {
             List<VehicleDetail> details = new ArrayList<>(7);
-            details.add(new VehicleDetail(getString(R.string.make),vehicleMakeInfo.getVehicleMake()));
-            details.add(new VehicleDetail(getString(R.string.model),vehicleMakeInfo.getVehicleModel()));
-            details.add(new VehicleDetail(getString(R.string.color),vehicleMakeInfo.getColor()));
-            details.add(new VehicleDetail(getString(R.string.number_of_doors),vehicleMakeInfo.getDoors()));
-            details.add(new VehicleDetail(getString(R.string.no_of_seat_belts),vehicleMakeInfo.getSeatbelts()));
-            details.add(new VehicleDetail(getString(R.string.vehicle_number),vehicleMakeInfo.getVehicleNumber()));
-            details.add(new VehicleDetail(getString(R.string.year),vehicleMakeInfo.getYear()));
+            details.add(new VehicleDetail(getString(R.string.make), vehicleMakeInfo.getVehicleMake()));
+            details.add(new VehicleDetail(getString(R.string.model), vehicleMakeInfo.getVehicleModel()));
+            details.add(new VehicleDetail(getString(R.string.color), vehicleMakeInfo.getColor()));
+            details.add(new VehicleDetail(getString(R.string.number_of_doors), vehicleMakeInfo.getDoors()));
+            details.add(new VehicleDetail(getString(R.string.no_of_seat_belts), vehicleMakeInfo.getSeatbelts()));
+            details.add(new VehicleDetail(getString(R.string.vehicle_number), vehicleMakeInfo.getVehicleNumber()));
+            details.add(new VehicleDetail(getString(R.string.year), vehicleMakeInfo.getYear()));
 
 
-            if(rvVehicleTypes.getAdapter()==null){
+            if (rvVehicleTypes.getAdapter() == null) {
                 vehicleDetailsProfileAdapter = new VehicleDetailsProfileAdapter();
                 rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
             }
@@ -781,7 +812,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
             rvVehicleTypes.setVisibility(View.VISIBLE);
 
-        }else{
+        } else {
             rvVehicleTypes.setVisibility(View.GONE);
 
         }
@@ -799,16 +830,16 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     }
 
     private void openVehicleModelFragment() {
-        if(getSupportFragmentManager().findFragmentByTag(VehicleDetailsFragment.class.getName())==null){
-            int cityId = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.CITY_ID,1);
-            int vehicleType = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.VEHICLE_TYPE,0);
+        if (getSupportFragmentManager().findFragmentByTag(VehicleDetailsFragment.class.getName()) == null) {
+            int cityId = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.CITY_ID, 1);
+            int vehicleType = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.VEHICLE_TYPE, 0);
 
             VehicleDetailsFragment vehicleDetailsFragment = VehicleDetailsFragment.newInstance(Data.userData.accessToken,
                     String.valueOf(cityId),
                     String.valueOf(vehicleType),
-                    Data.userData.userName, Data.userData.getVehicleDetailsLogin(),true);
+                    Data.userData.userName, Data.userData.getVehicleDetailsLogin(), true);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.container, vehicleDetailsFragment,VehicleDetailsFragment.class.getSimpleName()).
+            getSupportFragmentManager().beginTransaction().add(R.id.container, vehicleDetailsFragment, VehicleDetailsFragment.class.getSimpleName()).
                     addToBackStack(VehicleDetailsFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
             title.setText(getString(R.string.edit_vehicle_details));
@@ -819,7 +850,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     @Override
     public void onDetailsUpdated(@NotNull VehicleDetailsLogin vehicleDetails) {
-        if(Data.userData!=null){
+        if (Data.userData != null) {
             Data.userData.setVehicleDetailsLogin(vehicleDetails);
             setVehicleModelData();
         }
@@ -829,11 +860,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
     	HashMap<String, String> params = new HashMap<>();
     	params.put(key, String.valueOf(1));
-    	params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
-		new ApiCommon<FeedCommonResponse>(this).showLoader(true).putDefaultParams(true)
-				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallback<FeedCommonResponse>() {
+		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
+				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
 			@Override
-			public void onSuccess(FeedCommonResponse feedCommonResponseKotlin, String message, int flag) {
+			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
 				if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
 					if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_CASH_RIDES)) {
 						Data.userData.setOnlyCashRides(value);
@@ -845,7 +875,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			}
 
 			@Override
-			public boolean onError(FeedCommonResponse feedCommonResponseKotlin, String message, int flag) {
+			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
 				switchCompat.setChecked(value != 1);
 				return false;
 			}
@@ -865,7 +895,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         DialogPopup.alertPopup(DriverProfileActivity.this, "", "Location data from vehcile gps is not available at this moment.", false, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateGpsPreference(false);
+//                updateGpsPreference(false);
             }
         });
     }

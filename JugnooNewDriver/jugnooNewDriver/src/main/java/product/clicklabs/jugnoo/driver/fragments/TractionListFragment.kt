@@ -157,15 +157,4 @@ class TractionListFragment : Fragment() {
         super.onDestroyView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        toolbarChangeListener?.setToolbarVisibility(true)
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden) {
-            toolbarChangeListener?.setToolbarVisibility(true)
-        }
-    }
 }

@@ -16,11 +16,13 @@ public class UserData {
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled, destinationOptionEnable;
-	public double showDriverRating;
+    public CurrDestRide currDestRideObj;
+    public double showDriverRating;
 	public String deiValue, driverSupportNumber, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
-	public long remainigPenaltyPeriod, walletUpdateTimeout;
+	public long remainigPenaltyPeriod;
+	private long walletUpdateTimeout;
 	public String userId, userEmail, blockedAppPackageMessage;
 	private int deliveryEnabled, deliveryAvailable;
 	public Integer fareCachingLimit,isCaptiveDriver;
@@ -38,12 +40,17 @@ public class UserData {
 	private String dateOfBirth;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
-	private int subscriptionEnabled;
+	private int driverSubscription;
+	private int driverSubscriptionEnabled;
+	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
 	private int onlyCashRides, onlyLongRides;
     private ArrayList<DriverVehicleDetails> driverVehicleDetailsList = new ArrayList<>();
     private DriverVehicleDetails activeVehicle=null;
 	private Double walletBalance;
 	private Double minDriverBalance;
+	public double endStopAlertRadius;
+
+    private SafetyInfoData safetyInfoData;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -58,7 +65,8 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth,DriverVehicleDetails activeVehicle, Double minDriverBalance,Double mActualWalletBalance) {
+					int resendEmailInvoiceEnabled, String driverTag, int driverSubscription, int driverSubscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth,
+					DriverVehicleDetails activeVehicle, Double minDriverBalance, Double mActualWalletBalance, double endStopAlertRadius) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -115,10 +123,13 @@ public class UserData {
 		this.walletBalance=mActualWalletBalance;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
-		this.subscriptionEnabled = subscriptionEnabled;
+		this.driverSubscription = driverSubscription;
+		this.driverSubscriptionEnabled = driverSubscriptionEnabled;
 		this.onlyCashRides = onlyCashRides;
 		this.onlyLongRides = onlyLongRides;
-		this.minDriverBalance = minDriverBalance;
+        this.activeVehicle=activeVehicle;
+		this.driverTag = driverTag;
+		this.endStopAlertRadius = endStopAlertRadius;
 	}
 
 	public String getUserId() {
@@ -285,12 +296,20 @@ public class UserData {
 		this.onlyLongRides = onlyLongRides;
 	}
 
-	public int getSubscriptionEnabled() {
-		return subscriptionEnabled;
+	public int getDriverSubscription() {
+		return driverSubscription;
 	}
 
-	public void setSubscriptionEnabled(int subscriptionEnabled) {
-		this.subscriptionEnabled = subscriptionEnabled;
+	public void setDriverSubscription(int driverSubscription) {
+		this.driverSubscription = driverSubscription;
+	}
+
+	public int getDriverSubscriptionEnabled() {
+		return driverSubscriptionEnabled;
+	}
+
+	public void setDriverSubscriptionEnabled(int driverSubscriptionEnabled) {
+		this.driverSubscriptionEnabled = driverSubscriptionEnabled;
 	}
 
 	public int getGender() {
@@ -319,21 +338,85 @@ public class UserData {
 		return dateOfBirth;
 	}
 
+	public SafetyInfoData getSafetyInfoData() {
+		return safetyInfoData;
+	}
+
+	public void setSafetyInfoData(SafetyInfoData safetyInfoData) {
+		this.safetyInfoData = safetyInfoData;
+	}
+
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public ArrayList<DriverVehicleDetails> getDriverVehicleDetailsList() {
-		return driverVehicleDetailsList;
+	public ArrayList<SearchResultNew> getSavedAddressList(){
+		return savedAddressList;
 	}
 
-	public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
-		this.activeVehicle = activeVehicle;
+	public long getWalletUpdateTimeout() {
+		return walletUpdateTimeout+5000;
 	}
+
+	public class CurrDestRide{
+		String address,type;
+		Double latitude,longitude;
+		int destinationRideTimeRem;
+		long createdAt;
+		public CurrDestRide(String address,double latitude,double longitude,int destinationRideTimeRem,long createdAt,String type){
+			this.address=address;
+			this.destinationRideTimeRem=destinationRideTimeRem;
+			this.latitude=latitude;
+			this.longitude=longitude;
+			this.type=type;
+			this.createdAt=createdAt;
+		}
+
+		public Double getLatitude() {
+			return latitude;
+		}
+
+		public Double getLongitude() {
+			return longitude;
+		}
+
+		public int getDestinationRideTimeRem() {
+			//returns time in seconds
+			if(createdAt>0){
+				int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
+				if(timeRemaining>0)
+				return timeRemaining;
+				else
+					return 0;
+			}
+			else
+				return destinationRideTimeRem;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public void setCreatedAt(long createdAt) {
+			this.createdAt = createdAt;
+		}
+	}
+    public ArrayList<DriverVehicleDetails> getDriverVehicleDetailsList() {
+        return driverVehicleDetailsList;
+    }
+
+    public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
+        this.activeVehicle = activeVehicle;
+    }
 
 	public DriverVehicleDetails getActiveVehicle() {
 		return activeVehicle;
 	}
+
 	/**
 	 * driver's current balance
 	 * @return double
@@ -352,9 +435,5 @@ public class UserData {
 	 */
 	public Double getMinDriverBalance() {
 		return minDriverBalance;
-	}
-
-	public void setMinDriverBalance(double minDriverBalance) {
-		this.minDriverBalance = minDriverBalance;
 	}
 }

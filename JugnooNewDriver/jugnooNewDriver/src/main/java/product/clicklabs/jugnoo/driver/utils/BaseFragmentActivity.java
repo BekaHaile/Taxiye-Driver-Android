@@ -14,11 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +22,12 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
@@ -56,6 +57,9 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
 			updateLanguage(this,null);
 		}
 		updateStatusBar();
+
+		if (BuildConfig.DEBUG)
+			Thread.setDefaultUncaughtExceptionHandler(JugnooExceptionHandler.getInstance(this));
 	}
 
 	protected void restartApp(){

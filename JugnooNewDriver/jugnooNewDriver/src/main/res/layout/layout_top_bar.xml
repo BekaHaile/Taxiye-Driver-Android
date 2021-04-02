@@ -24,6 +24,7 @@
         android:gravity="center"
         android:textAllCaps="true"
         android:maxHeight="45dp"
+        android:textSize="18sp"
         style="@style/TextTitle"
         app:autoSizeTextType="uniform"
         android:layout_toEndOf="@+id/backBtn"

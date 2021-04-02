@@ -1,22 +1,15 @@
 package product.clicklabs.jugnoo.driver.apis;
 
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.JungleApisImpl;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 /**
  * Created by shankar on 5/31/16.
@@ -24,46 +17,27 @@ import retrofit.mime.TypedByteArray;
 public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, List<LatLng>>{
 
 	private long engagementId;
-	private String strOrigin = "", strDestination = "", strWaypoints = "", source;
+	private String source;
 	private LatLng latLngInit;
 	private LatLng latLngDrop;
 	private int pathColor;
 	private Callback callback;
+	private ArrayList<LatLng> waypoints;
 
-	public ApiGoogleDirectionWaypoints(long engagementId, ArrayList<LatLng> latLngs, int pathColor, boolean sortArray, String source, Callback callback){
+	public ApiGoogleDirectionWaypoints(long engagementId, ArrayList<LatLng> latLngs, int pathColor, String source, Callback callback){
 		this.engagementId = engagementId;
 		this.source = source;
-		latLngInit = latLngs.get(0);
-		if(sortArray) {
-			Collections.sort(latLngs, new Comparator<LatLng>() {
-				@Override
-				public int compare(LatLng lhs, LatLng rhs) {
-					if (latLngInit != null) {
-						double distanceLhs = MapUtils.distance(latLngInit, lhs);
-						double distanceRhs = MapUtils.distance(latLngInit, rhs);
-						return (int) (distanceLhs - distanceRhs);
-					}
-					return 0;
-				}
-			});
-		}
+		this.waypoints = new ArrayList<>();
 
-		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<latLngs.size(); i++){
 			if(i == 0){
-				strOrigin = latLngs.get(i).latitude+","+latLngs.get(i).longitude;
+				latLngInit = latLngs.get(i);
 			} else if(i == latLngs.size()-1){
-				strDestination = latLngs.get(i).latitude+","+latLngs.get(i).longitude;
 				latLngDrop = latLngs.get(i);
 			} else{
-				sb.append("via:")
-						.append(latLngs.get(i).latitude)
-						.append("%2C")
-						.append(latLngs.get(i).longitude)
-						.append("%7C");
+				waypoints.add(latLngs.get(i));
 			}
 		}
-		strWaypoints = sb.toString();
 		this.pathColor = pathColor;
 		this.callback = callback;
 	}
@@ -79,15 +53,13 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, List
 	protected List<LatLng> doInBackground(String... params) {
 		List<LatLng> list = null;
 		try {
-			Response response;
-			if(!TextUtils.isEmpty(strWaypoints)) {
-				response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints, source);
-				String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
-				list = MapUtils.getLatLngListFromPath(responseStr);
+			JungleApisImpl.DirectionsResult directionsResult;
+			if(waypoints.size() > 0) {
+				directionsResult = JungleApisImpl.INSTANCE.getDirectionsWaypointsPathSync(engagementId, latLngInit, latLngDrop, waypoints, source, false);
 			} else {
-				GAPIDirections.DirectionsResult directionsResult = GAPIDirections.INSTANCE.getDirectionsPathSync(engagementId, latLngInit, latLngDrop, source);
-				list = directionsResult.getLatLngs();
+				directionsResult = JungleApisImpl.INSTANCE.getDirectionsPathSync(engagementId, latLngInit, latLngDrop, source, false);
 			}
+			list = directionsResult.getLatLngs();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,7 +73,7 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, List
 				try {
 					if (callback.showPath()) {
 						PolylineOptions polylineOptions = new PolylineOptions();
-						polylineOptions.width(ASSL.Xscale() * 8).color(pathColor).geodesic(true);
+						polylineOptions.width(ASSL.Xscale() * 4).color(pathColor).geodesic(true);
 						for (int z = 0; z < s.size(); z++) {
 							polylineOptions.add(s.get(z));
 						}

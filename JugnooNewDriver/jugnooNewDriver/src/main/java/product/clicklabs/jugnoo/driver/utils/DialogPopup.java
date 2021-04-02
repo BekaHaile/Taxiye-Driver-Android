@@ -358,6 +358,62 @@ public class DialogPopup {
 		}
 	}
 
+	public static void alertPopupWithImageListenerSubs(Activity activity, String title, String message, int resId, final View.OnClickListener onClickListener, final boolean showTitle) {
+		try {
+			dismissAlertPopup();
+			if("".equalsIgnoreCase(title)){
+				title = activity.getResources().getString(R.string.alert);
+			}
+
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_custom_one_button_image_subs);
+
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, false);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
+
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
+			ImageView imageViewAlert = (ImageView) dialog.findViewById(R.id.imageViewAlert);
+
+			imageViewAlert.setImageResource(resId);
+
+			textHead.setText(title);
+			textMessage.setText(message);
+
+			textHead.setVisibility(View.GONE);
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.mavenRegular(activity));
+
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+					onClickListener.onClick(view);
+				}
+
+			});
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void alertPopupTwoButtonsWithListeners(Activity activity,String message,View.OnClickListener listenerPositive){
 		alertPopupTwoButtonsWithListeners(activity, "", message,"","", listenerPositive, null, true,false);
 	}

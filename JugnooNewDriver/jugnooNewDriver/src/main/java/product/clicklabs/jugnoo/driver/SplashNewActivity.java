@@ -200,7 +200,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 
 
-
+        MyApplication.getInstance().mContext=this;
 		setContentView(R.layout.activity_splash_new);
 
 		Data.locationFetcher = null;
