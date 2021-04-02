@@ -548,8 +548,11 @@ class EmergencyContactOperationsFragment : Fragment() {
 
             val phoneNo: String = contactBean.phoneNo
             val ccpn = UtilsKt.splitCountryCodeAndPhoneNumber(requireContext(), phoneNo)
+            var countryCode: String = ccpn.countryCode
 
-            tvCountryCode.setText(ccpn.countryCode)
+            if(countryCode.isEmpty()) countryCode = Utils.getCountryCode(context)
+            tvCountryCode.setText(countryCode).toString()
+
             editTextPhoneNumber.setText(ccpn.phoneNo)
 
             editTextPhoneNumber.addTextChangedListener(object : TextWatcher {
