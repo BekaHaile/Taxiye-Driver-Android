@@ -156,3 +156,8 @@
     public static *** v(...);
     public static *** i(...);
 }
+
+-keep class org.json.**
+-keepclassmembers,includedescriptorclasses class org.json.** { *; }
+-keep class com.fugu.model.**
+-keep class product.clicklabs.jugnoo.driver.**

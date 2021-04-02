@@ -429,9 +429,7 @@ class LoginFragment : Fragment() {
                             errorMessage = "URL can't be empty.",
                             onTextValidated = { link ->
                                 Prefs.with(requireActivity()).save(SPLabels.CUSTOM_SERVER_URL, link)
-//                                val editor = preferences.edit()
-//                                editor.putString(Data.SP_SERVER_LINK, link)
-//                                editor.commit()
+                                Prefs.with(requireActivity()).save(Data.SP_SERVER_LINK, link)
 
                                 MyApplication.getInstance().initializeServerURLAndRestClient(requireActivity())
                             })
