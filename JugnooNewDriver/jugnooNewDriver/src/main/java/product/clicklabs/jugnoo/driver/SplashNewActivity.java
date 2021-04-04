@@ -46,6 +46,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -139,7 +141,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
 	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn, buttonRegister;
-	private TextView tvCountryCode, tvCountryCodeL;
+	private TextView tvCountryCode, tvCountryCodeL, tvTnC;
+	CheckBox cbTnC;
 
 	static boolean loginDataFetched = false;
 
@@ -296,6 +299,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
 		signUpBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		signUpBtn.setEnabled(false);
 		textViewLoginRegister = (TextView) findViewById(R.id.textViewLoginRegister);
 		textViewLoginRegister.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
@@ -305,6 +309,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
+
+		tvTnC = (TextView) findViewById(R.id.tvTnC);
+		tvTnC.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		cbTnC = (CheckBox) findViewById(R.id.cbTnC);
+		cbTnC.setTypeface(Fonts.mavenRegular(this));
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
 		tvCountryCodeL.setText(Utils.getCountryCode(this));
@@ -357,6 +366,18 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, HelpActivity.class));
 				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+			}
+		});
+
+		cbTnC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+				if(isChecked) {
+					signUpBtn.setEnabled(true);
+				}
+				else {
+					signUpBtn.setEnabled(false);
+				}
 			}
 		});
 

@@ -100,7 +100,8 @@ class LoginFragment : Fragment() {
             tvCountryCode.typeface = Fonts.mavenRegular(parentActivity)
             edtPhoneNo.typeface = Fonts.mavenRegular(parentActivity)
             btnGenerateOtp.typeface = Fonts.mavenRegular(parentActivity)
-            tvTnC.typeface = Fonts.mavenRegular(parentActivity)
+            btnGenerateOtp.background = resources.getDrawable(R.drawable.generate_otp)
+//            tvTnC.typeface = Fonts.mavenRegular(parentActivity)
 
 
             imageView.setOnLongClickListener {
@@ -130,16 +131,16 @@ class LoginFragment : Fragment() {
                 }
             })
 
-            cbTnC.setOnCheckedChangeListener { buttonView, isChecked ->
-                if(isChecked) {
-                    btnGenerateOtp.isEnabled = true
-                    btnGenerateOtp.background = resources.getDrawable(R.drawable.generate_otp)
-                }
-                else {
-                    btnGenerateOtp.isEnabled = false
-                    btnGenerateOtp.background = resources.getDrawable(R.drawable.button_grey_br)
-                }
-            }
+//            cbTnC.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if(isChecked) {
+//                    btnGenerateOtp.isEnabled = true
+//                    btnGenerateOtp.background = resources.getDrawable(R.drawable.generate_otp)
+//                }
+//                else {
+//                    btnGenerateOtp.isEnabled = false
+//                    btnGenerateOtp.background = resources.getDrawable(R.drawable.button_grey_br)
+//                }
+//            }
 
             btnGenerateOtp.setOnClickListener{
                 generateOtpApi()
@@ -166,40 +167,40 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupTermsAndConditionsTextView()
+//        setupTermsAndConditionsTextView()
     }
 
-    private fun setupTermsAndConditionsTextView() {
-        val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
-                == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1){
-            val termsText = getString(R.string.terms_and_conditions);
-            val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
-            val clickableSpan = object : ClickableSpan() {
-                override fun onClick(textView: View) {
-                    startActivity(Intent(parentActivity, HelpActivity::class.java))
-                }
-
-                /* override fun updateDrawState(ds: TextPaint) {
-                     super.updateDrawState(ds)
-                     ds.isUnderlineText = false
-                 }*/
-            }
-            val start = ss.length-termsText.length
-            val end = ss.length
-            ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireActivity(), R.color.themeColor)), start, end, 0);
-            tvTnC.text = ss
-            tvTnC.movementMethod = LinkMovementMethod.getInstance()
-            tvTnC.highlightColor = Color.TRANSPARENT
-            tvTnC.typeface = Fonts.mavenRegular(requireActivity())
-
-            llTnC.visible()
-        }else{
-            llTnC.gone()
-        }
-
-    }
+//    private fun setupTermsAndConditionsTextView() {
+//        val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
+//                == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
+//        if(Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1){
+//            val termsText = getString(R.string.terms_and_conditions);
+//            val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
+//            val clickableSpan = object : ClickableSpan() {
+//                override fun onClick(textView: View) {
+//                    startActivity(Intent(parentActivity, HelpActivity::class.java))
+//                }
+//
+//                /* override fun updateDrawState(ds: TextPaint) {
+//                     super.updateDrawState(ds)
+//                     ds.isUnderlineText = false
+//                 }*/
+//            }
+//            val start = ss.length-termsText.length
+//            val end = ss.length
+//            ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireActivity(), R.color.themeColor)), start, end, 0);
+//            tvTnC.text = ss
+//            tvTnC.movementMethod = LinkMovementMethod.getInstance()
+//            tvTnC.highlightColor = Color.TRANSPARENT
+//            tvTnC.typeface = Fonts.mavenRegular(requireActivity())
+//
+//            llTnC.visible()
+//        }else{
+//            llTnC.gone()
+//        }
+//
+//    }
 
     private fun View.generateOtpApi() {
         val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
@@ -515,7 +516,7 @@ class LoginFragment : Fragment() {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
                 btnGenerateOtp.text = getString(R.string.btn_generate_otp_text)
-                setupTermsAndConditionsTextView()
+//                setupTermsAndConditionsTextView()
                 TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }
@@ -588,9 +589,9 @@ class LoginFragment : Fragment() {
                 if(!tvCountryCode.isGone())tvCountryCode.visible()
                 if(!edtPhoneNo.isGone())edtPhoneNo.visible()
                 if(!btnGenerateOtp.isGone())btnGenerateOtp.visible()
-                if(!llTnC.isGone())llTnC.visible()
-                if(!cbTnC.isGone())llTnC.visible()
-                if(!tvTnC.isGone())llTnC.visible()
+//                if(!llTnC.isGone())llTnC.visible()
+//                if(!cbTnC.isGone())llTnC.visible()
+//                if(!tvTnC.isGone())llTnC.visible()
             }
         } catch (e: Exception) {
         }
