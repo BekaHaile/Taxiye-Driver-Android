@@ -761,6 +761,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                             break;
                     }
             }
+
         }
     };
     }

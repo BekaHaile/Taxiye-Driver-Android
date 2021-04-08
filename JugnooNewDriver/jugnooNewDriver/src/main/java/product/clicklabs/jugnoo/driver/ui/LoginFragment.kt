@@ -250,6 +250,11 @@ class LoginFragment : Fragment() {
         params["longitude"] = "" + Data.longitude
         params["login_type"] = Data.LOGIN_TYPE
         params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
+        context?.let {
+            val signature = AppSignatureHelper.getAppSignatures(it)
+            if (signature.size > 0)
+                params.put(Constants.OTP_SIGNATURE_TOKEN, signature[0])
+        }
 
 
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
