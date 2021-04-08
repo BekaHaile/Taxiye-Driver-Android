@@ -11,6 +11,7 @@ import android.content.res.Configuration
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -21,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
 import com.google.firebase.iid.FirebaseInstanceId
@@ -245,7 +247,7 @@ import java.util.*
         }
 
 
-        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000L else 30 * 1000L, 5, object : CustomCountDownTimer.DownTimerOperation {
+        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 30 * 1000L else 30 * 1000L, 5, object : CustomCountDownTimer.DownTimerOperation {
             override fun updateCounterView(text: String?, width: Double) {
                 otpDialog?.updateCounterView(text, width)
             }
@@ -518,6 +520,11 @@ import java.util.*
         params.put(Constants.KEY_PHONE_NO, countryCode + phoneNumber)
         params.put(Constants.KEY_COUNTRY_CODE, countryCode+"")
         params.put(Constants.LOGIN_TYPE, "1")
+        context?.let {
+            val signature = AppSignatureHelper.getAppSignatures(it)
+            if (signature.size > 0)
+                params.put(Constants.OTP_SIGNATURE_TOKEN, signature[0])
+        }
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
         ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
@@ -591,6 +598,8 @@ import java.util.*
 
     }
 
+    private lateinit var smsReceiver: BroadcastReceiver
+
     private fun startSMSListener() {
         val client = SmsRetriever.getClient(requireActivity())
         val task = client.startSmsRetriever()
@@ -598,11 +607,11 @@ import java.util.*
             smsReceiver = createSmsBroadcastReceiver()
             requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
         }
-        task.addOnFailureListener{ }
-
+        task.addOnFailureListener{
+            Log.e("Start_sms_listener_error: ", "Error on starting the sms listener")
+        }
     }
 
-    private lateinit var smsReceiver: BroadcastReceiver
 
     private fun createSmsBroadcastReceiver() = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
@@ -615,6 +624,7 @@ import java.util.*
                         CommonStatusCodes.SUCCESS -> {
                             val message = extras.get(SmsRetriever.EXTRA_SMS_MESSAGE) as String
                             if (message != null) {
+                                Log.d("OTP_message", message)
                                 onOtpReceived(Utils.retrieveOTPFromSMS(message))
                             }
                         }
