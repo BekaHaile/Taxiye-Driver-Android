@@ -247,8 +247,8 @@ class EmergencyContactOperationsFragment : Fragment() {
                 (convertView.findViewById<View>(R.id.textViewContactNumberType) as TextView).text = p.phoneNo + " " + p.type
                 convertView.findViewById<View>(R.id.imageViewOption).visibility = View.GONE
 
-                convertView.findViewById<View>(R.id.relative).tag = position
-                convertView.findViewById<View>(R.id.relative).setOnClickListener { v ->
+                convertView.tag = position
+                convertView.setOnClickListener { v ->
                     try {
                         val position = v.tag as Int
                         val p = getItem(position)
