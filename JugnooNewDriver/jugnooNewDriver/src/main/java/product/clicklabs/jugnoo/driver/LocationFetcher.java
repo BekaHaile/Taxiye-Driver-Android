@@ -23,6 +23,8 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationFetcher extends LocationCallback {
 
+	private static final float SMALLEST_DISPLACEMENT = 100;
+
 	private final String TAG = this.getClass().getSimpleName();
 
 	private FusedLocationProviderClient fusedLocationClient;
@@ -105,6 +107,7 @@ public class LocationFetcher extends LocationCallback {
 		locationrequest = new LocationRequest();
 		locationrequest.setInterval(interval);
 		locationrequest.setFastestInterval(interval / 2);
+		locationrequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
 		if(priority == 1){
 			locationrequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 		}
