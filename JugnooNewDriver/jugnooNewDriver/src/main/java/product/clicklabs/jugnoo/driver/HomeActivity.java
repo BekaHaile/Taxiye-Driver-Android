@@ -2715,7 +2715,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
                 if(Data.userData != null) {
-                    //Data.userData.setWalletBalance(walletModelResponse.getBalance());
+                    Data.userData.setWalletBalance(walletModelResponse.getBalance());
+
+                    setUserData();
                     checkForLowWalletBalance();
                 }
             }
@@ -4140,7 +4142,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Prefs.with(this).getInt(Constants.DRIVER_CREDITS, 0) == 1
                     && Data.userData.creditsEarned != null) {
                 tvCredits.setVisibility(View.VISIBLE);
-                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.creditsEarned) + " "
+                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.getWalletBalance()) + " "
                         + getString(R.string.credits));
             } else {
                 tvCredits.setVisibility(View.GONE);
@@ -10435,7 +10437,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setUserData();
+                fetchWalletData();
             }
         });
     }
