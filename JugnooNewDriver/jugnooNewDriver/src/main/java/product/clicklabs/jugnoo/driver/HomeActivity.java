@@ -1710,7 +1710,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             earningsRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-					openIncomeDetailsActivity();
+					openEarningsActivity();
                 }
             });
 
