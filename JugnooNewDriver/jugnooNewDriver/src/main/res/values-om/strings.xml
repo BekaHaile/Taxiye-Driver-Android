@@ -1009,4 +1009,6 @@
     <string name="resend_OTP_call">Call me</string>
 
     <string name="alert_low_wallet_balance">Wallet Balance is low. Credit your Wallet to receive requests.</string>
+    <string name="low_balance_for_manual">Wallet Balance is low. Credit your Wallet to start manual ride.</string>
+
 </resources>
