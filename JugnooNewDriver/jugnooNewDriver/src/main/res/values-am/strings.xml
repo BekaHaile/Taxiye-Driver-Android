@@ -1012,4 +1012,6 @@
     <string name="resend_OTP_call">ጥራኝ</string>
 
     <string name="alert_low_wallet_balance">የኪስ ቦርሳ ሚዛን ዝቅተኛ ነው። ጥያቄዎችን ለመቀበል የኪስ ቦርሳዎን በብድር ይያዙ ፡፡</string>
+    <string name="low_balance_for_manual">የዋሌትዎ ሂሳብ ጎዞ ለማስጀመር በቂ አደለም። እባኮትን የዋሌቶን ሂሳብ ይሙሉ፡፡</string>
+
 </resources>
