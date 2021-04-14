@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
@@ -191,7 +192,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 		});
 
 
-		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78),
+		searchListAdapter = new SearchListAdapter(activity, editTextSearch, getPivotLatLng(activity),
 				new SearchListAdapter.SearchListActionsHandler() {
 
 					@Override
@@ -294,6 +295,10 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 		imageViewSep2.setVisibility(View.GONE);
 	}
 
+	public static LatLng getPivotLatLng(Context context){
+			return new LatLng(LocationFetcher.getSavedLatFromSP(context), LocationFetcher.getSavedLngFromSP(context));
+	}
+
 
     @Override
 	public void onDestroy() {
@@ -339,7 +344,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
         setLocationOnMarker=false;
         rlMarkerPin.setVisibility(View.GONE);
         listViewSearch.setVisibility(View.VISIBLE);
-		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78),
+		searchListAdapter = new SearchListAdapter(activity, editTextSearch, getPivotLatLng(activity),
 				new SearchListAdapter.SearchListActionsHandler() {
 
 					@Override
