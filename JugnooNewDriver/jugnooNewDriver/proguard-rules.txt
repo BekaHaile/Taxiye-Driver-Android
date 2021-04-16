@@ -40,6 +40,7 @@
 -dontwarn rx.**
 -keep class com.example.testobfuscation.** { *; }
 -keepattributes Signature
+-keepattributes Exceptions
 -keep class sun.misc.Unsafe { *; }
 -dontoptimize
 -dontpreverify
@@ -82,7 +83,7 @@
 # For CleverTap SDK
 -dontwarn com.clevertap.android.sdk.**
 
-#-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.google.gson.examples.android.model.** { *; }
@@ -161,3 +162,7 @@
 -keepclassmembers,includedescriptorclasses class org.json.** { *; }
 -keep class com.fugu.model.**
 -keep class product.clicklabs.jugnoo.driver.**
+
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
