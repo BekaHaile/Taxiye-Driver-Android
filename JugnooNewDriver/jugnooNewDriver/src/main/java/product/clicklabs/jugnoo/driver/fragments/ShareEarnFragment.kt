@@ -109,7 +109,8 @@ class ShareEarnFragment : BaseFragment() {
                     Utils.showToast(requireContext(), getString(R.string.please_install_whatsapp))
                 }
             } else {
-                confirmCustomerNumberPopup(activity)
+                generateBranchUrl(true)
+//                confirmCustomerNumberPopup(activity)
             }
         }
         tvMoreSharingOptions.setOnClickListener{
