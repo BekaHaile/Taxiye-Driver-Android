@@ -771,8 +771,8 @@
     <string name="current_details">Current Details</string>
     <string name="credit_history">Credit History</string>
     <string name="title_credits_activity">CREDITS &amp; REWARDS</string>
-    <string name="earn_more_credits">Send Credits to Driver</string>
-    <string name="title_earn_more_credits">Request Credits</string>
+    <string name="earn_more_credits">Refer &amp; Earn</string>
+    <string name="title_earn_more_credits">Refer &amp; Earn</string>
     <string name="share_your_credits">Share Credits</string>
     <string name="total_credits_earned">Total Credits earned</string>
     <string name="commission_saved">Commission saved</string>
@@ -786,7 +786,7 @@
     <string name="please_enter_valid_phone">Please enter valid phone number</string>
     <string name="get_credits">Receive credits from a friend</string>
     <string name="get_credits_from_drivers">Get Credits from Driver</string>
-    <string name="earn_credits_format">(%s credits कमाऐं)</string>
+    <string name="earn_credits_format">(%s credits)</string>
     <string name="hash_format">#%s</string>
     <string name="credits_left_format">Total Credits in Account %s</string>
     <string name="please_enter_less_value">Please enter less value</string>
