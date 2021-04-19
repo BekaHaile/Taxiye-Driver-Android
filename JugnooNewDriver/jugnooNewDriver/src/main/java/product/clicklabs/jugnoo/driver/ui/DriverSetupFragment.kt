@@ -128,6 +128,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
+            cbTnC.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
             tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
             edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
@@ -141,6 +142,9 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         calendar?.timeInMillis = System.currentTimeMillis()
 
         setSpinnerListGender()
+        cbTnC.setOnCheckedChangeListener { _, isChecked ->
+            bContinue.isEnabled = isChecked
+        }
         bContinue.typeface = Fonts.mavenMedium(requireActivity())
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
         editTextName.setOnEditorActionListener { _, _, _ ->
@@ -179,7 +183,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun selectVehicleVisibility(){
 
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1){
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0)==1){
             rvVehicleTypes.visibility=View.GONE
             tvSelectVehicle.text=resources.getString(R.string.title_dialog_select_city)
             tvCities.text="city"
@@ -318,7 +322,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         }
         val vehicleNumber = edtVehicleNo.text.toString().trim()
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0)==0
                 && (vehicleNumber.isEmpty() && Data.getMultipleVehiclesEnabled()==1)) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.invalid_vehicle_number))
             return false
@@ -357,7 +361,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val userEmail = editTextEmail.text.trim().toString();
         val params = hashMapOf<String, String>(
                 (KEY_ACCESS_TOKEN to accessToken) as Pair<String, String>,
-                "user_name" to userName ,
+                "user_name" to userName,
                 "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
@@ -386,7 +390,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
 
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0){
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0)==0){
             val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
             val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
             params["vehicle_type"] = vehicleType
@@ -401,7 +405,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
             if(!it.isSuccessful) {
-                Log.w(TAG,"${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + driversetupfrag -> registerDriver device_token_unsuccessful",it.exception)
+                Log.w(TAG, "${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + driversetupfrag -> registerDriver device_token_unsuccessful", it.exception)
                 return@addOnCompleteListener
             }
             if(it.result?.token != null) {
@@ -433,7 +437,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.d("", t.serverMessage())
                         when (t.flag) {
                             ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                                if(t.driverVehicleMappinId!=-1){
+                                if (t.driverVehicleMappinId != -1) {
                                     Data.setDriverMappingIdOnBoarding(t.driverVehicleMappinId)
                                 }
                                 openVehicleDetailsOrUploadDocument(params, userName)
@@ -488,21 +492,21 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private fun applyPromoCodeApi(){
 
         val promoCode =  edtPromo.text.toString().trim()
-        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity(),successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
-                .execute( hashMapOf(Constants.CODE to promoCode,Constants.KEY_ACCESS_TOKEN to accessToken),ApiName.APPLY_PROMO,
-                object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
+        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity(), successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+                .execute(hashMapOf(Constants.CODE to promoCode, Constants.KEY_ACCESS_TOKEN to accessToken), ApiName.APPLY_PROMO,
+                        object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
 
-                    override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
-                        setPromoLayout(true,promoCode)
-                       // registerDriver(nu)
-                    }
+                            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+                                setPromoLayout(true, promoCode)
+                                // registerDriver(nu)
+                            }
 
-                    override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
-                        return false
-                    }
+                            override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                                return false
+                            }
 
 
-                })
+                        })
 
     }
      private fun setSpinnerListGender() {
@@ -515,7 +519,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
          categories.add(Gender(GenderValues.OTHER.type, getString(R.string.gender_others)))
 
 //       // Creating adapter for spinner
-         val dataAdapter = DropDownListAdapter(context!!,android.R.layout.simple_spinner_dropdown_item, categories, IS_FIRST_ITEM_TITLE)
+         val dataAdapter = DropDownListAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, categories, IS_FIRST_ITEM_TITLE)
 
 //         val spinnerArrayAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, categories)
          spinnerGender?.adapter = dataAdapter
@@ -538,22 +542,22 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     onError(t, t.serverMessage(), t.flag)
                     return
                 }
-                promoCodeFromServer = if(t != null) t.promoCode else ""
+                promoCodeFromServer = if (t != null) t.promoCode else ""
                 citiesList = t!!.cities
                 setCityData(t.currentCity)
-                if(!fromVehicleDetailScreen){
+                if (!fromVehicleDetailScreen) {
                     groupView.visible()
                     setupTermsAndConditionsTextView()
                     if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
-                        || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1&&!fromVehicleDetailScreen) {
-                    tvEnterEmail.visible()
-                    editTextEmail.visible()
+                            || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1 && !fromVehicleDetailScreen) {
+                        tvEnterEmail.visible()
+                        editTextEmail.visible()
                     } else {
-                    tvEnterEmail.gone()
-                    editTextEmail.gone()
+                        tvEnterEmail.gone()
+                        editTextEmail.gone()
                     }
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 1){
+                if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 1) {
                     tvGender.visible()
                     spinnerGender.visible()
                     tvArrow.visible()
@@ -562,7 +566,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     spinnerGender.gone()
                     tvArrow.gone()
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 1){
+                if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 1) {
                     tvDob.visible()
                     edtDob.visible()
                 } else {
@@ -578,23 +582,23 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             override fun onNotConnected(): Boolean {
-                onError(null,parentActivity?.getString(R.string.check_internet_message),0)
+                onError(null, parentActivity?.getString(R.string.check_internet_message), 0)
                 return true
             }
 
             override fun onFailure(error: RetrofitError?): Boolean {
-                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                onError(null, parentActivity?.getString(R.string.some_error_occured), 0)
                 return true
             }
 
             override fun onException(e: Exception?): Boolean {
-                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                onError(null, parentActivity?.getString(R.string.some_error_occured), 0)
                 return true
             }
         })
     }
 
-    private fun setPromoLayout(show:Boolean,promoText:String? = null) {
+    private fun setPromoLayout(show: Boolean, promoText: String? = null) {
         if (show) {
             promoGroupView.visible()
 //            if (promoText != null && !promoText.isBlank()) {
@@ -634,7 +638,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun setCityData(city: CityResponse.City?){
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1)
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0)==1)
             rvVehicleTypes.gone()
         if(city!=null){
             tvCities.text = city.cityName
@@ -655,12 +659,12 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
 
-            adapter.setList(list,0)
+            adapter.setList(list, 0)
             if(list==null || list.size==0){
                 rvVehicleTypes.gone()
-                Snackbar.make(view!!,getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view!!, getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
             }else{
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0)
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0)==0)
                     rvVehicleTypes.visible()
                 else
                     rvVehicleTypes.gone()
@@ -742,16 +746,15 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                         if (jObj.has(Constants.KEY_DATA)) {
                             val dataObj = jObj.getJSONObject(Constants.KEY_DATA)
-                            if (dataObj!= null) {
-                                var driverVehicleDetail: DriverVehicleDetails?=null
+                            if (dataObj != null) {
+                                var driverVehicleDetail: DriverVehicleDetails? = null
 
-                                driverVehicleDetail= DriverVehicleDetails.parseDocumentVehicleDetails(dataObj)
+                                driverVehicleDetail = DriverVehicleDetails.parseDocumentVehicleDetails(dataObj)
                                 Data.userData.driverVehicleDetailsList.add(driverVehicleDetail)
                                 (activity as VehicleDetailsActivity).vehicleAdded(driverVehicleDetail)
                             }
 
-                        }
-                        else
+                        } else
                             activity!!.supportFragmentManager.popBackStackImmediate()
                     }
                     DialogPopup.alertPopup(activity, "", message)
@@ -784,18 +787,18 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             Utils.showToast(requireActivity(), getString(R.string.error_no_fleets_in_this_city_format, citySelected!!.cityName))
         } else {
             val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.select_fleet), false)
-            countryPickerDialog.setCountryPickerListener(object:OnCountryPickerListener<CityResponse.Fleet>{
+            countryPickerDialog.setCountryPickerListener(object : OnCountryPickerListener<CityResponse.Fleet> {
                 override fun onSelectCountry(country: CityResponse.Fleet?) {
                     fleetSelected = country
                     tvFleetSelected.text = fleetSelected!!.name
                 }
 
             });
-            countryPickerDialog.setDialogInteractionListener(object:CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet>{
+            countryPickerDialog.setDialogInteractionListener(object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet> {
                 override fun getAllCountries(): MutableList<CityResponse.Fleet> {
                     val fleets = mutableListOf<CityResponse.Fleet>()
                     fleets.addAll(citySelected!!.fleets)
-                    if(citySelected!!.mandatoryFleetRegistration != 1) {
+                    if (citySelected!!.mandatoryFleetRegistration != 1) {
                         val noneFleet = CityResponse.Fleet()
                         noneFleet.name = getString(R.string.none)
                         noneFleet.id = -1
@@ -808,7 +811,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 }
 
                 override fun canSearch(): Boolean {
-                    return citySelected!!.fleets.size>7
+                    return citySelected!!.fleets.size > 7
                 }
 
             })
