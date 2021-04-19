@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fillViewport="true"
     android:background="@android:color/white"
@@ -366,42 +367,70 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSelectFleet"
             android:visibility="visible"
             />
+        <LinearLayout
+            android:id="@+id/llTnC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tvFleetSelected"
+            tools:layout_editor_absoluteX="16dp">
 
+            <CheckBox
+                android:id="@+id/cbTnC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX="1.30"
+                android:scaleY="1.30"
+                android:buttonTint="@color/themeColor" />
+
+            <TextView
+                android:id="@+id/tvTermsOfUse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_horizontal"
+                android:text="@string/by_signing_you_agree"
+                android:textColor="@color/text_color_splash_heading"
+                android:textSize="14sp" />
+        </LinearLayout>
         <Button
             android:id="@+id/bContinue"
             style="@style/ButtonTheme"
             android:layout_width="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="22dp"
             android:text="@string/continue_text"
             android:textAllCaps="true"
             android:layout_marginStart="10dp"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bCancel"
-            app:layout_constraintTop_toBottomOf="@+id/tvFleetSelected" />
+            app:layout_constraintTop_toBottomOf="@+id/llTnC" />
 
         <Button
             android:id="@+id/bCancel"
             style="@style/ButtonThemeAlternate"
             android:layout_width="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="22dp"
             android:layout_marginEnd="10dp"
             android:text="@string/cancel"
             android:textAllCaps="true"
             app:layout_constraintEnd_toStartOf="@+id/bContinue"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFleetSelected" />
-        <TextView
-            android:id="@+id/tvTermsOfUse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:gravity="center_horizontal"
-            android:text="@string/by_signing_you_agree"
-            android:textColor="@color/text_color_splash_heading"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/bContinue"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/llTnC" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvTermsOfUse"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="14dp"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:text="@string/by_signing_you_agree"-->
+<!--            android:textColor="@color/text_color_splash_heading"-->
+<!--            android:textSize="14sp"-->
+<!--            android:visibility="visible"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/bContinue"-->
+<!--            />-->
         <androidx.constraintlayout.widget.Group
             android:id="@+id/multipleVehicleEnabledGroup"
             android:layout_width="match_parent"
@@ -420,7 +449,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectFleet,tvFleetSelected,tvPromo,edtPromo"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectFleet,tvFleetSelected,tvPromo,edtPromo">
+
+        </androidx.constraintlayout.widget.Group>
         <androidx.constraintlayout.widget.Group
             android:id="@+id/selectCityGroup"
             android:layout_width="wrap_content"
