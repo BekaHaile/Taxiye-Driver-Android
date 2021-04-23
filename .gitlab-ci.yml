@@ -10,13 +10,14 @@ build_debug_release:
   script:
     - cd JugnooNewDriver
     - ./gradlew assembleTaxiyeStagingDebug assembleTaxiyeStagingRelease
+    - cd ../
     - mkdir build-files
-    - mv jugnooNewDriver/build/outputs/apk/taxiyeStaging/release/taxiyeStaging_driver_release6010.apk build-files/taxiye-driver-staging-release.apk
-    - mv jugnooNewDriver/build/outputs/apk/taxiyeStaging/debug/taxiyeStaging_driver_debug6010.apk build-files/taxiye-driver-staging-debug.apk
+    - mv JugnooNewDriver/jugnooNewDriver/build/outputs/apk/taxiyeStaging/release/taxiyeStaging_driver_release6010.apk build-files/taxiye-driver-staging-release.apk
+    - mv JugnooNewDriver/jugnooNewDriver/build/outputs/apk/taxiyeStaging/debug/taxiyeStaging_driver_debug6010.apk build-files/taxiye-driver-staging-debug.apk
 
   artifacts:
     paths:
-      - JugnooNewDriver/build-files
+      - build-files
 
   only:
     - develop
