@@ -1,0 +1,22 @@
+
+
+stages:
+  - bulid
+
+build_debug_release:
+  stage: build
+  image: mingc/android-build-box
+
+  script:
+    - cd JugnooNewDriver
+    - ./gradlew assembleTaxiyeStagingDebug assembleTaxiyeStagingRelease
+    - mkdir build-files
+    - mv jugnooNewDriver/build/outputs/apk/taxiyeStaging/release/taxiyeStaging_driver_debug6010.apk build-files/taxiye-driver-staging-release.apk
+    - mv jugnooNewDriver/build/outputs/apk/taxiyeStaging/debug/taxiyeStaging_driver_release6010.apk build-files/taxiye-driver-staging-debug.apk
+
+  artifacts:
+    paths:
+      - build-files
+
+  only:
+    - develop
