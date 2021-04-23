@@ -1,7 +1,7 @@
 
 
 stages:
-  - bulid
+  - build
 
 build_debug_release:
   stage: build
