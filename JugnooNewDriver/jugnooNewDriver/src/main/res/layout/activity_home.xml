@@ -120,6 +120,15 @@
                 android:textStyle="bold"
                 />
 
+            <product.clicklabs.jugnoo.driver.widgets.MovableFloatingActionButton
+                android:id="@+id/network_status_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_baseline_signal_cellular_alt_24"/>
+
 
             <!-- offline request accept layout-->
             <include layout="@layout/layout_driver_request_accept"/>

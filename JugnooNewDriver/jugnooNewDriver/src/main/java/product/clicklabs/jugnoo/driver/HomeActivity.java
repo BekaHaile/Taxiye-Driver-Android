@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -24,6 +25,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -206,6 +208,7 @@ import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
 import product.clicklabs.jugnoo.driver.home.HomeBannerAction;
 import product.clicklabs.jugnoo.driver.home.PushClickAction;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
+import product.clicklabs.jugnoo.driver.receiver.NetworkCheckReceiver;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -268,6 +271,7 @@ import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.SwipeCallback;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import product.clicklabs.jugnoo.driver.utils.ZoomOutPageTransformer;
+import product.clicklabs.jugnoo.driver.widgets.MovableFloatingActionButton;
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText;
 import product.clicklabs.jugnoo.driver.widgets.SimpleRatingBar;
 import retrofit.Callback;
@@ -589,10 +593,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TabLayout tabDots;
     private ViewPager vpRequests;
     private ConstraintLayout containerRequestBidNew;
+
+    MovableFloatingActionButton floatingActionButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+
             setContentView(R.layout.activity_home);
             MyApplication.getInstance().mContext=this;
             decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
@@ -1176,6 +1184,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 containerSwitch.setVisibility(View.GONE);
                 tvTitle.setVisibility(View.VISIBLE);
             }
+
+            floatingActionButton = findViewById(R.id.network_status_action_button);
+            IntentFilter networkChangeIntentFilter = new IntentFilter();
+            networkChangeIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            NetworkCheckReceiver networkCheckReceiver = new NetworkCheckReceiver();
+            networkCheckReceiver.setOnNetworkChangeListener(isOnline -> {
+                if (isOnline) {
+                    floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_green_dark )));
+                    floatingActionButton.setImageResource(R.drawable.ic_baseline_signal_cellular_alt_24);
+                } else {
+                    floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_red_dark )));
+                    floatingActionButton.setImageResource(R.drawable.ic_baseline_signal_cellular_connected_no_internet_4_bar_24);
+                }
+            });
+            registerReceiver(networkCheckReceiver, networkChangeIntentFilter);
 
 
             slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
