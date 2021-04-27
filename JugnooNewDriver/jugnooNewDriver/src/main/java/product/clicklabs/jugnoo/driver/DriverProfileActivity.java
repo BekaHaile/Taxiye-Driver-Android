@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.CircleTransform;
@@ -37,6 +36,7 @@ import java.util.TimeZone;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
@@ -48,9 +48,9 @@ import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverSubscriptionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SubscriptionData;
+import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
@@ -90,6 +90,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation, cvSubs;;
+    private RelativeLayout rlAddSubscription, rlTotalRide, takenRidesViewSubsRl, pendingViewSubsRl, rlRidesValidUpto, topbarProfile;
     private TextView totalRides, consumedRides, pendingRides, validUptoSubs, textViewTotalRides, textViewPendingRides, textViewConsumedRides, textViewValidUpto;
     SwitchCompat switchNavigation, switchMaxSound,enableDelivery;;
     TextView tvDocuments, tvEmergencyContacts,tvSelectRingtone;
@@ -228,7 +229,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
         cvSubs = findViewById(R.id.cvSubscriptions);
-        totalRides = findViewById(R.id.textViewTotalRidesValue);
+        totalRides = findViewById(R.id.textViewSubscription);
         totalRides.setTypeface(Fonts.mavenRegular(this));
         consumedRides = findViewById(R.id.textViewRidesTakenValueSubs);
         consumedRides.setTypeface(Fonts.mavenRegular(this));
@@ -237,7 +238,35 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         validUptoSubs = findViewById(R.id.textViewRidesValidValue);
         validUptoSubs.setTypeface(Fonts.mavenRegular(this));
 
-        textViewTotalRides = findViewById(R.id.textViewTotalRidesText);
+        rlAddSubscription = findViewById(R.id.rlAddSubscription);
+        rlAddSubscription.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                SubscriptionFragment subsFrag;
+                subsFrag =new  SubscriptionFragment();
+                Bundle args =new Bundle();
+                args.putString("AccessToken", Data.userData.accessToken);
+                args.putInt("stripe_key", 0 );
+                subsFrag.setArguments(args);
+
+                title.setText(getString(R.string.subscriptions));
+                driverDetailsRLL.setVisibility(View.GONE);
+                terms.setVisibility(View.GONE);
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, subsFrag, SubscriptionFragment.class.getSimpleName())
+                        .addToBackStack(SubscriptionFragment.class.getName())
+                        .commitAllowingStateLoss();
+            }
+        });
+
+        rlTotalRide = findViewById(R.id.rlTotalRide);
+        takenRidesViewSubsRl = findViewById(R.id.takenRidesViewSubsRl);
+        pendingViewSubsRl = findViewById(R.id.pendingViewSubsRl);
+        rlRidesValidUpto = findViewById(R.id.rlRidesValidUpto);
+
+        textViewTotalRides = findViewById(R.id.textViewAddSubscriptionText);
         textViewTotalRides.setTypeface(Fonts.mavenRegular(this));
         textViewConsumedRides = findViewById(R.id.textViewRidesTakenTextSubs);
         textViewConsumedRides.setTypeface(Fonts.mavenRegular(this));
@@ -465,8 +494,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             }
         });*/
         if (subscriptionData.size() == 0) {
-            cvSubs.setVisibility(View.GONE);
+            rlTotalRide.setVisibility(View.GONE);
+            takenRidesViewSubsRl.setVisibility(View.GONE);
+            pendingViewSubsRl.setVisibility(View.GONE);
+            rlRidesValidUpto.setVisibility(View.GONE);
         } else {
+            rlAddSubscription.setVisibility(View.GONE);
             if (subscriptionData.get(0).getNum_of_rides_allowed() == 0) {
                 totalRides.setText(getResources().getString(R.string.unlimited));
                 totalRides.setTextColor(getResources().getColor(R.color.green_btn));
@@ -577,6 +610,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0) {
             title.setText(getString(R.string.profile));
             terms.setVisibility(View.VISIBLE);
+            driverDetailsRLL.setVisibility(View.VISIBLE);
             super.onBackPressed();
 
         } else {
