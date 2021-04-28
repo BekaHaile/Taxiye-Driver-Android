@@ -385,30 +385,7 @@ import java.util.*
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())) {
                                 JSONParser().parseAccessTokenLoginData(requireActivity(), jsonString)
                                 requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
-
-                                if ((Data.userData.driverSubscriptionEnabled == DriverSubscriptionEnabled.MANDATORY.getOrdinal()||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&& 0 == Data.userData.deliveryEnabled) {
-                                    if (Data.userData.driverSubscription == DriverSubscription.UNSUBSCRIBED.getOrdinal()) {
-                                        lateinit var subsFrag:SubscriptionFragment
-                                        subsFrag = SubscriptionFragment()
-                                        val args = Bundle()
-                                        args.putString("AccessToken", Data.userData.accessToken as String)
-                                        args.putInt("stripe_key", 0 as Int)
-                                        //args.putInt("")
-                                        subsFrag.setArguments(args)
-                                        fragmentManager!!.findFragmentByTag(OTPConfirmFragment::class.simpleName)?.let {
-                                            fragmentManager!!.beginTransaction()
-                                                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                                                    .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
-                                                    .hide(it)
-                                                    .addToBackStack(SubscriptionFragment::class.java.name)
-                                                    .commit()
-                                        }
-                                    } else {
-                                        mListener?.goToHomeScreen()
-                                    }
-                                } else {
                                     mListener?.goToHomeScreen()
-                                }
                             }
                             if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
                                 val vehicleModelEnabled = jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,

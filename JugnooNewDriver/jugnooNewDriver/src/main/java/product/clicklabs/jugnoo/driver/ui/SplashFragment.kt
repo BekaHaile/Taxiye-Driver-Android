@@ -330,31 +330,7 @@ class SplashFragment : Fragment() {
                                 if (resp.contains(Constants.SERVER_TIMEOUT)) {
                                     DialogPopup.alertPopup(mActivity, "", message)
                                 } else {
-
-                                    if ((Data.userData.driverSubscriptionEnabled == DriverSubscriptionEnabled.MANDATORY.ordinal||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&& 0 == Data.userData.deliveryEnabled) {
-                                        if (Data.userData.driverSubscription == DriverSubscription.UNSUBSCRIBED.ordinal) {
-
-                                            lateinit var subsFrag: SubscriptionFragment
-                                            subsFrag = SubscriptionFragment()
-                                            val args = Bundle()
-                                            args.putString("AccessToken", Data.userData.accessToken as String)
-                                            args.putInt("stripe_key", 0 as Int)
-                                            subsFrag.setArguments(args)
-                                            fragmentManager!!.findFragmentByTag(SplashFragment::class.simpleName)?.let {
-                                                fragmentManager!!.beginTransaction()
-                                                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                                                        .add(R.id.container, subsFrag, SubscriptionFragment::class.java.name)
-                                                        .hide(it)
-                                                        .addToBackStack(SubscriptionFragment::class.java.name)
-                                                        .commit()
-                                            }
-
-                                        } else {
-                                            mListener?.goToHomeScreen()
-                                        }
-                                    } else {
                                         mListener?.goToHomeScreen()
-                                    }
 
                                 }
 

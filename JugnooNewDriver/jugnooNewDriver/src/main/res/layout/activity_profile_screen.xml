@@ -41,848 +41,869 @@
 
 
     <androidx.core.widget.NestedScrollView
-        android:layout_below="@id/topbarProfile"
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/topbarProfile">
 
-    <LinearLayout
-        android:id="@+id/driverDetailsRLL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvDriverInfo"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/driverDetailsRLL"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20px"
-            android:layout_marginStart="20px"
-            android:background="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="3dp"
-            card_view:cardUseCompatPadding="true"
-            >
+            android:orientation="vertical">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvDriverInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginEnd="20px"
+                android:background="?android:attr/selectableItemBackground"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
 
-            <RelativeLayout
-                android:id="@+id/driverDetailsRL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/ivEditIcon"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="30px"
-                    android:layout_marginTop="30px"
-                    android:src="@drawable/edit_pencil_icon"
-                    android:tag="mwar"/>
 
                 <RelativeLayout
-                    android:id="@+id/profileRl"
-                    android:layout_width="140px"
-                    android:layout_height="140px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="30px"
-                    android:layout_marginTop="30px"
-                    android:layout_marginBottom="30px"
-                    android:splitMotionEvents="false"
-                    android:tag="mwar">
+                    android:id="@+id/driverDetailsRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="153dp">
 
                     <ImageView
-                        android:id="@+id/profileBack"
+                        android:id="@+id/ivEditIcon"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="30px"
+                        android:layout_marginEnd="30px"
+                        android:src="@drawable/edit_pencil_icon"
+                        android:tag="mwar" />
+
+                    <RelativeLayout
+                        android:id="@+id/profileRl"
                         android:layout_width="140px"
                         android:layout_height="140px"
-                        android:background="@drawable/ring"
-                        android:tag="mwar"/>
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="30px"
+                        android:layout_marginTop="30px"
+                        android:layout_marginBottom="30px"
+                        android:splitMotionEvents="false"
+                        android:tag="mwar">
+
+                        <ImageView
+                            android:id="@+id/profileBack"
+                            android:layout_width="140px"
+                            android:layout_height="140px"
+                            android:background="@drawable/ring"
+                            android:tag="mwar" />
+
+                        <ImageView
+                            android:id="@+id/profileImg"
+                            android:layout_width="134px"
+                            android:layout_height="134px"
+                            android:layout_centerInParent="true"
+                            android:tag="mwar" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20px"
+                        android:layout_marginTop="20px"
+                        android:layout_marginEnd="5px"
+                        android:layout_marginBottom="20px"
+                        android:layout_toStartOf="@+id/ivEditIcon"
+                        android:layout_toEndOf="@id/profileRl"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewDriverName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginEnd="40px"
+                            android:text="@string/name"
+                            android:textColor="@color/textColor"
+                            android:textSize="36px" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewPhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textViewDriverName"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5px"
+                            android:fontFamily="@font/maven_pro_regular"
+                            android:text="@string/phone_no"
+                            android:textColor="@color/textColorMedium"
+                            android:textSize="30px" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewDriverId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textViewDriverName"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5px"
+                            android:text="@string/driver_id"
+                            android:textColor="@color/textColorMedium"
+                            android:textSize="30px" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewRankCity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textViewDriverId"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5px"
+                            android:text="@string/rank_city"
+                            android:textColor="@color/textColorMedium"
+                            android:textSize="30px" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewRankOverall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textViewRankCity"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5px"
+                            android:text="@string/rank_overall"
+                            android:textColor="@color/textColorMedium"
+                            android:textSize="30px" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/tvGender"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:tag="@string/dont_touch_me"
+                            tools:text="Gender: Male" />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/tvDateOfBirth"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:tag="@string/dont_touch_me"
+                            tools:text="Date Of Birth:" />
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvVehicleDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tag="@string/dont_touch_me"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/tvLabelVehicleDetails"
+                        style="@style/TextLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bgColor"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/title_vehicle_details"
+                        android:textColor="@color/textColor" />
 
                     <ImageView
-                        android:id="@+id/profileImg"
-                        android:layout_width="134px"
-                        android:layout_height="134px"
-                        android:layout_centerInParent="true"
-                        android:tag="mwar"/>
-                </RelativeLayout>
+                        android:id="@+id/idEditVehicle"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/edit_pencil_icon"
+                        card_view:layout_constraintBottom_toBottomOf="@id/tvLabelVehicleDetails"
+                        card_view:layout_constraintEnd_toEndOf="@id/tvLabelVehicleDetails"
+                        card_view:layout_constraintTop_toTopOf="@id/tvLabelVehicleDetails" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvVehicleDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        card_view:layout_constraintTop_toBottomOf="@id/tvLabelVehicleDetails" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSubscriptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tag="@string/dont_touch_me"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20px"
-                    android:layout_marginEnd="5px"
-                    android:layout_marginTop="20px"
-                    android:layout_marginBottom="20px"
-                    android:orientation="vertical"
-                    android:layout_toEndOf="@id/profileRl"
-                    android:layout_toStartOf="@+id/ivEditIcon">
+                    android:orientation="vertical">
+
 
                     <TextView
-                        android:id="@+id/textViewDriverName"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="40px"
+                        android:id="@+id/textViewSubscriptions"
+                        style="@style/TextLarge"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:text="@string/name"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"/>
+                        android:background="@color/bgColor"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/subscriptions"
+                        android:textColor="@color/textColor" />
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/textViewPhoneNumber"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rlAddSubscription"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/textViewDriverName"
-                        android:layout_marginTop="5px"
-                        android:text="@string/phone_no"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="30px"
-                        android:fontFamily="@font/maven_pro_regular"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:visibility="visible">
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/textViewDriverId"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewAddSubscriptionText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/add" />
+
+                        <TextView
+                            android:id="@+id/textViewSubscription"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/textViewAddSubscriptionText"
+                            android:text="@string/subscriptions"
+                            android:textColor="@color/textColor" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlTotalRide"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/textViewDriverName"
-                        android:layout_marginTop="5px"
-                        android:text="@string/driver_id"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="30px"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:visibility="visible">
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/textViewRankCity"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewAddSubscriptionText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/total_rides" />
+
+                        <TextView
+                            android:id="@+id/textViewSubscription"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0000"
+                            android:textColor="@color/textColor" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontalSubs1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:id="@+id/takenRidesViewSubsRl"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/textViewDriverId"
-                        android:layout_marginTop="5px"
-                        android:text="@string/rank_city"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="30px"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/textViewRankOverall"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewRidesTakenTextSubs"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_taken"
+                            android:textColor="@color/textColorMedium" />
+
+                        <TextView
+                            android:id="@+id/textViewRidesTakenValueSubs"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0000"
+                            android:textColor="@color/textColor" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontalSubs3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:id="@+id/pendingViewSubsRl"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/textViewRankCity"
-                        android:layout_marginTop="5px"
-                        android:text="@string/rank_overall"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="30px"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/tvGender"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewRidesPendingSubs"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_pending"
+                            android:textColor="@color/textColorMedium" />
+
+                        <TextView
+                            android:id="@+id/textViewRidesPendingValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0000"
+                            android:textColor="@color/textColor" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontalSubs2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlRidesValidUpto"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:tag="@string/dont_touch_me"
-                        android:layout_marginTop="2dp"
-                        tools:text="Gender: Male"
-                        style="@style/TextMedium"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                        android:id="@+id/tvDateOfBirth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:tag="@string/dont_touch_me"
-                        android:layout_marginTop="2dp"
-                        tools:text="Date Of Birth:"
-                        style="@style/TextMedium"/>
+                        <TextView
+                            android:id="@+id/textViewRidesValidUptoText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_valid_upto"
+                            android:textColor="@color/textColorMedium" />
 
+                        <TextView
+                            android:id="@+id/textViewRidesValidValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0000"
+                            android:textColor="@color/textColor" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvVehicleDetails"
-            android:tag="@string/dont_touch_me"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="3dp"
-            card_view:cardUseCompatPadding="true"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_below="@+id/cvSubscriptions"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tag="@string/dont_touch_me"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
 
-
-                <TextView
-                    android:id="@+id/tvLabelVehicleDetails"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:gravity="center"
-                    style="@style/TextLarge"
-                    android:text="@string/title_vehicle_details"
-                    android:textColor="@color/textColor"
-                    android:background="@color/bgColor" />
-
-                <ImageView
-                    android:id="@+id/idEditVehicle"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/edit_pencil_icon"
-                    card_view:layout_constraintBottom_toBottomOf="@id/tvLabelVehicleDetails"
-                    card_view:layout_constraintEnd_toEndOf="@id/tvLabelVehicleDetails"
-                    card_view:layout_constraintTop_toTopOf="@id/tvLabelVehicleDetails" />
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvVehicleDetails"
-                    card_view:layout_constraintTop_toBottomOf="@id/tvLabelVehicleDetails"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvSubscriptions"
-            android:tag="@string/dont_touch_me"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="3dp"
-            card_view:cardUseCompatPadding="true"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:id="@+id/textViewSubscriptions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:gravity="center"
-                    style="@style/TextLarge"
-                    android:text="@string/subscriptions"
-                    android:textColor="@color/textColor"
-                    android:background="@color/bgColor" />
-
-                <RelativeLayout
-                    android:id="@+id/rlTotalRides"
-                    android:layout_width="match_parent"
-                    android:minHeight="45dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/TextNormal"
-                        android:id="@+id/textViewTotalRidesText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/total_rides"
-                        />
-
-                    <TextView
-                        android:id="@+id/textViewTotalRidesValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/TextNormal"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:text="0000"
-                        android:textColor="@color/textColor" />
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontalSubs1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:id="@+id/takenRidesViewSubsRl"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
-
-                    <TextView
-                        android:id="@+id/textViewRidesTakenTextSubs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/rides_taken"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColorMedium" />
-
-                    <TextView
-                        android:id="@+id/textViewRidesTakenValueSubs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        android:text="0000"
-                        android:textColor="@color/textColor" />
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontalSubs3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:id="@+id/pendingViewSubsRl"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
-
-                    <TextView
-                        android:id="@+id/textViewRidesPendingSubs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/rides_pending"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColorMedium" />
-
-                    <TextView
-                        android:id="@+id/textViewRidesPendingValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:text="0000"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColor"/>
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontalSubs2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/dividerColor"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
-
-                    <TextView
-                        android:id="@+id/textViewRidesValidUptoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        android:text="@string/rides_valid_upto"
-                        android:textColor="@color/textColorMedium" />
-
-                    <TextView
-                        android:id="@+id/textViewRidesValidValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        android:text="0000"
-                        android:textColor="@color/textColor" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvScore"
-            android:tag="@string/dont_touch_me"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cvSubscriptions"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="3dp"
-            card_view:cardUseCompatPadding="true"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    android:orientation="vertical">
 
 
                     <TextView
                         android:id="@+id/textViewmonthlyScore"
+                        style="@style/TextLarge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/bgColor"
+                        android:gravity="center"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:gravity="center"
-                        style="@style/TextLarge"
                         android:text="@string/monthly"
-                        android:textColor="@color/textColor"
-                        android:background="@color/bgColor" />
-
-                <RelativeLayout
-                    android:id="@+id/rlMonthlyEarnings"
-                    android:layout_width="match_parent"
-                    android:minHeight="45dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/TextNormal"
-                        android:id="@+id/textViewMonthlyText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/earnings"
-                        />
-
-                    <TextView
-                        android:id="@+id/textViewMonthlyValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/TextNormal"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        tools:text="0000"
                         android:textColor="@color/textColor" />
 
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
-
-                    <TextView
-                        android:id="@+id/textViewRidesTakenText"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rlMonthlyEarnings"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/rides_taken"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColorMedium" />
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/textViewRidesTakenValue"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewMonthlyText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/earnings" />
+
+                        <TextView
+                            android:id="@+id/textViewMonthlyValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/textColor"
+                            tools:text="0000" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        tools:text="0000"
-                        android:textColor="@color/textColor" />
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/textViewRidesTakenText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_taken"
+                            android:textColor="@color/textColorMedium" />
 
-                <ImageView
-                    android:id="@+id/imageViewHorizontal3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
+                        <TextView
+                            android:id="@+id/textViewRidesTakenValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/textColor"
+                            tools:text="0000" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
+                    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/textViewRidesMissedText"
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/rides_missed"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColorMedium" />
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                    <TextView
-                        android:id="@+id/textViewRidesMissedValue"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textViewRidesMissedText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_missed"
+                            android:textColor="@color/textColorMedium" />
+
+                        <TextView
+                            android:id="@+id/textViewRidesMissedValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/textColor"
+                            tools:text="0000" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        tools:text="0000"
-                        style="@style/TextNormal"
-                        android:textColor="@color/textColor"/>
+                        android:minHeight="45dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/textViewRidesCancelledText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/rides_cancelled"
+                            android:textColor="@color/textColorMedium" />
 
-                <ImageView
-                    android:id="@+id/imageViewHorizontal2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/dividerColor"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                        <TextView
+                            android:id="@+id/textViewRidesCancelledValue"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/textColor"
+                            tools:text="0000" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:minHeight="45dp">
-
-                    <TextView
-                        android:id="@+id/textViewRidesCancelledText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        android:text="@string/rides_cancelled"
-                        android:textColor="@color/textColorMedium" />
-
-                    <TextView
-                        android:id="@+id/textViewRidesCancelledValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        style="@style/TextNormal"
-                        tools:text="0000"
-                        android:textColor="@color/textColor" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvSwitchNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            android:tag="@string/dont_touch_me"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-
-                <TextView
-                    android:id="@+id/tvAppSettings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    style="@style/TextLarge"
-                    android:gravity="center"
-                    android:text="@string/settings"
-                    android:textStyle="bold"
-                    android:background="@color/bgColor"/>
-
-                <LinearLayout
-                    android:id="@+id/layoutVehicleServiceDetails"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/labelServiceType"
-                        android:text="@string/service_type"
-                        style="@style/TextNormal"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.4"
-                        android:layout_height="wrap_content" />
-
-
-                    <TextView
-                        android:id="@+id/tvServiceType"
-                        style="@style/TextNormal"
-                        android:gravity="end"
-                        android:layout_gravity="end"
-                        android:drawablePadding="5dp"
-                        tools:text="Jugnoo Go, Jugnoo"
-                        android:drawableEnd='@drawable/ic_arrow_down_vector'
-                        android:layout_width="0dp"
-                        android:layout_weight="0.6"
-                        android:layout_height="wrap_content" />
+                    </RelativeLayout>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <View
-                    android:id="@+id/ivDivVehicleServiceDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
 
-                <TextView
-                    android:id="@+id/tvDocuments"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSwitchNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:tag="@string/dont_touch_me"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    style="@style/TextNormal"
-                    android:text="@string/documents"
-                    android:background="?attr/selectableItemBackground"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-                <TextView
-                    android:id="@+id/tvEmergencyContacts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    style="@style/TextNormal"
-                    android:text="@string/emergency_contacts"
-                    android:background="?attr/selectableItemBackground"
-                    />
-                <View
-                    android:id="@+id/ivDivEmergencyContacts"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
+                    android:orientation="vertical">
 
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/deliveryEnable"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:visibility="gone"
-                    android:paddingTop="15dp"
-                    android:text="@string/delivery_enable"
-                    android:theme="@style/ThemeSwitch"
-                    />
+                    <TextView
+                        android:id="@+id/tvAppSettings"
+                        style="@style/TextLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bgColor"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings"
+                        android:textStyle="bold" />
 
-                <View
-                    android:id="@+id/ivDeliveryEnable"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:visibility="gone"
-                    android:background="@color/dividerColor"/>
+                    <LinearLayout
+                        android:id="@+id/layoutVehicleServiceDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp">
 
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchNavigation"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:text="@string/waze_navigation"
-                    android:theme="@style/ThemeSwitch"
-                    />
-
-                <View
-                    android:id="@+id/ivDivNavigation"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchMaxSound"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:text="@string/ringtone_full_volume"
-                    android:theme="@style/ThemeSwitch"
-                    />
+                        <TextView
+                            android:id="@+id/labelServiceType"
+                            style="@style/TextNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.4"
+                            android:text="@string/service_type" />
 
 
-                <View
-                    android:id="@+id/ivDivRingtoneSelection"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-                <TextView
-                    android:id="@+id/tvSelectRingtone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    style="@style/TextNormal"
-                    android:text="@string/select_ringtone"
-                    android:background="?attr/selectableItemBackground"
-                    />
+                        <TextView
+                            android:id="@+id/tvServiceType"
+                            style="@style/TextNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="0.6"
+                            android:drawableEnd='@drawable/ic_arrow_down_vector'
+                            android:drawablePadding="5dp"
+                            android:gravity="end"
+                            tools:text="Jugnoo Go, Jugnoo" />
 
-                <View
-                    android:id="@+id/ivDivOnlyCashRides"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:visibility="gone"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/dividerColor"/>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchOnlyCashRides"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:visibility="gone"
-                    android:paddingTop="15dp"
-                    android:text="@string/only_cash_rides"
-                    android:theme="@style/ThemeSwitch"
-                    />
+                    </LinearLayout>
 
-                <View
-                    android:id="@+id/ivDivOnlyLongRides"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:visibility="gone"
-                    android:background="@color/dividerColor"/>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchOnlyLongRides"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="20dp"
-                    android:visibility="gone"
-                    android:paddingTop="15dp"
-                    android:text="@string/only_long_rides"
-                    android:theme="@style/ThemeSwitch"
-                    />
-                <View
-                    android:id="@+id/ivDivExternalGps"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:visibility="gone"
-                    android:background="@color/dividerColor"/>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchExternalGps"
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingEnd="20dp"
-                    android:visibility="gone"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:text="@string/vehicle_gps"
-                    android:theme="@style/ThemeSwitch"
-                    />
-            </LinearLayout>
+                    <View
+                        android:id="@+id/ivDivVehicleServiceDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
 
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/tvDocuments"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/documents" />
 
-    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <TextView
+                        android:id="@+id/tvEmergencyContacts"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/emergency_contacts" />
+
+                    <View
+                        android:id="@+id/ivDivEmergencyContacts"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/deliveryEnable"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/delivery_enable"
+                        android:theme="@style/ThemeSwitch"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/ivDeliveryEnable"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor"
+                        android:visibility="gone" />
+
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchNavigation"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/waze_navigation"
+                        android:theme="@style/ThemeSwitch" />
+
+                    <View
+                        android:id="@+id/ivDivNavigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchMaxSound"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/ringtone_full_volume"
+                        android:theme="@style/ThemeSwitch" />
+
+
+                    <View
+                        android:id="@+id/ivDivRingtoneSelection"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor" />
+
+                    <TextView
+                        android:id="@+id/tvSelectRingtone"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/select_ringtone" />
+
+                    <View
+                        android:id="@+id/ivDivOnlyCashRides"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchOnlyCashRides"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/only_cash_rides"
+                        android:theme="@style/ThemeSwitch"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/ivDivOnlyLongRides"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchOnlyLongRides"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/only_long_rides"
+                        android:theme="@style/ThemeSwitch"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/ivDivExternalGps"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/dividerColor"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchExternalGps"
+                        style="@style/TextNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/vehicle_gps"
+                        android:theme="@style/ThemeSwitch"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

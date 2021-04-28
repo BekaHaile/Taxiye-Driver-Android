@@ -28,6 +28,7 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
+import product.clicklabs.jugnoo.driver.DriverProfileActivity;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
@@ -77,6 +78,9 @@ public class SubscriptionFragment extends Fragment {
         else if(getActivity() instanceof DriverDocumentActivity){
             activity = (DriverDocumentActivity) getActivity();
         }
+        else if(getActivity() instanceof DriverProfileActivity){
+            activity = (DriverProfileActivity) getActivity();
+        }
         else
         {
             activity = (HomeActivity) getActivity();
@@ -92,12 +96,7 @@ public class SubscriptionFragment extends Fragment {
         }
         getSubscriptionData(getArguments().getString("AccessToken"));
         stripe_enabled = getArguments().getInt("stripe_key");
-        if(Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal()){
-            tvSkip.setVisibility(View.VISIBLE);
-        }
-        else {
-            tvSkip.setVisibility(View.GONE);
-        }
+        tvSkip.setVisibility(View.GONE);
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
