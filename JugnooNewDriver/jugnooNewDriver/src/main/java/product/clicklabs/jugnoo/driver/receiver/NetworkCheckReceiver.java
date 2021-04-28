@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import java.lang.reflect.Method;
 
@@ -16,6 +15,16 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
  * Created by aneeshbansal on 07/09/16.
  */
 public class NetworkCheckReceiver extends BroadcastReceiver {
+
+	private NetworkChangeListener networkChangeListener;
+
+	public interface NetworkChangeListener {
+		void onStateChanged(boolean isOnline);
+	}
+
+	public void setOnNetworkChangeListener(NetworkChangeListener networkChangeListener) {
+		this.networkChangeListener = networkChangeListener;
+	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -29,6 +38,7 @@ public class NetworkCheckReceiver extends BroadcastReceiver {
 			if (!isMobileDataEnable(context)) {
 				Prefs.with(context).save(Constants.MOBILE_DATA_STATE, false);
 			}
+			networkChangeListener.onStateChanged(!noConnectivity);
 
 		}
 	}
