@@ -507,6 +507,13 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             imageViewHorizontalSubs3.setVisibility(View.GONE);
         } else {
             rlAddSubscription.setVisibility(View.GONE);
+            rlTotalRide.setVisibility(View.VISIBLE);
+            takenRidesViewSubsRl.setVisibility(View.VISIBLE);
+            pendingViewSubsRl.setVisibility(View.VISIBLE);
+            rlRidesValidUpto.setVisibility(View.VISIBLE);
+            imageViewHorizontalSubs1.setVisibility(View.VISIBLE);
+            imageViewHorizontalSubs2.setVisibility(View.VISIBLE);
+            imageViewHorizontalSubs3.setVisibility(View.VISIBLE);
             if (subscriptionData.get(0).getNum_of_rides_allowed() == 0) {
                 totalRides.setText(getResources().getString(R.string.unlimited));
                 totalRides.setTextColor(getResources().getColor(R.color.green_btn));
