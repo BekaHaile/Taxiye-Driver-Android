@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.subscription;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,8 +35,6 @@ import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.ToolbarChangeListener;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverSubscription;
-import product.clicklabs.jugnoo.driver.datastructure.DriverSubscriptionEnabled;
-import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverSubscriptionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SubscriptionData;
@@ -221,6 +218,8 @@ public class SubscriptionFragment extends Fragment {
                 if(activity instanceof DriverDocumentActivity){
                     Intent i = new Intent (activity,DriverSplashActivity.class);
                     startActivity(i);
+                }else if(activity instanceof DriverProfileActivity){
+                    activity.onBackPressed();
                 }else{
                     moveToHome();
                 }
