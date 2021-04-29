@@ -46,6 +46,11 @@
         android:layout_height="match_parent"
         android:layout_below="@id/topbarProfile">
 
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
         <LinearLayout
             android:id="@+id/driverDetailsRLL"
             android:layout_width="match_parent"
@@ -273,7 +278,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-
                     <TextView
                         android:id="@+id/textViewSubscriptions"
                         style="@style/TextLarge"
@@ -287,37 +291,6 @@
                         android:textColor="@color/textColor" />
 
                     <RelativeLayout
-                        android:id="@+id/rlAddSubscription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="45dp"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp"
-                        android:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/textViewAddSubscriptionText"
-                            style="@style/TextNormal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/add" />
-
-                        <TextView
-                            android:id="@+id/textViewSubscription"
-                            style="@style/TextNormal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/textViewAddSubscriptionText"
-                            android:text="@string/subscriptions"
-                            android:textColor="@color/textColor" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
                         android:id="@+id/rlTotalRide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -327,7 +300,7 @@
                         android:visibility="visible">
 
                         <TextView
-                            android:id="@+id/textViewAddSubscriptionText"
+                            android:id="@+id/textViewTotalRideText"
                             style="@style/TextNormal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -336,7 +309,7 @@
                             android:text="@string/total_rides" />
 
                         <TextView
-                            android:id="@+id/textViewSubscription"
+                            android:id="@+id/textViewTotalRideValueSubs"
                             style="@style/TextNormal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -461,6 +434,35 @@
                             android:text="0000"
                             android:textColor="@color/textColor" />
 
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlAddSubscription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
+
+                        <TextView
+                            android:id="@+id/textViewAddSubscriptionText"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/add" />
+
+                        <TextView
+                            android:id="@+id/textViewSubscription"
+                            style="@style/TextNormal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/textViewAddSubscriptionText"
+                            android:text="@string/subscriptions"
+                            android:textColor="@color/textColor" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -904,13 +906,8 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+        </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <FrameLayout
-        android:layout_below="@id/topbarProfile"
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
 </RelativeLayout>
