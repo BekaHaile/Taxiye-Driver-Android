@@ -955,6 +955,10 @@
         android:visibility="visible"
         />
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+    <RelativeLayout
         android:id="@+id/rlChatDriver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -983,6 +987,7 @@
             android:visibility="visible"
             android:background="@drawable/circle_white_stroke_grey"/>
 
+    </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
