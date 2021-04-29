@@ -16,6 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.CircleTransform;
@@ -33,12 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
@@ -104,7 +104,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     int delivery_available = 0;
     boolean checked = false;
     private RelativeLayout pendingRidesRl, takenRidesRl;
-    private ImageView upperSubs, secondsSubs;
+    private ImageView upperSubs, secondsSubs, imageViewHorizontalSubs1,imageViewHorizontalSubs2, imageViewHorizontalSubs3;
     private List<SubscriptionData> subscriptionData = new ArrayList<SubscriptionData>();
 
 	private SwitchCompat switchOnlyCashRides;
@@ -229,7 +229,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
         cvSubs = findViewById(R.id.cvSubscriptions);
-        totalRides = findViewById(R.id.textViewSubscription);
+        totalRides = findViewById(R.id.textViewTotalRideValueSubs);
         totalRides.setTypeface(Fonts.mavenRegular(this));
         consumedRides = findViewById(R.id.textViewRidesTakenValueSubs);
         consumedRides.setTypeface(Fonts.mavenRegular(this));
@@ -266,7 +266,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         pendingViewSubsRl = findViewById(R.id.pendingViewSubsRl);
         rlRidesValidUpto = findViewById(R.id.rlRidesValidUpto);
 
-        textViewTotalRides = findViewById(R.id.textViewAddSubscriptionText);
+        textViewTotalRides = findViewById(R.id.textViewTotalRideText);
         textViewTotalRides.setTypeface(Fonts.mavenRegular(this));
         textViewConsumedRides = findViewById(R.id.textViewRidesTakenTextSubs);
         textViewConsumedRides.setTypeface(Fonts.mavenRegular(this));
@@ -274,6 +274,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         textViewPendingRides.setTypeface(Fonts.mavenRegular(this));
         textViewValidUpto = findViewById(R.id.textViewRidesValidUptoText);
         textViewValidUpto.setTypeface(Fonts.mavenRegular(this));
+
+        imageViewHorizontalSubs1 = findViewById(R.id.imageViewHorizontalSubs1);
+        imageViewHorizontalSubs2 = findViewById(R.id.imageViewHorizontalSubs2);
+        imageViewHorizontalSubs3 = findViewById(R.id.imageViewHorizontalSubs3);
 
         pendingRidesRl = findViewById(R.id.pendingViewSubsRl);
         takenRidesRl = findViewById(R.id.takenRidesViewSubsRl);
@@ -498,6 +502,9 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             takenRidesViewSubsRl.setVisibility(View.GONE);
             pendingViewSubsRl.setVisibility(View.GONE);
             rlRidesValidUpto.setVisibility(View.GONE);
+            imageViewHorizontalSubs1.setVisibility(View.GONE);
+            imageViewHorizontalSubs2.setVisibility(View.GONE);
+            imageViewHorizontalSubs3.setVisibility(View.GONE);
         } else {
             rlAddSubscription.setVisibility(View.GONE);
             if (subscriptionData.get(0).getNum_of_rides_allowed() == 0) {
@@ -611,6 +618,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             title.setText(getString(R.string.profile));
             terms.setVisibility(View.VISIBLE);
             driverDetailsRLL.setVisibility(View.VISIBLE);
+            getProfileInfoAsync(DriverProfileActivity.this);
             super.onBackPressed();
 
         } else {
