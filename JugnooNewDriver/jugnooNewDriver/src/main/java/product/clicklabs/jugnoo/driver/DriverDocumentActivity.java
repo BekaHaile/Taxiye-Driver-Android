@@ -496,29 +496,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 											DialogPopup.alertPopup(activity, "", message);
 										}
 										else{
-											if ((Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.MANDATORY.getOrdinal()||Data.userData.getDriverSubscriptionEnabled() == DriverSubscriptionEnabled.ENABLED.getOrdinal())&&0 == Data.userData.getDeliveryEnabled()) {
-												if (Data.userData.getDriverSubscription() == DriverSubscription.UNSUBSCRIBED.getOrdinal()) {
-													SubscriptionFragment subsFrag;
-													subsFrag =new  SubscriptionFragment();
-													Bundle args =new Bundle();
-													args.putString("AccessToken", Data.userData.accessToken);
-													args.putInt("stripe_key", 0 );
-													subsFrag.setArguments(args);
-													title.setText(getResources().getText(R.string.subscription_title));
-													submitButton.setVisibility(View.GONE);
-													getSupportFragmentManager().beginTransaction()
-															.add(R.id.fragment, subsFrag, SubscriptionFragment.class.getName())
-															.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
-															.addToBackStack(SubscriptionFragment.class.getName())
-															.commit();
-												}
-												else {
-													goToHomeScreen();
-												}
-											}
-											else {
 												goToHomeScreen();
-											}
 										}
 
 								Utils.deleteMFile(activity);
