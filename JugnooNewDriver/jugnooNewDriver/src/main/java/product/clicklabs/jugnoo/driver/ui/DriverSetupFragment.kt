@@ -516,7 +516,6 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
          categories.add(Gender(0, getString(R.string.hint_gender)))
          categories.add(Gender(GenderValues.FEMALE.type, getString(R.string.gender_female)))
          categories.add(Gender(GenderValues.MALE.type, getString(R.string.gender_male)))
-         categories.add(Gender(GenderValues.OTHER.type, getString(R.string.gender_others)))
 
 //       // Creating adapter for spinner
          val dataAdapter = DropDownListAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, categories, IS_FIRST_ITEM_TITLE)
