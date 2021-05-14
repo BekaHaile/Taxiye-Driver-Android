@@ -77,7 +77,7 @@ public class AboutActivity extends BaseActivity {
                     if (Utils.appInstalledOrNot(AboutActivity.this, "com.facebook.katana")) {
                         try {
                             getPackageManager().getPackageInfo("com.facebook.katana", 0);
-                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookPageUrl));
+                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/" + facebookPageId));
                         } catch (Exception e) {
                             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl));
                         }
