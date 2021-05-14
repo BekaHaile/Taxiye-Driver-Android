@@ -36,8 +36,8 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        facebookPageId = Prefs.with(this).getString(Constants.KEY_FACEBOOK_PAGE_ID, getString(R.string.facebook_page_id));
-        facebookPageUrl = Prefs.with(this).getString(Constants.KEY_FACEBOOK_PAGE_URL, getString(R.string.facebook_page_url));
+        facebookPageId = getString(R.string.facebook_page_id);
+        facebookPageUrl = getString(R.string.facebook_page_url);
         relative = (RelativeLayout) findViewById(R.id.relative);
 
         title = (TextView) findViewById(R.id.title);
