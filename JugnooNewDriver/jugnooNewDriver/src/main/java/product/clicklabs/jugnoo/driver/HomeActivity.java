@@ -595,6 +595,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private ConstraintLayout containerRequestBidNew;
 
     MovableFloatingActionButton floatingActionButton;
+    NetworkCheckReceiver networkCheckReceiver = new NetworkCheckReceiver();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -1188,7 +1189,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             floatingActionButton = findViewById(R.id.network_status_action_button);
             IntentFilter networkChangeIntentFilter = new IntentFilter();
             networkChangeIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            NetworkCheckReceiver networkCheckReceiver = new NetworkCheckReceiver();
             networkCheckReceiver.setOnNetworkChangeListener(isOnline -> {
                 if (isOnline) {
                     floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_green_dark )));
@@ -4166,7 +4166,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Prefs.with(this).getInt(Constants.DRIVER_CREDITS, 0) == 1
                     && Data.userData.creditsEarned != null) {
                 tvCredits.setVisibility(View.VISIBLE);
-                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.getWalletBalance()) + " "
+                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.creditsEarned == null ? 0.0 : Data.userData.creditsEarned) + " "
                         + getString(R.string.credits));
             } else {
                 tvCredits.setVisibility(View.GONE);
@@ -5659,6 +5659,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             unregisterReceiver(broadcastReceiverLowBattery);
             unregisterReceiver(broadcastReceiverChatCount);
             unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
+            unregisterReceiver(networkCheckReceiver);
 
         } catch (Exception e) {
             e.printStackTrace();
