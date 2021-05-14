@@ -320,8 +320,6 @@ public class UserData {
 			return context.getString(R.string.gender_male);
 		} else if(gender == GenderValues.FEMALE.getType()){
 			return context.getString(R.string.gender_female);
-		} else if(gender == GenderValues.OTHER.getType()){
-			return context.getString(R.string.gender_others);
 		} else {
 			return "";
 		}

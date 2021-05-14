@@ -1337,7 +1337,6 @@
     <string name="hint_gender">Select gender</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
-    <string name="gender_others">Others</string>
     <string name="label_select_gender">Select your gender</string>
     <string name="label_enter_date_of_birth">Enter your date of birth</string>
     <string name="hint_date_of_birth">Date of birth</string>
