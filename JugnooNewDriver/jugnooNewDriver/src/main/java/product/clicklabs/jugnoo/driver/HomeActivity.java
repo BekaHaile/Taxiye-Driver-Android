@@ -1399,6 +1399,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     changeJugnooON(0, false, false);
                                     resetSharedPrefs();
                                     MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
+                                    if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE, ""))) {
+                                        Prefs.with(HomeActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, "Approval going on");
+                                    }
                                     drawerLayout.closeDrawer(GravityCompat.START);
                                 } else {
                                     if(Data.userData.getSafetyInfoData() != null){
@@ -1417,6 +1420,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 changeJugnooON(0, false, false);
                                 resetSharedPrefs();
                                 MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
+                                if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE, ""))) {
+                                    Prefs.with(HomeActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, "");
+                                }
                                 drawerLayout.closeDrawer(GravityCompat.START);
                             } else {
                                 if(Data.userData.getSafetyInfoData() != null){
