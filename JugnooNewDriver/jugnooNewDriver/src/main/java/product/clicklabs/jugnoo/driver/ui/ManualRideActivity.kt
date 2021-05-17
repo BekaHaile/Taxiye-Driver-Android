@@ -1,7 +1,9 @@
 package product.clicklabs.jugnoo.driver.ui
 
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -56,6 +58,25 @@ class ManualRideActivity: BaseFragmentActivity() {
         tvCountryCode.typeface = Fonts.mavenRegular(this)
         btnRequestManualRide.typeface = Fonts.mavenMedium(this)
         labelDescriptionManualRide.typeface = Fonts.mavenMedium(this)
+        edtPhoneNo.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                val s = p0?.toString() ?: ""
+                if (s.startsWith("0")) {
+                    if (s.length > 1) {
+                        edtPhoneNo.setText(s.toString().substring(1))
+                    } else {
+                        edtPhoneNo.setText("")
+                    }
+                    Toast.makeText(this@ManualRideActivity, this@ManualRideActivity.getString(R.string.number_should_not_start_with_zero), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
         btnRequestManualRide.setOnClickListener(View.OnClickListener {
             val phoneNo: String = edtPhoneNo.text.trim().toString()
             val countryCode: String = tvCountryCode.text.trim().toString()
