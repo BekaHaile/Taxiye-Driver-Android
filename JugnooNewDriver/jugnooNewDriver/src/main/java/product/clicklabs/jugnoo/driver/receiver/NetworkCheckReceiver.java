@@ -38,8 +38,8 @@ public class NetworkCheckReceiver extends BroadcastReceiver {
 			if (!isMobileDataEnable(context)) {
 				Prefs.with(context).save(Constants.MOBILE_DATA_STATE, false);
 			}
-			networkChangeListener.onStateChanged(!noConnectivity);
-
+			if(networkChangeListener != null)
+				networkChangeListener.onStateChanged(!noConnectivity);
 		}
 	}
 
