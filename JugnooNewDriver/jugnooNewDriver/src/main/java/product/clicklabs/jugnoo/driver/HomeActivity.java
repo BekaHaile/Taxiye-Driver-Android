@@ -288,7 +288,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		CustomerSignatureFragment.Callback{
 
 
-    private static final double MINIMUM_COUNT_DISPLACEMENT = 100d;
     private final String TAG = HomeActivity.class.getSimpleName();
 
     DrawerLayout drawerLayout;                                                                        // views declaration
@@ -8784,7 +8783,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 lastloctime, customerInfo, fusedLocationUsed);
 //                    } else {
 //                        driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
-//                                 customerInfo);
+//                                -1, customerInfo);
 //                    }
                     return true;
                 } else {
@@ -8832,13 +8831,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					double totalDistance = totalDisp;
 					if(getFlagDistanceTravelled(customerInfo) == -1 && totalDisp > 0 && customerDist < totalDisp){
 						try {
-
 							JungleApisImpl.DistanceMatrixResult distanceMatrixResult = JungleApisImpl.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng(), destination, "zero_dist");
-                            if (MapUtils.distance(customerInfo.getRequestlLatLng(), destination) < MINIMUM_COUNT_DISPLACEMENT) {
-                                totalDistance = 0;
-                            } else {
-                                totalDistance = distanceMatrixResult.getDistanceValue();
-                            }
+							totalDistance = distanceMatrixResult.getDistanceValue();
 
 							double speedDirections = totalDistance / (customerInfo.getElapsedRideTime()/1000);
 
@@ -8858,11 +8852,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								double distanceOfPath = -1;
 								try {
 									JungleApisImpl.DistanceMatrixResult distanceMatrixResult = JungleApisImpl.INSTANCE.getDistanceMatrix(source, destination, "fused");
-									if (MapUtils.distance(source, destination) < MINIMUM_COUNT_DISPLACEMENT) {
-                                        distanceOfPath = 0;
-                                    } else {
-									    distanceOfPath = distanceMatrixResult.getDistanceValue();
-                                    }
+									distanceOfPath = distanceMatrixResult.getDistanceValue();
 									endDistanceSpeed = distanceOfPath / lastTimeDiff;
 									Log.v("dist", "" + distanceOfPath);
 									Log.v("displacement speed", "" + endDistanceSpeed);
