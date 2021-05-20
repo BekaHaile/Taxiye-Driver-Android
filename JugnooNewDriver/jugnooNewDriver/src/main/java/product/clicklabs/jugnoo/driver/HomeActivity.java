@@ -4171,7 +4171,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Prefs.with(this).getInt(Constants.DRIVER_CREDITS, 0) == 1
                     && Data.userData.creditsEarned != null) {
                 tvCredits.setVisibility(View.VISIBLE);
-                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.creditsEarned == null ? 0.0 : Data.userData.creditsEarned) + " "
+                tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.getWalletBalance()) + " "
                         + getString(R.string.credits));
             } else {
                 tvCredits.setVisibility(View.GONE);
