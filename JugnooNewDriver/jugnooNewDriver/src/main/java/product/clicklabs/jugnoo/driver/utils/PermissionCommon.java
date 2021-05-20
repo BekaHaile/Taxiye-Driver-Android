@@ -14,6 +14,12 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.annotation.Retention;
@@ -21,11 +27,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import product.clicklabs.jugnoo.driver.R;
 
 /**
@@ -194,20 +195,22 @@ public final class PermissionCommon {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     getPermission(requestCodeInitiated,  permissionsInitiated); //continues to check again if all permissions have been granted or there is still a rational permission pending
                 else {
-                    if (!shouldShowRationalPermission(permissions[0])) {
+                    if(permissions.length > 0) {
+                        if (!shouldShowRationalPermission(permissions[0])) {
 
-                        String messageToShow = getNeverAskMessage(permissions[0]);
-                        //activity means the user has blocked a permission and chosen "Never ask again" for the same
-                        if(permissionListener!=null){
-                            if(permissionListener.permissionDenied(requestCodeInitiated, true)){
+                            String messageToShow = getNeverAskMessage(permissions[0]);
+                            //activity means the user has blocked a permission and chosen "Never ask again" for the same
+                            if (permissionListener != null) {
+                                if (permissionListener.permissionDenied(requestCodeInitiated, true)) {
+                                    showPermissionDenied(messageToShow);
+                                }
+                            } else {
                                 showPermissionDenied(messageToShow);
                             }
-                        }else{
-                            showPermissionDenied(messageToShow);
+
+                            return;
+
                         }
-
-                        return;
-
                     }
 
                     if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated, false);

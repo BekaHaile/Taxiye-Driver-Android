@@ -13,11 +13,7 @@ import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.Toast
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,24 +26,22 @@ import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
 import kotlinx.android.synthetic.main.layout_driver_menu.*
-import org.json.JSONObject
 import kotlinx.android.synthetic.main.layout_switch_slide.*
+import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode
-import product.clicklabs.jugnoo.driver.datastructure.UserMode
+import product.clicklabs.jugnoo.driver.fragments.TractionListFragment
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.subscription.SubscriptionFragment
-import product.clicklabs.jugnoo.driver.fragments.TractionListFragment
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
-import kotlin.system.exitProcess
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
-import java.util.HashMap
+import java.util.*
+import kotlin.system.exitProcess
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -542,13 +536,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
     override fun onBackPressed() {
-       when(supportFragmentManager.fragments[supportFragmentManager.fragments.size-1])
-       {
-           is SubscriptionFragment->{
-               logoutPopup(this@DriverSplashActivity)
-               return
-           }
-       }
+        if(supportFragmentManager.fragments.isNotEmpty()) {
+            when (supportFragmentManager.fragments[supportFragmentManager.fragments.size - 1]) {
+                is SubscriptionFragment -> {
+                    logoutPopup(this@DriverSplashActivity)
+                    return
+                }
+            }
+        }
         // if back pressed from driver setup fragment from the normal flow
         if (supportFragmentManager.backStackEntryCount == 2
                 && supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName) != null
