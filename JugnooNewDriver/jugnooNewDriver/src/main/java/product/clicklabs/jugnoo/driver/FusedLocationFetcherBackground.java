@@ -17,8 +17,6 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class FusedLocationFetcherBackground extends LocationCallback {
 
-	private static final float SMALLEST_DISPLACEMENT = 100;
-
 	private FusedLocationProviderClient fusedLocationClient;
 	private LocationRequest locationrequest;
 	private GPSLocationUpdate gpsLocationUpdate;
@@ -35,7 +33,6 @@ public class FusedLocationFetcherBackground extends LocationCallback {
 		locationrequest.setFastestInterval(requestInterval);
 		locationrequest.setMaxWaitTime(requestInterval);
 		locationrequest.setPriority(priority ); //LocationRequest.PRIORITY_HIGH_ACCURACY
-		locationrequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
 	}
 
 
