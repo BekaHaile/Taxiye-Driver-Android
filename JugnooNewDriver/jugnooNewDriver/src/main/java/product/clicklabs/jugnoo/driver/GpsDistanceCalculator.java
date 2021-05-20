@@ -444,7 +444,7 @@ public class GpsDistanceCalculator {
 	private synchronized boolean updateTotalDistance(LatLng lastLatLng, LatLng currentLatLng, double deltaDistance, Location currentLocation) {
 		boolean validDistance = false;
 		try {
-			if (deltaDistance > 100.0 && deltaDistance < Prefs.with(context).getInt(Constants.KEY_DELTA_DISTANCE_MAX, DELTA_DISTANCE_MAX)) {
+			if (deltaDistance > 0.0 && deltaDistance < Prefs.with(context).getInt(Constants.KEY_DELTA_DISTANCE_MAX, DELTA_DISTANCE_MAX)) {
 				LatLngPair latLngPair = new LatLngPair(lastLatLng, currentLatLng, deltaDistance);
 				if (deltaLatLngPairs == null) {
 					deltaLatLngPairs = new ArrayList<>();
