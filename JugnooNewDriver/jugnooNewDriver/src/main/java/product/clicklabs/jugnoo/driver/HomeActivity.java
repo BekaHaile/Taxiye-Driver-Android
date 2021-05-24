@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -4766,6 +4765,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverInRideMainRl.setVisibility(View.GONE);
 
                     driverStartRideBtn.setVisibility(View.VISIBLE);
+                    if(customerInfo.getIsCorporateRide() == 1)
+                        driverStartRideBtn.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.egyptianblue_btn_normal));
+
                     buttonMarkArrived.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
                     if (customerInfo.getIsDelivery() == 1) {
@@ -6165,6 +6167,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.llRentalRequest.setVisibility(View.VISIBLE);
                 holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
             }
+
+            if(customerInfo.getIsCorporateRide() == 1) holder.buttonAcceptRide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.egyptianblue_btn_normal));
 
             if (!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")) {
                 holder.textViewEstimatedFareValue.setText(getResources().getString(R.string.estimated_fare)
@@ -9958,6 +9962,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
                         double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
                         double arrivingDistance = Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
+                        if(customerInfo.getIsCorporateRide() == 1) {
+                            buttonMarkArrived.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.egyptianblue_btn_normal));
+                        }
+
                         if (arrived || actualDispalcement < arrivingDistance) {
                             buttonMarkArrived.setText(getResources().getString(R.string.arrived));
                             buttonMarkArrived.setEnabled(true);

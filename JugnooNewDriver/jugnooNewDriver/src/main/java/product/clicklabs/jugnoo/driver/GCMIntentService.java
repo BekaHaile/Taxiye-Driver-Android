@@ -584,6 +584,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 										String dropAddress = jObj.optString(Constants.KEY_DROP_ADDRESS, "");
 										String pickupAdress = jObj.optString(Constants.KEY_PICKUP_ADDRESS,"");
 										double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
+										String isManual = jObj.optString(Constants.KEY_IS_MANUAL,"");
 										int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 										double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 										double cashOnDelivery = jObj.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
@@ -691,6 +692,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
 											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt,
 											multiDestCount);
+									if(isManual != "0" && isManual != "1035")
+										customerInfo.setIsCorporateRide(1);
+									else customerInfo.setIsCorporateRide(0);
 									Data.addCustomerInfo(customerInfo);
 
 									if(!isOffline) {

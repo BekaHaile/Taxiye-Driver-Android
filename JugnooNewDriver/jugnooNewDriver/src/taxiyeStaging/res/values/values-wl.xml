@@ -84,6 +84,7 @@
     <color name="textColorButton">#FFFFFF</color>
     <color name="dividerColor">#dbdbdb</color>
     <color name="themeColor">#E7A000</color>
+    <color name="egyptianBlueColor">#1034a6</color>
     <color name="themeColorLight">#bbE7A000</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
