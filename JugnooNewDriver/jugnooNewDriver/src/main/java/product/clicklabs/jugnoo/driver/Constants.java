@@ -114,6 +114,7 @@ public interface Constants {
     String KEY_RIDE_PATH_DATA = "ride_path_data";
     String KEY_POOL_FARE ="pool_fare";
     String STOP_ID = "stop_id";
+    String KEY_IS_MANUAL = "is_manual";
 
 	String KEY_SP_METER_DISP_MIN_THRESHOLD = "meter_disp_min_threshold";
 	String KEY_SP_METER_DISP_MAX_THRESHOLD = "meter_disp_max_threshold";
