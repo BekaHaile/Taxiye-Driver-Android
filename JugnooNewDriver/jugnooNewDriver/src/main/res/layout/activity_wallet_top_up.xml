@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootLayout"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include layout="@layout/layout_top_bar" />
+
+
+        <TextView
+            android:id="@+id/labelSelectOption"
+            style="@style/TextMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/bgColor"
+            android:padding="15dp"
+            android:text="@string/select_payment_option"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topRl" />
+
+
+        <TextView
+        android:id="@+id/cbeBirrOption"
+        style="@style/TextNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_white_selector"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+        android:focusable="true"
+        android:gravity="start"
+        android:paddingBottom="20dp"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:paddingTop="20dp"
+        android:text="@string/cbe_birr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelSelectOption" />
+
+        <View
+            android:id="@+id/dividerBelowCbe"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cbeBirrOption" />
+
+        <TextView
+            android:id="@+id/mpesaOption"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_white_selector"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+            android:focusable="true"
+            android:gravity="start"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="20dp"
+            android:text="@string/mpesa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerBelowCbe" />
+
+        <View
+            android:id="@+id/dividerBelowMpesa"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mpesaOption" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

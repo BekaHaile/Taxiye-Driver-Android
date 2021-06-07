@@ -670,6 +670,9 @@
     <string name="rupees_value_format">ETB %s</string>
     <string name="rupees_value_format_negtive">-ETB %s</string>
     <string name="wallet_transactions">Wallet Transactions</string>
+    <string name="top_up_wallet">Top up Wallet</string>
+    <string name="cbe_birr">CBE Birr</string>
+    <string name="mpesa">Mpesa</string>
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
@@ -1081,6 +1084,7 @@
     <string name="card_details">Card Details</string>
     <string name="view_cards">View Cards</string>
     <string name="wallet_details">Wallet Details</string>
+    <string name="select_payment_option">Select Payment Option</string>
     <string name="current_balance">Current Balance</string>
     <string name="add_cash">Add Cash</string>
     <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>

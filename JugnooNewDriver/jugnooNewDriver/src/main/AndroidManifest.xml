@@ -560,6 +560,11 @@
             android:label="@string/title_activity_destination_ride"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".wallet.TopUpOptionSelector"
+            android:label="@string/top_up_wallet"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>
