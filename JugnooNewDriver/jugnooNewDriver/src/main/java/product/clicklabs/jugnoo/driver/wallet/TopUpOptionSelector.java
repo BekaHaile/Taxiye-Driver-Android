@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.wallet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.R;
@@ -12,6 +13,8 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 public class TopUpOptionSelector extends BaseActivity {
 
     TextView cbeBirrOption, mpesaOption;
+    ImageView backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,16 @@ public class TopUpOptionSelector extends BaseActivity {
             @Override
             public void onClick(View view) {
                 openMpesaTopUpActivity();
+            }
+        });
+
+        backBtn = (ImageView) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }
         });
     }
