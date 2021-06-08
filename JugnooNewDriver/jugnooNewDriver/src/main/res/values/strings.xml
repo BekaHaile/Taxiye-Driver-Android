@@ -366,6 +366,7 @@
     <string name="customer_id">Customer ID</string>
     <string name="paytm_transaction">Paytm Transaction</string>
     <string name="phone_no">Phone No.</string>
+    <string name="amount">Amount</string>
     <string name="changed_no_same_as_previous">Changed phone number is same as the previous one
 	</string>
     <string name="sharing_payment_recieved">Sharing payment recieved for Phone</string>

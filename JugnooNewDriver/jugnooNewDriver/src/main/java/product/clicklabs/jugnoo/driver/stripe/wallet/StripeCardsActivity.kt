@@ -38,7 +38,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
     override fun openWalletTopUp() {
 
-            startActivity(Intent(Intent(this, TopUpOptionSelector::class.java)))
+            startActivity(Intent(this, TopUpOptionSelector::class.java))
             overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
