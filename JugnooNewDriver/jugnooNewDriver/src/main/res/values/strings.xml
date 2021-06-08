@@ -672,6 +672,7 @@
     <string name="rupees_value_format_negtive">-ETB %s</string>
     <string name="wallet_transactions">Wallet Transactions</string>
     <string name="top_up_wallet">Top up Wallet</string>
+    <string name="cash_out_from_wallet">Cash out from Wallet</string>
     <string name="cbe_birr">CBE Birr</string>
     <string name="mpesa">Mpesa</string>
     <string name="no_transactions">No Transactions Currently</string>

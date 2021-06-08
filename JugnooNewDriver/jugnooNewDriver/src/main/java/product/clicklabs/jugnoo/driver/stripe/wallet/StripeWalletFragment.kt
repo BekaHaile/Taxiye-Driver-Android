@@ -41,6 +41,7 @@ class StripeWalletFragment: Fragment(){
         fun openViewCard(stripeCardData: StripeCardData);
         fun openWalletTransactions();
         fun openWalletTopUp();
+        fun openWalletCashOut();
         fun isStripeEnabled():Boolean;
 
     }
@@ -101,6 +102,10 @@ class StripeWalletFragment: Fragment(){
         }
         tvWalletTopUp.setOnClickListener {
             stripeWalletInteractor.openWalletTopUp()
+        }
+
+        tvWalletCashOut.setOnClickListener{
+            stripeWalletInteractor.openWalletCashOut()
         }
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)

@@ -88,13 +88,42 @@
             app:layout_constraintTop_toBottomOf="@+id/dividerBelowCurrentBalance" />
 
         <View
-            android:id="@+id/dividerBelowTvWalletTopUp"
+            android:id="@+id/dividerBelowTopUp"
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:background="@color/bgColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWalletTopUp" />
+
+
+        <TextView
+            android:id="@+id/tvWalletCashOut"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_white_selector"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+            android:focusable="true"
+            android:gravity="start"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="20dp"
+            android:text="@string/cash_out_from_wallet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerBelowTopUp" />
+
+        <View
+            android:id="@+id/dividerBelowTvWalletTopUp"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWalletCashOut" />
 
         <TextView
             android:id="@+id/tvWalletTransactions"

@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class CbeTopUp extends BaseActivity {
 
@@ -46,6 +47,13 @@ public class CbeTopUp extends BaseActivity {
         buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
+                if(isTopUp){
+                    //do top up
+                }
+                else{
+                    //do cash out
+                }
                runUssd();
             }
         });

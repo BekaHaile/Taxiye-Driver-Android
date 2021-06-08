@@ -9,6 +9,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class MpesaTopUp extends BaseActivity {
 
@@ -29,7 +30,13 @@ public class MpesaTopUp extends BaseActivity {
         buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                boolean isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
+                if(isTopUp){
+                    //do top up
+                }
+                else{
+                    //do cash out
+                }
             }
         });
 
