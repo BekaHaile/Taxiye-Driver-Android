@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.wallet;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,8 +14,10 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class MpesaTopUp extends BaseActivity {
 
-    Button buttonDone;
+    Button buttonDone, fiftyButton, hundredButton, hundredFiftyButton;
     ImageView backBtn;
+    boolean isTopUp;
+    EditText editAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +25,42 @@ public class MpesaTopUp extends BaseActivity {
 
         setContentView(R.layout.activity_mpesa_top_up);
 
+        isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
+
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this));
         title.setText(R.string.mpesa);
+
+        editAmount = (EditText) findViewById(R.id.editAmount);
+
+        fiftyButton = (Button) findViewById(R.id.fiftyButton);
+        fiftyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editAmount.setText("50");
+            }
+        });
+
+        hundredButton = (Button) findViewById(R.id.hundredButton);
+        hundredButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editAmount.setText("100");
+            }
+        });
+
+        hundredFiftyButton = (Button) findViewById(R.id.hundredFiftyButton);
+        hundredFiftyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editAmount.setText("150");
+            }
+        });
 
         buttonDone = (Button) findViewById(R.id.btn_done);
         buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
                 if(isTopUp){
                     //do top up
                 }
