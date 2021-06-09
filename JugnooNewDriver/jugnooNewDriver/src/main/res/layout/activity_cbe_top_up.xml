@@ -86,6 +86,30 @@
                 android:textSize="34px" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/ussd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10px"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/copyUssd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:src="@drawable/ic_baseline_content_copy_24"
+                />
+
+        </LinearLayout>
+
         <Button
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"

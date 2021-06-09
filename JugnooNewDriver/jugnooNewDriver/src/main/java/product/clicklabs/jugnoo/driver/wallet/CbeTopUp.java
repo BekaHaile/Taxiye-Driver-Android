@@ -1,9 +1,13 @@
 package product.clicklabs.jugnoo.driver.wallet;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -11,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -19,12 +24,14 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class CbeTopUp extends BaseActivity {
 
     Button buttonDone;
     AutoCompleteTextView phoneNo;
-    ImageView backBtn;
+    ImageView backBtn, copyUssd;
+    TextView ussd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,21 @@ public class CbeTopUp extends BaseActivity {
 
         if(Data.userData != null)
             phoneNo.setText(Data.userData.phoneNo);
+
+        ussd = (TextView) findViewById(R.id.ussd);
+        ussd.setText("*804#");
+
+        copyUssd = (ImageView) findViewById(R.id.copyUssd);
+        copyUssd.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("ussd", ussd.getText());
+                clipboard.setPrimaryClip(clip);
+                Utils.showToast(CbeTopUp.this, ussd.getText() + " has been copied to clipboard");
+            }
+        });
 
         buttonDone = (Button) findViewById(R.id.btn_done);
         buttonDone.setOnClickListener(new View.OnClickListener() {
