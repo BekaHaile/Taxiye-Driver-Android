@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -18,6 +19,7 @@ public class MpesaTopUp extends BaseActivity {
     ImageView backBtn;
     boolean isTopUp;
     EditText editAmount;
+    String currency = Data.userData.getCurrency() + " %s";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class MpesaTopUp extends BaseActivity {
         editAmount = (EditText) findViewById(R.id.editAmount);
 
         fiftyButton = (Button) findViewById(R.id.fiftyButton);
+        fiftyButton.setText(String.format(currency, "50"));
         fiftyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +45,7 @@ public class MpesaTopUp extends BaseActivity {
         });
 
         hundredButton = (Button) findViewById(R.id.hundredButton);
+        hundredButton.setText(String.format(currency, "100"));
         hundredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,10 +54,11 @@ public class MpesaTopUp extends BaseActivity {
         });
 
         hundredFiftyButton = (Button) findViewById(R.id.hundredFiftyButton);
+        hundredFiftyButton.setText(String.format(currency, "300"));
         hundredFiftyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editAmount.setText("150");
+                editAmount.setText("300");
             }
         });
 
