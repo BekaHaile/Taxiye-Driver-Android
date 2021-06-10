@@ -29,11 +29,80 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/phone_no"
+                android:padding="10px"
+                android:textSize="18sp"
+                android:textColor="@color/text_color"
+                android:layout_gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:layout_marginTop="20sp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="30dp"
+                >
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCountryCode"
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:layout_height="50dp"
+                android:drawableEnd="@drawable/ic_arrow_down_vector"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:hint="@string/code"
+                android:includeFontPadding="false"
+                android:paddingBottom="2dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:text=""
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColorLight"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/backgroundPhone"
+                app:layout_constraintStart_toStartOf="@id/backgroundPhone"
+                app:layout_constraintTop_toTopOf="@id/backgroundPhone"/>
+
+            <EditText
+                android:id="@+id/edtPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="visible"
+                android:layout_marginStart="8dp"
+                android:background="@null"
+                android:drawablePadding="4dp"
+                android:hint="@string/hint_edt_phone"
+                android:inputType="phone"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColorLight"
+                android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/backgroundPhone"
+                app:layout_constraintStart_toEndOf="@+id/tvCountryCode"
+                app:layout_constraintTop_toTopOf="@id/backgroundPhone"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/amount"
                 android:padding="10px"
                 android:textSize="18sp"
                 android:textColor="@color/text_color"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 />
 
             <LinearLayout
