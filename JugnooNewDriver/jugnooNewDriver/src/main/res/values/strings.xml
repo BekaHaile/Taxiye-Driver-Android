@@ -675,6 +675,16 @@
     <string name="cash_out_from_wallet">Cash out from Wallet</string>
     <string name="cbe_birr">CBE Birr</string>
     <string name="mpesa">Mpesa</string>
+    <string name="follow_the_following"><b>Follow the following steps</b></string>
+    <string name="press_the_call_button"> 1. Dial /*847#. \n
+        2. Select the option number 5 (Pay Bill). \n
+        3. Select option number 1 (Select Beneficiary Short Code). \n
+        4. Select Zero(Input Short Code). \n
+        5. Enter the short code %s. \n
+        6. Enter the bill reference number %s. \n
+        7. Enter your CBE PIN. \n
+        8. Payment is Done. \n</string>
+    <string name="cbe_birr_cashout_message">Do you want to continue with this transaction?</string>
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>

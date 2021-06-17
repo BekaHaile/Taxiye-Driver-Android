@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.wallet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,12 +16,19 @@ import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.wallet.model.CbeBirrCashoutResponse;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MpesaTopUp extends BaseActivity implements OnCountryPickerListener<Country> {
 
@@ -112,10 +121,38 @@ public class MpesaTopUp extends BaseActivity implements OnCountryPickerListener<
             @Override
             public void onClick(View view) {
                 if(isTopUp){
-                    //do top up
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("payment_method", "CBE-BIRR");
+                    params.put("driver_id", Data.userData.userId);
+                    params.put("amount", editAmount.getText().toString());
+                    RestClient.getApiServices().mpesaCashOut(params, new Callback<CbeBirrCashoutResponse>() {
+                        @Override
+                        public void success(CbeBirrCashoutResponse cbeBirrCashoutResponse, Response response) {
+                            buildDialog(isTopUp);
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
                 }
                 else{
-                    //do cash out
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("payment_method", "CBE-BIRR");
+                    params.put("driver_id", Data.userData.userId);
+                    params.put("amount", editAmount.getText().toString());
+                    RestClient.getApiServices().mpesaTopUp(params, new Callback<CbeBirrCashoutResponse>() {
+                        @Override
+                        public void success(CbeBirrCashoutResponse cbeBirrCashoutResponse, Response response) {
+                    buildDialog(isTopUp);
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
                 }
             }
         });
@@ -141,5 +178,33 @@ public class MpesaTopUp extends BaseActivity implements OnCountryPickerListener<
     @Override
     public void onSelectCountry(Country country) {
         tvCountryCode.setText(country.getDialCode());
+    }
+
+    public void buildDialog(boolean isTopUp){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MpesaTopUp.this);
+
+        if(isTopUp)
+            alertDialog.setTitle("Top UP");
+        else
+            alertDialog.setTitle("Cash Out");
+
+        alertDialog.setMessage("R.string.cbe_birr_cashout_message");
+
+        alertDialog.setPositiveButton("Continue",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        Toast.makeText(getApplicationContext(), "You clicked on Continue", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        alertDialog.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        MpesaTopUp.super.onBackPressed();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 }
