@@ -676,7 +676,7 @@
     <string name="cbe_birr">CBE Birr</string>
     <string name="mpesa">Mpesa</string>
     <string name="follow_the_following"><b>Follow the following steps</b></string>
-    <string name="press_the_call_button"> 1. Dial /*847#. \n
+    <string name="press_the_call_button"> 1. Dial *847#. \n
         2. Select the option number 5 (Pay Bill). \n
         3. Select option number 1 (Select Beneficiary Short Code). \n
         4. Select Zero(Input Short Code). \n

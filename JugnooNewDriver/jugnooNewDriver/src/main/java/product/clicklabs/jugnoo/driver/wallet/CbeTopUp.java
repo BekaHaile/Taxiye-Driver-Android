@@ -161,12 +161,16 @@ public class CbeTopUp extends BaseActivity {
 
         dialog.setContentView(dialogView);
 
+        String shortCode = cbeBirrCashoutResponse.getData().getCbeShortCode();
+        String billRefNo = cbeBirrCashoutResponse.getData().getBillRefNo();
+
+        TextView stepsDialogue = (TextView) dialogView.findViewById(R.id.stepsDialogue);
+        stepsDialogue.setText(getString(R.string.press_the_call_button, shortCode, billRefNo));
+
         Button btnDone = (Button) dialogView.findViewById(R.id.btn_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String shortCode = cbeBirrCashoutResponse.getData().getCbeShortCode();
-                String billRefNo = cbeBirrCashoutResponse.getData().getBillRefNo();
                 runUssd("*847*5*1*0*" + shortCode + "*" + billRefNo);
             }
         });
