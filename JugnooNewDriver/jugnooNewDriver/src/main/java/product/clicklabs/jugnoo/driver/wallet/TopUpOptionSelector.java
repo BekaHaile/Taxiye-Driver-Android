@@ -12,7 +12,7 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 public class TopUpOptionSelector extends BaseActivity {
 
-    TextView cbeBirrOption, mpesaOption;
+    TextView cbeBirrOption, mpesaOption, helloCashOption;
     ImageView backBtn;
 
     @Override
@@ -41,6 +41,14 @@ public class TopUpOptionSelector extends BaseActivity {
             }
         });
 
+        helloCashOption = (TextView) findViewById(R.id.helloCashOption);
+        helloCashOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openHelloCashTopUpActivity();
+            }
+        });
+
         backBtn = (ImageView) findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -59,6 +67,11 @@ public class TopUpOptionSelector extends BaseActivity {
 
     public void openMpesaTopUpActivity(){
         startActivity(new Intent(TopUpOptionSelector.this, MpesaTopUp.class));
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+    }
+
+    public void openHelloCashTopUpActivity(){
+        startActivity(new Intent(TopUpOptionSelector.this, HelloCash.class));
         overridePendingTransition(R.anim.right_in, R.anim.right_out);
     }
 }

@@ -675,6 +675,7 @@
     <string name="cash_out_from_wallet">Cash out from Wallet</string>
     <string name="cbe_birr">CBE Birr</string>
     <string name="mpesa">Mpesa</string>
+    <string name="hello_cash">Hello Cash</string>
     <string name="follow_the_following"><b>Follow the following steps</b></string>
     <string name="press_the_call_button"> 1. Dial *847#. \n
         2. Select the option number 5 (Pay Bill). \n

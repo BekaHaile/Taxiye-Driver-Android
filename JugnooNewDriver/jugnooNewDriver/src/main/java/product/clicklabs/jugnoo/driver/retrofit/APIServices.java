@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.wallet.model.CbeBirrCashoutResponse;
+import product.clicklabs.jugnoo.driver.wallet.model.HelloCashCashoutResponse;
 import product.clicklabs.jugnoo.driver.wallet.model.ResponseModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -891,5 +892,15 @@ public interface APIServices {
 	@POST("/deposit/request")
 	void mpesaTopUp(@FieldMap Map<String, String> params,
 					Callback<CbeBirrCashoutResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void helloCashTopUp(@FieldMap Map<String, String> params,
+				  Callback<ResponseModel<HelloCashCashoutResponse>> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void helloCashCashout(@FieldMap Map<String, String> params,
+					Callback<ResponseModel<HelloCashCashoutResponse>> callback);
 
 }

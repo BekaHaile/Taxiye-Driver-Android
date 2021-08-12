@@ -87,6 +87,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mpesaOption" />
 
+        <TextView
+            android:id="@+id/helloCashOption"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_white_selector"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+            android:focusable="true"
+            android:gravity="start"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="20dp"
+            android:text="@string/hello_cash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerBelowMpesa" />
+
+        <View
+            android:id="@+id/dividerBelowHelloCash"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/helloCashOption" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

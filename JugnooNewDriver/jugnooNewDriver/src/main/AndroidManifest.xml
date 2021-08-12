@@ -577,6 +577,11 @@
             android:label="@string/mpesa"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".wallet.HelloCash"
+            android:label="@string/hello_cash"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>
