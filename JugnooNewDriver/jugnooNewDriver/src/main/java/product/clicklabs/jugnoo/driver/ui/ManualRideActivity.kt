@@ -99,7 +99,7 @@ class ManualRideActivity: BaseFragmentActivity() {
 
         })
 
-        if (Data.userData.walletBalance <= Data.userData.minDriverBalance) {
+        if (Data.userData.walletBalance < Data.userData.minDriverBalance) {
             DialogPopup.alertPopupWithListener(this@ManualRideActivity, getString(R.string.failed),getString(R.string.low_balance_for_manual)) {
                 this@ManualRideActivity.finish()
             }
