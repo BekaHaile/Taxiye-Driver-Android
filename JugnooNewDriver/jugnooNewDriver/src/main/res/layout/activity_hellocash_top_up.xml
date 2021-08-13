@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="20sp"
-                android:padding="20dp">
+                android:padding="5dp">
                 <Button
                     android:id="@+id/fiftyButton"
                     android:layout_width="0dp"
@@ -146,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="20dp">
+                android:layout_margin="10dp">
 
 
                 <EditText
@@ -154,7 +154,6 @@
                     android:layout_width="410px"
                     android:layout_height="80px"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="60px"
                     android:background="@color/transparent"
                     android:digits="0123456789"
                     android:ems="10"
@@ -174,6 +173,36 @@
                     android:layout_height="2px"
                     android:layout_gravity="center_horizontal"
                     android:src="@color/text_color" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selectPartner"
+                    android:padding="10px"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="450px"
+                android:layout_gravity="center_horizontal"
+                android:paddingStart="25px"
+                android:paddingEnd="25px"
+                android:layout_height="110px"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:layout_margin="10dp"/>
 
             </LinearLayout>
 

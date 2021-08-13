@@ -10,10 +10,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +44,13 @@ import retrofit.client.Response;
 public class HelloCash extends BaseActivity implements OnCountryPickerListener<Country> {
 
     Button buttonDone, fiftyButton, hundredButton, hundredFiftyButton;
-    AutoCompleteTextView phoneNo;
     ImageView backBtn;
     EditText editAmount, edtPhoneNo;
     String currency = Data.userData.getCurrency() + " %s";
 
     private TextView tvCountryCode;
     private CountryPicker countryPicker;
+    boolean isTopUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +125,16 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
             }
         });
 
+        Spinner dropdown = findViewById(R.id.spinner1);
+        String[] items = new String[]{"Lucy", "Walya", "Axum"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+
         buttonDone = (Button) findViewById(R.id.btn_done);
         buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
+                isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
                 if(isTopUp){
                     HashMap<String, String> params = new HashMap<>();
                     params.put("payment_method", "HELLO-CASH");
@@ -137,7 +143,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                     params.put("access_token", Data.userData.accessToken);
 
                     params.put("phone_no", edtPhoneNo.getText().toString());
-                    params.put("partner", "lucy");
+                    params.put("system", dropdown.getSelectedItem().toString());
 
                     RestClient.getApiServices().helloCashTopUp(params, new Callback<ResponseModel<HelloCashCashoutResponse>>() {
                         @Override
@@ -157,6 +163,9 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                     params.put("access_token", Data.userData.accessToken);
                     params.put("driver_id", Data.userData.userId);
                     params.put("amount", editAmount.getText().toString());
+
+                    params.put("phone_no", edtPhoneNo.getText().toString());
+                    params.put("system", dropdown.getSelectedItem().toString());
 
                     RestClient.getApiServices().helloCashCashout(params, new Callback<ResponseModel<HelloCashCashoutResponse>>() {
                         @Override

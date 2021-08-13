@@ -9,11 +9,13 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class TopUpOptionSelector extends BaseActivity {
 
     TextView cbeBirrOption, mpesaOption, helloCashOption;
     ImageView backBtn;
+    boolean isTopUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,11 @@ public class TopUpOptionSelector extends BaseActivity {
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this));
-        title.setText(R.string.top_up_wallet);
+
+        isTopUp = Prefs.with(this).getBoolean("isTopUp", false);
+        if(isTopUp)
+            title.setText(R.string.top_up_wallet);
+        else title.setText(R.string.cash_out_from_wallet);
 
         cbeBirrOption = (TextView) findViewById(R.id.cbeBirrOption);
         cbeBirrOption.setOnClickListener(new View.OnClickListener() {

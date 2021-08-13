@@ -899,7 +899,7 @@ public interface APIServices {
 				  Callback<ResponseModel<HelloCashCashoutResponse>> callback);
 
 	@FormUrlEncoded
-	@POST("/deposit/request")
+	@POST("/cashout/request")
 	void helloCashCashout(@FieldMap Map<String, String> params,
 					Callback<ResponseModel<HelloCashCashoutResponse>> callback);
 
