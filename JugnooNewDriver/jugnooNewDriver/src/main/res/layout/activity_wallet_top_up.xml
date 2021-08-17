@@ -31,61 +31,61 @@
             app:layout_constraintTop_toBottomOf="@id/topRl" />
 
 
-        <TextView
-        android:id="@+id/cbeBirrOption"
-        style="@style/TextNormal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_white_selector"
-        android:clickable="true"
-        android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
-        android:focusable="true"
-        android:gravity="start"
-        android:paddingBottom="20dp"
-        android:paddingEnd="15dp"
-        android:paddingStart="15dp"
-        android:paddingTop="20dp"
-        android:text="@string/cbe_birr"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelSelectOption" />
+<!--        <TextView-->
+<!--        android:id="@+id/cbeBirrOption"-->
+<!--        style="@style/TextNormal"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/background_white_selector"-->
+<!--        android:clickable="true"-->
+<!--        android:drawableEnd="@drawable/ic_navigate_next_black_18dp"-->
+<!--        android:focusable="true"-->
+<!--        android:gravity="start"-->
+<!--        android:paddingBottom="20dp"-->
+<!--        android:paddingEnd="15dp"-->
+<!--        android:paddingStart="15dp"-->
+<!--        android:paddingTop="20dp"-->
+<!--        android:text="@string/cbe_birr"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/labelSelectOption" />-->
 
-        <View
-            android:id="@+id/dividerBelowCbe"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@color/bgColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cbeBirrOption" />
+<!--        <View-->
+<!--            android:id="@+id/dividerBelowCbe"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:background="@color/bgColor"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/cbeBirrOption" />-->
 
-        <TextView
-            android:id="@+id/mpesaOption"
-            style="@style/TextNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_white_selector"
-            android:clickable="true"
-            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
-            android:focusable="true"
-            android:gravity="start"
-            android:paddingBottom="20dp"
-            android:paddingEnd="15dp"
-            android:paddingStart="15dp"
-            android:paddingTop="20dp"
-            android:text="@string/mpesa"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dividerBelowCbe" />
+<!--        <TextView-->
+<!--            android:id="@+id/mpesaOption"-->
+<!--            style="@style/TextNormal"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/background_white_selector"-->
+<!--            android:clickable="true"-->
+<!--            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"-->
+<!--            android:focusable="true"-->
+<!--            android:gravity="start"-->
+<!--            android:paddingBottom="20dp"-->
+<!--            android:paddingEnd="15dp"-->
+<!--            android:paddingStart="15dp"-->
+<!--            android:paddingTop="20dp"-->
+<!--            android:text="@string/mpesa"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/dividerBelowCbe" />-->
 
-        <View
-            android:id="@+id/dividerBelowMpesa"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@color/bgColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mpesaOption" />
+<!--        <View-->
+<!--            android:id="@+id/dividerBelowMpesa"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:background="@color/bgColor"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/mpesaOption" />-->
 
         <TextView
             android:id="@+id/helloCashOption"
@@ -104,7 +104,7 @@
             android:text="@string/hello_cash"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dividerBelowMpesa" />
+            app:layout_constraintTop_toBottomOf="@+id/labelSelectOption" />
 
         <View
             android:id="@+id/dividerBelowHelloCash"
