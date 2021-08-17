@@ -1,9 +1,7 @@
 package product.clicklabs.jugnoo.driver.wallet;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,9 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -31,12 +26,12 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import product.clicklabs.jugnoo.driver.wallet.model.HelloCashCashoutResponse;
-import product.clicklabs.jugnoo.driver.wallet.model.ResponseModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -134,26 +129,32 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
         buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DialogPopup.showLoadingDialog(HelloCash.this, HelloCash.this.getResources().getString(R.string.loading));
                 isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
                 if(isTopUp){
                     HashMap<String, String> params = new HashMap<>();
                     params.put("payment_method", "HELLO-CASH");
-                    params.put("driver_id", Data.userData.userId);
+                    params.put("user_id", Data.userData.userId);
                     params.put("amount", editAmount.getText().toString());
                     params.put("access_token", Data.userData.accessToken);
+                    params.put("user_type", "DRIVER");
 
-                    params.put("phone_no", edtPhoneNo.getText().toString());
+                    params.put("phone_no", tvCountryCode.getText().toString() + edtPhoneNo.getText().toString());
                     params.put("system", dropdown.getSelectedItem().toString());
 
-                    RestClient.getApiServices().helloCashTopUp(params, new Callback<ResponseModel<HelloCashCashoutResponse>>() {
+                    RestClient.getApiServices().helloCashTopUp(params, new Callback<HelloCashCashoutResponse>() {
                         @Override
-                        public void success(ResponseModel<HelloCashCashoutResponse> helloCashCashoutResponse, Response response) {
-                            buildDialog(isTopUp, helloCashCashoutResponse);
+                        public void success(HelloCashCashoutResponse helloCashCashoutResponse, Response response) {
+                            DialogPopup.dismissLoadingDialog();
+                            buildDialog(helloCashCashoutResponse);
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
                             Log.e("Error", "Top up error");
+                            DialogPopup.dismissLoadingDialog();
+
+                            Toast.makeText(HelloCash.this, HelloCash.this.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -161,21 +162,26 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                     HashMap<String, String> params = new HashMap<>();
                     params.put("payment_method", "HELLO-CASH");
                     params.put("access_token", Data.userData.accessToken);
-                    params.put("driver_id", Data.userData.userId);
+                    params.put("user_id", Data.userData.userId);
                     params.put("amount", editAmount.getText().toString());
+                    params.put("user_type", "DRIVER");
 
-                    params.put("phone_no", edtPhoneNo.getText().toString());
+                    params.put("phone_no", tvCountryCode.getText().toString() + edtPhoneNo.getText().toString());
                     params.put("system", dropdown.getSelectedItem().toString());
 
-                    RestClient.getApiServices().helloCashCashout(params, new Callback<ResponseModel<HelloCashCashoutResponse>>() {
+                    RestClient.getApiServices().helloCashCashout(params, new Callback<HelloCashCashoutResponse>() {
                         @Override
-                        public void success(ResponseModel<HelloCashCashoutResponse> helloCashCashoutResponse, Response response) {
-                            buildDialog(isTopUp, helloCashCashoutResponse);
+                        public void success(HelloCashCashoutResponse helloCashCashoutResponse, Response response) {
+                            DialogPopup.dismissLoadingDialog();
+                            Toast.makeText(HelloCash.this, HelloCash.this.getString(R.string.success), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
+                            DialogPopup.dismissLoadingDialog();
+                            Log.e("Error", "Cash out error");
 
+                            Toast.makeText(HelloCash.this, HelloCash.this.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -202,26 +208,16 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
     };
 
     public void runUssd(String ussd){
-        String ussdCode = "tel:" + ussd + Uri.encode("#");
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(ussdCode));
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+ussd+"#"));
         try{
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
-
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.CALL_PHONE},
-                        Integer.parseInt("123"));
-            } else {
                 startActivity(intent);
-            }
-        } catch (SecurityException e){
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
     }
 
-    public void buildDialog(boolean isTopUp, ResponseModel<HelloCashCashoutResponse> helloCashCashoutResponse){
+    public void buildDialog(HelloCashCashoutResponse helloCashCashoutResponse){
         Dialog dialog = new Dialog(HelloCash.this);
 
         LayoutInflater layoutInflater = LayoutInflater.from(HelloCash.this);
@@ -229,17 +225,20 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
 
         dialog.setContentView(dialogView);
 
-        String shortCode = helloCashCashoutResponse.getData().getCbeShortCode();
-        String billRefNo = helloCashCashoutResponse.getData().getBillRefNo();
+
+        String id = String.valueOf(helloCashCashoutResponse.getId());
+        String code = String.valueOf(helloCashCashoutResponse.getCode());
+        int amount = helloCashCashoutResponse.getAmount();
+        String description = helloCashCashoutResponse.getDescription();
 
         TextView stepsDialogue = (TextView) dialogView.findViewById(R.id.stepsDialogue);
-        stepsDialogue.setText(getString(R.string.press_the_call_button, shortCode, billRefNo));
+        stepsDialogue.setText(getString(R.string.hello_cash_instruction, id, code, String.valueOf(amount), description));
 
         Button btnDone = (Button) dialogView.findViewById(R.id.btn_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runUssd("*847*5*1*0*" + shortCode + "*" + billRefNo);
+                runUssd("*912");
             }
         });
 

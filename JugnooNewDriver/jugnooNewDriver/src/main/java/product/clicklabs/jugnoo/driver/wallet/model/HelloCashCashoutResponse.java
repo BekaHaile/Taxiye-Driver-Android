@@ -6,160 +6,158 @@ import com.google.gson.annotations.SerializedName;
 public class HelloCashCashoutResponse {
 
     @Expose
-    @SerializedName("billRefNo")
-    private String billRefNo;
-
-    @Expose
     @SerializedName("amount")
-    private String amount;
+    private int amount;
 
     @Expose
-    @SerializedName("status")
-    private int status;
+    @SerializedName("code")
+    private int code;
 
     @Expose
-    @SerializedName("generatedDate")
-    private String generatedDate;
+    @SerializedName("currency")
+    private String currency;
 
     @Expose
-    @SerializedName("payerName")
-    private String payerName ;
+    @SerializedName("date")
+    private String date;
 
     @Expose
-    @SerializedName("bankTransactionId")
-    private String bankTransactionId ;
+    @SerializedName("description")
+    private String description;
 
     @Expose
-    @SerializedName("sourceIdentifier")
-    private String sourceIdentifier ;
+    @SerializedName("expires")
+    private String expires ;
 
     @Expose
-    @SerializedName("callbackUrl")
-    private String callbackUrl ;
+    @SerializedName("from")
+    private String from ;
 
     @Expose
-    @SerializedName("expiryDate")
-    private String expiryDate ;
-
-    @Expose
-    @SerializedName("lastStatusDate")
-    private String lastStatusDate ;
+    @SerializedName("fromname")
+    private String fromName ;
 
     @Expose
     @SerializedName("id")
-    private int id ;
+    private String id ;
 
     @Expose
-    @SerializedName("sourceNotified")
-    private boolean sourceNotified ;
+    @SerializedName("status")
+    private String status ;
 
     @Expose
-    @SerializedName("cbeShortCode")
-    private String cbeShortCode ;
+    @SerializedName("statusdetail")
+    private String statusDetail ;
 
-    public String getBillRefNo() {
-        return billRefNo;
-    }
+    @Expose
+    @SerializedName("toname")
+    private String toName ;
 
-    public String getAmount() {
+    @Expose
+    @SerializedName("to")
+    private String to ;
+
+    public int getAmount() {
         return amount;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-
-    public String getPayerName() {
-        return payerName;
-    }
-
-    public String getBankTransactionId() {
-        return bankTransactionId;
-    }
-
-    public String getSourceIdentifier() {
-        return sourceIdentifier;
-    }
-
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public String getExpiryDate() {
-        return expiryDate;
-    }
-
-    public String getLastStatusDate() {
-        return lastStatusDate;
-    }
-
-    public String getGeneratedDate() {
-        return generatedDate;
-    }
-
-    public void setGeneratedDate(String generatedDate) {
-        this.generatedDate = generatedDate;
-    }
-
-    public String getCbeShortCode() {
-        return cbeShortCode;
-    }
-
-    public void setCbeShortCode(String cbeShortCode) {
-        this.cbeShortCode = cbeShortCode;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public boolean isSourceNotified() {
-        return sourceNotified;
-    }
-
-    public void setBillRefNo(String billRefNo) {
-        this.billRefNo = billRefNo;
-    }
-
-    public void setAmount(String amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public int getCode() {
+        return code;
     }
 
-
-    public void setPayerName(String payerName) {
-        this.payerName = payerName;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public void setBankTransactionId(String bankTransactionId) {
-        this.bankTransactionId = bankTransactionId;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setSourceIdentifier(String sourceIdentifier) {
-        this.sourceIdentifier = sourceIdentifier;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public String getDate() {
+        return date;
     }
 
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setLastStatusDate(String lastStatusDate) {
-        this.lastStatusDate = lastStatusDate;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(int id) {
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getExpires() {
+        return expires;
+    }
+
+    public void setExpires(String expires) {
+        this.expires = expires;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setSourceNotified(boolean sourceNotified) {
-        this.sourceNotified = sourceNotified;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatusDetail() {
+        return statusDetail;
+    }
+
+    public void setStatusDetail(String statusDetail) {
+        this.statusDetail = statusDetail;
+    }
+
+    public String isToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

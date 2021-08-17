@@ -687,6 +687,7 @@
         7. Enter your CBE PIN. \n
         8. Payment is Done. \n</string>
     <string name="cbe_birr_cashout_message">Do you want to continue with this transaction?</string>
+    <string name="hello_cash_instruction">Pay your bill at your Lucy, Walya or Axum HelloCash agent or bank! Check *912# or call 8807 for information. \n ID: %s\n pay: %s \n Amount: %s Birr \n Description: %s</string>
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
