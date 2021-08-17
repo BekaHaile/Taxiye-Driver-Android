@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver.stripe.wallet
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
 import product.clicklabs.jugnoo.driver.Data
@@ -40,6 +40,8 @@ class StripeWalletFragment: Fragment(){
         fun openAddCard();
         fun openViewCard(stripeCardData: StripeCardData);
         fun openWalletTransactions();
+        fun openWalletTopUp();
+        fun openWalletCashOut();
         fun isStripeEnabled():Boolean;
 
     }
@@ -97,6 +99,13 @@ class StripeWalletFragment: Fragment(){
         }
         tvWalletTransactions.setOnClickListener {
             stripeWalletInteractor.openWalletTransactions()
+        }
+        tvWalletTopUp.setOnClickListener {
+            stripeWalletInteractor.openWalletTopUp()
+        }
+
+        tvWalletCashOut.setOnClickListener{
+            stripeWalletInteractor.openWalletCashOut()
         }
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)

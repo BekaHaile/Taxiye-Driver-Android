@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="false"
+    android:animateLayoutChanges="true"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top_bar" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:focusableInTouchMode="true"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12sp"
+            android:layout_marginTop="20sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
+                android:padding="10px"
+                android:textSize="18sp"
+                android:textColor="@color/text_color"
+                android:layout_gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20sp"
+                android:padding="20dp">
+                <Button
+                    android:id="@+id/fiftyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="50"
+                    android:textColor="@color/text_color"
+                    android:background="@drawable/background_white_rounded_bordered"/>
+
+                <Button
+                    android:id="@+id/hundredButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="100"
+                    android:textColor="@color/text_color"
+                    android:background="@drawable/background_white_rounded_bordered"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+                <Button
+                    android:id="@+id/hundredFiftyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="300"
+                    android:textColor="@color/text_color"
+                    android:background="@drawable/background_white_rounded_bordered"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="20dp">
+
+
+                <EditText
+                    android:id="@+id/editAmount"
+                    android:layout_width="410px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="60px"
+                    android:background="@color/transparent"
+                    android:digits="0123456789"
+                    android:ems="10"
+                    android:hint="@string/enter_amount"
+                    android:inputType="number|textNoSuggestions"
+                    android:maxLength="5"
+                    android:gravity="center"
+                    android:paddingStart="25px"
+                    android:paddingEnd="25px"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_32"
+                    />
+
+                <ImageView
+                    android:layout_width="410px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@color/text_color" />
+
+            </LinearLayout>
+
+            <Button
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/ButtonTheme"
+                android:text="@string/done"
+                android:id="@+id/btn_done"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

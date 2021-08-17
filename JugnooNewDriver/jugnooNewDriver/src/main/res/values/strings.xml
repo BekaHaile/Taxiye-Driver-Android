@@ -366,6 +366,8 @@
     <string name="customer_id">Customer ID</string>
     <string name="paytm_transaction">Paytm Transaction</string>
     <string name="phone_no">Phone No.</string>
+    <string name="amount">Amount</string>
+    <string name="selectPartner">Select Partner</string>
     <string name="changed_no_same_as_previous">Changed phone number is same as the previous one
 	</string>
     <string name="sharing_payment_recieved">Sharing payment recieved for Phone</string>
@@ -670,6 +672,22 @@
     <string name="rupees_value_format">ETB %s</string>
     <string name="rupees_value_format_negtive">-ETB %s</string>
     <string name="wallet_transactions">Wallet Transactions</string>
+    <string name="top_up_wallet">Top up Wallet</string>
+    <string name="cash_out_from_wallet">Cash out from Wallet</string>
+    <string name="cbe_birr">CBE Birr</string>
+    <string name="mpesa">Mpesa</string>
+    <string name="hello_cash">Hello Cash</string>
+    <string name="follow_the_following"><b>Follow the following steps</b></string>
+    <string name="press_the_call_button"> 1. Dial *847#. \n
+        2. Select the option number 5 (Pay Bill). \n
+        3. Select option number 1 (Select Beneficiary Short Code). \n
+        4. Select Zero(Input Short Code). \n
+        5. Enter the short code %s. \n
+        6. Enter the bill reference number %s. \n
+        7. Enter your CBE PIN. \n
+        8. Payment is Done. \n</string>
+    <string name="cbe_birr_cashout_message">Do you want to continue with this transaction?</string>
+    <string name="hello_cash_instruction">Pay your bill at your Lucy, Walya or Axum HelloCash agent or bank! Check *912# or call 8807 for information. \n ID: %s\n pay: %s \n Amount: %s Birr \n Description: %s</string>
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
@@ -1081,6 +1099,7 @@
     <string name="card_details">Card Details</string>
     <string name="view_cards">View Cards</string>
     <string name="wallet_details">Wallet Details</string>
+    <string name="select_payment_option">Select Payment Option</string>
     <string name="current_balance">Current Balance</string>
     <string name="add_cash">Add Cash</string>
     <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>
