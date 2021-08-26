@@ -31,21 +31,21 @@ public class TopUpOptionSelector extends BaseActivity {
             title.setText(R.string.top_up_wallet);
         else title.setText(R.string.cash_out_from_wallet);
 
-        cbeBirrOption = (TextView) findViewById(R.id.cbeBirrOption);
-        cbeBirrOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openCbeTopUpActivity();
-            }
-        });
-
-        mpesaOption = (TextView) findViewById(R.id.mpesaOption);
-        mpesaOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openMpesaTopUpActivity();
-            }
-        });
+//        cbeBirrOption = (TextView) findViewById(R.id.cbeBirrOption);
+//        cbeBirrOption.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                openCbeTopUpActivity();
+//            }
+//        });
+//
+//        mpesaOption = (TextView) findViewById(R.id.mpesaOption);
+//        mpesaOption.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                openMpesaTopUpActivity();
+//            }
+//        });
 
         helloCashOption = (TextView) findViewById(R.id.helloCashOption);
         helloCashOption.setOnClickListener(new View.OnClickListener() {

@@ -63,6 +63,12 @@ class StripeWalletFragment: Fragment(){
         return inflater.inflate(R.layout.frag_wallet,container,false)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        fetchWalletData();
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupShowStripe(if(stripeWalletInteractor.isStripeEnabled()) View.VISIBLE else View.GONE)
@@ -111,13 +117,39 @@ class StripeWalletFragment: Fragment(){
         tvQuickAmtTwo.setFillListener(edtAmount)
         tvQuickAmtThree.setFillListener(edtAmount)
         fetchWalletData();
+        checkPaymentConfig()
 
+    }
 
+    fun checkPaymentConfig(){
+        ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
+        execute(params = null, apiName = ApiName.FETCH_WALLET_BALANCE, apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
+            override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
+
+                tvWalletCashOut.visibility = View.GONE
+                tvWalletTopUp.visibility = View.GONE
+
+                t.data.forEach {
+                    if(it.name == "hellocash" && it.enabled == 1) {
+                    tvWalletCashOut.visibility = View.VISIBLE
+                    tvWalletTopUp.visibility = View.VISIBLE
+                } }
+
+            }
+
+            override fun onError(t: WalletModelResponse?, message: String?, flag: Int): Boolean {
+                return false;
+            }
+
+            override fun onDialogClick() {
+                requireActivity().onBackPressed();
+            }
+        })
     }
 
     fun fetchWalletData(){
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
-        execute(params = null,apiName = ApiName.FETCH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
+        execute(params = null, apiName = ApiName.FETCH_WALLET, apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
                         /*if (Data.userData != null) {
                             Data.userData.walletBalance = t.getBalance()
@@ -127,8 +159,6 @@ class StripeWalletFragment: Fragment(){
                         quickAddAmounts = t.quickAddAmounts;
                         edtAmount.addTextChangedListener(UpdateCurrencyDrawableWatcher(edtAmount,currencyUnit));
                         setStripeData(t.stripeCards?.run { if(this.size>0) this[0] else null})
-
-
 
                     }
 
@@ -199,7 +229,7 @@ class StripeWalletFragment: Fragment(){
                                 "card_id" to   (stripeCardData?.cardId?:""))
 
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true,checkForActionComplete = true).
-        execute(params,apiName = ApiName.ADD_CASH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
+        execute(params, apiName = ApiName.ADD_CASH_WALLET, apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
                         DialogPopup.alertPopup(requireActivity(),"",message);
                         tvCurrentBalance.text = Utils.formatCurrencyValue(currencyUnit,t.getBalance());
