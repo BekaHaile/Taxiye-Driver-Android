@@ -692,6 +692,11 @@ public interface APIServices {
 							Callback<WalletModelResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/fetch_wallet_balance")
+	void fetchWalletPaymentConfig(@FieldMap Map<String, String> params,
+							Callback<WalletModelResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/driver/add_money_via_stripe")
 	void addMoneyViaStripe(@FieldMap Map<String, String> params,
 						   Callback<WalletModelResponse> callback);

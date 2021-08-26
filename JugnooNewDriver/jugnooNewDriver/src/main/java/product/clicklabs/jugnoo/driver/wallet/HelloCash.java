@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
     ImageView backBtn;
     EditText editAmount, edtPhoneNo;
     String currency = Data.userData.getCurrency() + " %s";
+    LinearLayout minimumAmount;
 
     private TextView tvCountryCode;
     private CountryPicker countryPicker;
@@ -57,7 +59,32 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
         title.setTypeface(Fonts.mavenRegular(this));
         title.setText(R.string.hello_cash);
 
+        isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
+        minimumAmount = (LinearLayout) findViewById(R.id.minimumAmount);
+
         editAmount = (EditText) findViewById(R.id.editAmount);
+        editAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!isTopUp && !editable.toString().equals("")) {
+                    if (Integer.parseInt(editable.toString()) < 25) {
+                        minimumAmount.setVisibility(View.VISIBLE);
+                    } else {
+                        minimumAmount.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
         edtPhoneNo = (EditText) findViewById(R.id.edtPhoneNo);
         edtPhoneNo.setText(Utils.retrievePhoneNumberTenChars(Data.userData.getCountryCode(), Data.userData.phoneNo));
@@ -130,7 +157,6 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
             @Override
             public void onClick(View view) {
                 DialogPopup.showLoadingDialog(HelloCash.this, HelloCash.this.getResources().getString(R.string.loading));
-                isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
                 if(isTopUp){
                     HashMap<String, String> params = new HashMap<>();
                     params.put("payment_method", "HELLO-CASH");
@@ -174,6 +200,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                         public void success(HelloCashCashoutResponse helloCashCashoutResponse, Response response) {
                             DialogPopup.dismissLoadingDialog();
                             Toast.makeText(HelloCash.this, HelloCash.this.getString(R.string.success), Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                         @Override
@@ -247,6 +274,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+                finish();
 //                CbeTopUp.super.onBackPressed();
             }
         });
