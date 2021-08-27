@@ -51,6 +51,9 @@ import product.clicklabs.jugnoo.driver.ui.models.ProgramModel;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
+import product.clicklabs.jugnoo.driver.wallet.model.CbeBirrCashoutResponse;
+import product.clicklabs.jugnoo.driver.wallet.model.HelloCashCashoutResponse;
+import product.clicklabs.jugnoo.driver.wallet.model.ResponseModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -689,6 +692,11 @@ public interface APIServices {
 							Callback<WalletModelResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/fetch_wallet_balance")
+	void fetchWalletPaymentConfig(@FieldMap Map<String, String> params,
+							Callback<WalletModelResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/driver/add_money_via_stripe")
 	void addMoneyViaStripe(@FieldMap Map<String, String> params,
 						   Callback<WalletModelResponse> callback);
@@ -866,8 +874,38 @@ public interface APIServices {
 	void sendOtpViaCall(@FieldMap Map<String, String> params,
 						Callback<FeedCommonResponseKotlin> callback);
 
-	    @POST("/delivery/upload_images")
+	@POST("/delivery/upload_images")
     void uploadImagesRide(@Body MultipartTypedOutput params,
 						  Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void cbeCashOut(@FieldMap Map<String, String> params,
+					Callback<ResponseModel<CbeBirrCashoutResponse>> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void cbeTopUp(@FieldMap Map<String, String> params,
+					Callback<ResponseModel<CbeBirrCashoutResponse>> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void mpesaCashOut(@FieldMap Map<String, String> params,
+					Callback<CbeBirrCashoutResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void mpesaTopUp(@FieldMap Map<String, String> params,
+					Callback<CbeBirrCashoutResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/deposit/request")
+	void helloCashTopUp(@FieldMap Map<String, String> params,
+				  Callback<HelloCashCashoutResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cashout/request")
+	void helloCashCashout(@FieldMap Map<String, String> params,
+					Callback<HelloCashCashoutResponse> callback);
 
 }

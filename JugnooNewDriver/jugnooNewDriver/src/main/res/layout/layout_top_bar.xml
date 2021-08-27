@@ -13,8 +13,7 @@
 
     <ImageView
         android:id="@+id/backBtn"
-        style="@style/BackArrow"
-        />
+        style="@style/BackArrow" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
