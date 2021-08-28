@@ -148,9 +148,9 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
         });
 
         Spinner dropdown = findViewById(R.id.spinner1);
-        String[] items = new String[]{"Lion", "Wogagen"};
+        String[] items = new String[]{"Lion", "Wegagen"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);l
+        dropdown.setAdapter(adapter);
 
         buttonDone = (Button) findViewById(R.id.btn_done);
         buttonDone.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +172,8 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                         @Override
                         public void success(HelloCashCashoutResponse helloCashCashoutResponse, Response response) {
                             DialogPopup.dismissLoadingDialog();
-                            buildDialog(helloCashCashoutResponse);
+                            if(!helloCashCashoutResponse.isUpcoming())
+                                buildDialog(helloCashCashoutResponse);
                         }
 
                         @Override
@@ -200,7 +201,8 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
                         public void success(HelloCashCashoutResponse helloCashCashoutResponse, Response response) {
                             DialogPopup.dismissLoadingDialog();
                             Toast.makeText(HelloCash.this, HelloCash.this.getString(R.string.success), Toast.LENGTH_SHORT).show();
-                            finish();
+                            if(!helloCashCashoutResponse.isUpcoming())
+                                finish();
                         }
 
                         @Override
