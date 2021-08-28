@@ -57,6 +57,10 @@ public class HelloCashCashoutResponse {
     @SerializedName("to")
     private String to ;
 
+    @Expose
+    @SerializedName("isUpcoming")
+    private boolean isUpcoming ;
+
     public int getAmount() {
         return amount;
     }
@@ -159,5 +163,16 @@ public class HelloCashCashoutResponse {
 
     public void setTo(String to) {
         this.to = to;
+    }
+    public String getToName() {
+        return toName;
+    }
+
+    public boolean isUpcoming() {
+        return isUpcoming;
+    }
+
+    public void setUpcoming(boolean upcoming) {
+        isUpcoming = upcoming;
     }
 }
