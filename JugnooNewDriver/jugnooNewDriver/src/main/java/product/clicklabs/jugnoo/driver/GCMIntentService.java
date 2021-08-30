@@ -692,9 +692,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
 											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt,
 											multiDestCount);
-									if(isManual == "0" || isManual == "1035")
+									if(isManual.equals("0") || isManual.equals("1035"))
 										customerInfo.setIsCorporateRide(0);
-									else customerInfo.setIsCorporateRide(1);
+									else
+										customerInfo.setIsCorporateRide(1);
 									Data.addCustomerInfo(customerInfo);
 
 									if(!isOffline) {
