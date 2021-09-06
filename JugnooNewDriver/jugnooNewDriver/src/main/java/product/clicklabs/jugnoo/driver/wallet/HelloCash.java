@@ -45,7 +45,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
     String currency = Data.userData.getCurrency() + " %s";
     LinearLayout minimumAmount;
 
-    private TextView tvCountryCode;
+    private TextView tvCountryCode, redLabelMessage;
     private CountryPicker countryPicker;
     boolean isTopUp;
 
@@ -61,6 +61,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
 
         isTopUp = Prefs.with(getApplicationContext()).getBoolean("isTopUp", false);
         minimumAmount = (LinearLayout) findViewById(R.id.minimumAmount);
+        redLabelMessage = (TextView) findViewById(R.id.redLabelMessage);
 
         editAmount = (EditText) findViewById(R.id.editAmount);
         editAmount.addTextChangedListener(new TextWatcher() {
@@ -78,9 +79,27 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
             public void afterTextChanged(Editable editable) {
                 if(!isTopUp && !editable.toString().equals("")) {
                     if (Integer.parseInt(editable.toString()) < 25) {
-                        minimumAmount.setVisibility(View.VISIBLE);
+                        if (Integer.parseInt(editable.toString()) < 25) {
+                            redLabelMessage.setText(getResources().getString(R.string.minimumCashOut));
+                            minimumAmount.setVisibility(View.VISIBLE);
+                            buttonDone.setEnabled(false);
+                        } else {
+                            buttonDone.setEnabled(true);
+                            minimumAmount.setVisibility(View.GONE);
+                        }
                     } else {
-                        minimumAmount.setVisibility(View.GONE);
+
+                        int minimumDriverBalance = Prefs.with(HelloCash.this).getInt("minimumDriverBalance", 0) - 25;
+                        int walletBalance = Prefs.with(HelloCash.this).getInt("walletBalance", 0);
+                        if (walletBalance - Integer.parseInt(editable.toString()) <= minimumDriverBalance) {
+                            redLabelMessage.setText(getResources().getString(R.string.walletBalanceAfterCheckout,
+                                   Integer.toString(minimumDriverBalance)));
+                            minimumAmount.setVisibility(View.VISIBLE);
+                            buttonDone.setEnabled(false);
+                        } else {
+                            buttonDone.setEnabled(true);
+                            minimumAmount.setVisibility(View.GONE);
+                        }
                     }
                 }
             }

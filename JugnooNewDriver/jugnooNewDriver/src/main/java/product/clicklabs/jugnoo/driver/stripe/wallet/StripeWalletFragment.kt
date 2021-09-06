@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver.stripe.wallet
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -26,6 +28,7 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
+import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
 import kotlin.math.roundToInt
@@ -58,6 +61,8 @@ class StripeWalletFragment: Fragment(){
     private var stripeCardData:StripeCardData? = null;
     private var currencyUnit:String?=null;
     private var quickAddAmounts:List<Double>?=null;
+    private var helloCashMinimumBalance: Int=0;
+    private var walletBalance: Int=0;
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.frag_wallet,container,false)
@@ -111,7 +116,24 @@ class StripeWalletFragment: Fragment(){
         }
 
         tvWalletCashOut.setOnClickListener{
-            stripeWalletInteractor.openWalletCashOut()
+            if(helloCashMinimumBalance > walletBalance){
+                val dialogBuilder = AlertDialog.Builder(context)
+
+                // set message of alert dialog
+                dialogBuilder.setMessage("Your wallet balance should be more than $helloCashMinimumBalance")
+                        // positive button text and action
+                        .setPositiveButton(R.string.ok, DialogInterface.OnClickListener {
+                            dialog, _ -> dialog.cancel()
+                        })
+
+                // create dialog box
+                val alert = dialogBuilder.create()
+                // set title for alert dialog box
+                alert.setTitle("Minimum wallet balance")
+                // show alert dialog
+                alert.show()
+            }
+            else stripeWalletInteractor.openWalletCashOut()
         }
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)
@@ -130,10 +152,13 @@ class StripeWalletFragment: Fragment(){
                 tvWalletTopUp.visibility = View.GONE
 
                 t.data.forEach {
-                    if(it.name == "hellocash" && it.enabled == 1) {
-                    tvWalletCashOut.visibility = View.VISIBLE
-                    tvWalletTopUp.visibility = View.VISIBLE
-                } }
+                        if(it.name == "hellocash" && it.enabled == 1) {
+                        tvWalletCashOut.visibility = View.VISIBLE
+                        tvWalletTopUp.visibility = View.VISIBLE
+                        helloCashMinimumBalance = it.minimumDriverBalance
+                        Prefs.with(context).save("minimumDriverBalance", it.minimumDriverBalance)
+                    }
+                }
 
             }
 
@@ -155,6 +180,8 @@ class StripeWalletFragment: Fragment(){
                             Data.userData.walletBalance = t.getBalance()
                         }*/
                         tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance())
+                        walletBalance = t.getBalance().toInt()
+                        Prefs.with(context).save("walletBalance", t.walletBalance.toInt())
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;
                         edtAmount.addTextChangedListener(UpdateCurrencyDrawableWatcher(edtAmount,currencyUnit));

@@ -12,6 +12,10 @@ public class PaymentConfig {
     @SerializedName("enabled")
     private int enabled;
 
+    @Expose
+    @SerializedName("minimum_driver_balance")
+    private int minimumDriverBalance;
+
     public String getName() {
         return name;
     }
@@ -26,5 +30,13 @@ public class PaymentConfig {
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+
+    public int getMinimumDriverBalance() {
+        return minimumDriverBalance;
+    }
+
+    public void setMinimumDriverBalance(int minimumDriverBalance) {
+        this.minimumDriverBalance = minimumDriverBalance;
     }
 }
