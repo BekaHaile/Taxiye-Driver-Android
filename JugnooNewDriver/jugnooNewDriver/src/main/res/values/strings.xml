@@ -368,7 +368,7 @@
     <string name="phone_no">Phone No.</string>
     <string name="amount">Amount</string>
     <string name="minimumCashOut">Minimum Cash out amount is 25ETB.</string>
-    <string name="walletBalanceAfterCheckout">Your wallet balance after cash-out should be %s.</string>
+    <string name="walletBalanceAfterCheckout">Your wallet balance after transaction should be %s.</string>
     <string name="selectPartner">Select Partner</string>
     <string name="changed_no_same_as_previous">Changed phone number is same as the previous one
 	</string>
