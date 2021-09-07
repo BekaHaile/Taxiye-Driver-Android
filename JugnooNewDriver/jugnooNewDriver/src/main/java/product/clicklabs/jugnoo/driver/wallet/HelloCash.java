@@ -91,7 +91,7 @@ public class HelloCash extends BaseActivity implements OnCountryPickerListener<C
 
                         int minimumDriverBalance = Prefs.with(HelloCash.this).getInt("minimumDriverBalance", 0) - 25;
                         int walletBalance = Prefs.with(HelloCash.this).getInt("walletBalance", 0);
-                        if (walletBalance - Integer.parseInt(editable.toString()) <= minimumDriverBalance) {
+                        if (walletBalance - Integer.parseInt(editable.toString()) < minimumDriverBalance) {
                             redLabelMessage.setText(getResources().getString(R.string.walletBalanceAfterCheckout,
                                    Integer.toString(minimumDriverBalance)));
                             minimumAmount.setVisibility(View.VISIBLE);
